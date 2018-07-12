@@ -3,4 +3,118 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--main_tag-->
+    <color name="main_text_color">#ff6600</color>
+    <color name="main_text_default">#9c9c9c</color>
+    <color name="main_top_line">#e8e8e8</color>
+
+    <color name="toolbar_background">#f8f8f8</color>
+    <color name="toolbar_text">#000000</color>
+    
+    <color name="black_3">#333333</color>
+    <color name="black_6">#666666</color>
+    <color name="black_9">#999999</color>
+    <color name="black_c">#cccccc</color>
+    <color name="black_1a">#1a1a1a</color>
+    <color name="black_tranparent30p">#55000000</color>
+    <color name="black_tranparent80">#80000000</color>
+
+    <color name="default_bg">#f4f4f4</color>
+    <color name="default_bg_e6">#e6e6e6</color>
+    <color name="default_bg_f8">#f8f8f8</color>
+    <color name="default_text_black">#525252</color>
+    <color name="default_text_white">#ffffff</color>
+
+    <color name="bg_gray">#e8e8e8</color>
+    <color name="bg_gray_e6">#e6e6e6</color>
+    <color name="bg_white">#ffffffff</color>
+    <color name="bg_blue">#50a2f7</color>
+    <color name="bg_green">#23d056</color>
+    <color name="bg_recycle_divider">@color/default_bg</color>
+    <color name="demand_gray">#e6e6e6</color>
+
+    <color name="date_title_text">#cccccc</color>
+    <color name="mine_text_blue">#3994f2</color>
+
+    <!--自定义弹窗背景颜色-->
+    <color name="popup_bg">#7f000000</color>
+    <color name="popup_bg2">#cc000000</color>
+    <color name="line_bg">#dbdbdb</color>
+
+    <color name="item_coupon_red">#ff6161</color>
+    <color name="item_coupon_blue">#009eff</color>
+    <color name="item_coupon_blue_bg">#e6f7ff</color>
+    <color name="item_coupon_green">#23d056</color>
+    <color name="item_coupon_gray">#9c9c9c</color>
+    <color name="item_coupon_default">#cccccc</color>
+    <color name="item_coupon_orange">#ff6161</color>
+
+    <color name="mylive_course_title_default">#7ce29a</color>
+
+    <color name="transparent_white">#66ffffff</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="city_search_bg">#fff2f2f2</color>
+    <color name="city_item_letter_color">#ff8c8c8c</color>
+    <color name="city_item_text_color">#ff5c5c5c</color>
+    <color name="city_item_divider_color">#ffdddddc</color>
+    <color name="city_search_hint">#ff787878</color>
+
+    <color name="rts_background">#ff000000</color>
+    <color name="rts_expandable_bg">#98000000</color>
+    <color name="rts_line_bg">#808080</color>
+    <color name="rts_text_default">#cccccc</color>
+    <color name="rts_text_orange">#ff6600</color>
+
+    <color name="rts_paint_yellow">#ffe600</color>
+    <color name="rts_paint_red">#ff0000</color>
+    <color name="rts_paint_black">#050505</color>
+    <color name="rts_paint_green">#04ff00</color>
+
+    <color name="rts_blue">#0000FF</color>
+    <color name="rts_red">#FF0000</color>
+    <color name="rts_black">#000000</color>
+    <color name="rts_pink">#FF00FF</color>
+
+    <color name="white_dark">#f2f2f2</color>
+    <color name="item_coupon_text_black">#000000</color>
+    <color name="item_coupon_text_dark">#666666</color>
+
+    <color name="main_sky">#1a7dc7</color>
+    <color name="blue_text_color">#51aafb</color>
+    <color name="red_hint_bg_color">#fff4ee</color>
+
+    <color name="red_bag_sign_red">#ff0000</color>
+    <color name="red_bag_gray">#cccccc</color>
+    <color name="protective_color">#C7EDCC</color>
+    <color name="black60t">#99000000</color>
+    <color name="white30t">#4CFFFFFF</color>
+    <color name="white20t">#33FFFFFF</color>
+    <color name="white12t">#1FFFFFFF</color>
+
+    <color name="blackf2">#F2333333</color>
+
+
+    <color name="p_p_item_select">#ebebeb</color>
+    <color name="btn_yellow">#ffb966</color>
+    <color name="btn_blue">#6ccbff</color>
+    <color name="white_tr20">#99ffffff</color>
+
+    <color name="material_red">#ffF44336</color>
+    <color name="material_green">#ff4CAF50</color>
+    <color name="material_blue">#ff03A9F4</color>
+    <color name="material_yellow">#ffFFEB3B</color>
+
+
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1976D2</color>
+    <color name="primary_light">#BBDEFB</color>
+    <color name="accent">#455A64</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+    <color name="dialog_bg">#80000000</color>
+
 </resources>

@@ -7,5 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="android:windowFullscreen">true</item> &lt;!&ndash;设置全屏. &ndash;&gt;-->
+        <item name="android:statusBarColor">@color/rts_text_orange</item><!--5.0  21API以上  在不设置全屏情况下可以设置顶部状态栏背景颜色. -->
+    </style>
 
 </resources>

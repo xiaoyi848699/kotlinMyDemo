@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/main_top_line" />
+            <size
+                android:width="0dp"
+                android:height="1px" />
+        </shape>
+    </item>
+
+    <item android:top="2px">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bg_recycle_divider" />
+            <size
+                android:width="0dp"
+                android:height="1px" />
+        </shape>
+    </item>
+
+</layer-list>

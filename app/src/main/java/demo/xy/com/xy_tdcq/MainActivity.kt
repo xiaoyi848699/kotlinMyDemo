@@ -1,6 +1,7 @@
 package demo.xy.com.xy_tdcq
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -8,11 +9,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import kotlinx.android.synthetic.main.item_list.view.*
+import demo.xy.com.xy_tdcq.view.DividerItemLinearLayout
 
 class MainActivity : AppCompatActivity() {
 //    lateinit可以在任何位置初始化并且可以初始化多次。而lazy在第一次被调用时就被初始化，想要被改变只能重新定义
@@ -23,7 +25,13 @@ class MainActivity : AppCompatActivity() {
     val context: Context = this
     val items = listOf(
             "全屏",
-            "画板")
+            "画板",
+            "test1",
+            "test2",
+            "test3",
+            "test4",
+            "test5",
+            "test6")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +41,15 @@ class MainActivity : AppCompatActivity() {
 
 
         listview.layoutManager = LinearLayoutManager(this)
+        listview.addItemDecoration(DividerItemLinearLayout(context,
+                R.drawable.bg_recycler_divider,
+                DividerItemLinearLayout.VERTICAL_LIST))
         listview.adapter = MainAdapter(items){ s: String, i: Int ->
-                        Toast.makeText(context,"你点击了$s-->$i",Toast.LENGTH_LONG).show()
+               Toast.makeText(context,"你点击了$s-->$i",Toast.LENGTH_LONG).show()
+            when(i){
+                0 -> startActivity(Intent(context,FullActivity::class.java))
+
+            }
         }
 
 
@@ -55,11 +70,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         class ViewHolder(val view:View, val itemClickListener: (String,Int) -> Unit): RecyclerView.ViewHolder(view){
-//            var text_tv:TextView = view.findViewById(R.id.text_tv)
-            fun bind(news: String,position:Int) {
-                view.text_tv.text = news
+            var text_tv: TextView = view.findViewById(R.id.text_tv)
+            fun bind(str: String,position:Int) {
+//                view.text_tv.text = str
+                text_tv.text = str
                 view.setOnClickListener {
-                    itemClickListener(news,position)
+                    itemClickListener(str,position)
                 }
             }
 
