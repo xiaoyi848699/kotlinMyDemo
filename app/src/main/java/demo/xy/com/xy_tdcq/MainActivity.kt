@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             when(i){
                 0 -> startActivity(Intent(context,FullActivity::class.java))
                 1 -> startActivity(Intent(context,GLSurfaceViewActivity1::class.java))
-                1 -> startActivity(Intent(context,GLSurfaceViewActivity2::class.java))
+                2 -> startActivity(Intent(context,GLSurfaceViewActivity2::class.java))
 
             }
         }

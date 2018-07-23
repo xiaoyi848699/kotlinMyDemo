@@ -1,6 +1,7 @@
 package demo.xy.com.xy_tdcq.gl
 
 import android.opengl.GLSurfaceView
+import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
 /**
@@ -9,7 +10,7 @@ import javax.microedition.khronos.opengles.GL10
 class GLRender1 : GLSurfaceView.Renderer {
 
 
-    override fun onSurfaceCreated(gl: GL10?, config: javax.microedition.khronos.egl.EGLConfig?) {
+    override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         // gl.glDisable用于禁用OpenGL某方面的特性，该处表示关闭抗抖动，可以提高性能
         gl?.glDisable(GL10.GL_DITHER)
         //该方法用于修正，本处用于设置对透视进行修正
@@ -68,11 +69,11 @@ class GLRender1 : GLSurfaceView.Renderer {
         //设置顶点位置数据
         gl.glVertexPointer(3,
                 GL10.GL_FLOAT, 0,
-                PointData1.getTriangleDataBuffer())
+                PointDataKotlin.getTriangleDataBuffer())
         //设置顶点颜色数据
         gl.glColorPointer(4,
                 GL10.GL_FIXED, 0,
-                PointData1.getTriangleColorBuffer())
+                PointDataKotlin.getTriangleColorBuffer())
         //根据顶点数据绘制平面图形
         gl.glDrawArrays(GL10.GL_TRIANGLES, 0, 3)
 //        GL_POINTS - 单独的将顶点画出来。
@@ -91,11 +92,11 @@ class GLRender1 : GLSurfaceView.Renderer {
         //设置顶点位置数据
         gl.glVertexPointer(3,
                 GL10.GL_FLOAT, 0,
-                PointData1.getRectDataBuffer())
+                PointDataKotlin.getRectDataBuffer())
         //设置顶点颜色数据
         gl.glColorPointer(4,
                 GL10.GL_FIXED, 0,
-                PointData1.getRectColorBuffer())
+                PointDataKotlin.getRectColorBuffer())
         //更具顶点数据绘制平面图形
         gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4)
 
@@ -108,11 +109,11 @@ class GLRender1 : GLSurfaceView.Renderer {
         // 沿着xY轴旋转
         gl.glRotatef(rotate, 1f, 1f, 0f)
         //设置顶点位置数据
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, PointData1.getVerticesBuffer())
+        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, PointDataKotlin.getVerticesBuffer())
         // 设置顶点的颜色数据
-        gl.glColorPointer(4, GL10.GL_FLOAT, 0, PointData1.getColorbuffer())
+        gl.glColorPointer(4, GL10.GL_FLOAT, 0, PointDataKotlin.getColorbuffer())
         //绘制三角形
-        gl.glDrawElements(GL10.GL_TRIANGLES, PointData1.indices.size, GL10.GL_UNSIGNED_SHORT, PointData1.getIndexbuffer())
+        gl.glDrawElements(GL10.GL_TRIANGLES, PointDataKotlin.indices.size, GL10.GL_UNSIGNED_SHORT, PointDataKotlin.getIndexbuffer())
 
 
         //绘制结束

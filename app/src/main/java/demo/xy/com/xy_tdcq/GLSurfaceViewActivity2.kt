@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import demo.xy.com.xy_tdcq.gl.GLRender1
+import demo.xy.com.xy_tdcq.gl.GLRender2
 import demo.xy.com.xy_tdcq.view.MyGLSurfaceView
 
 class GLSurfaceViewActivity2 : AppCompatActivity() {
@@ -21,7 +21,7 @@ class GLSurfaceViewActivity2 : AppCompatActivity() {
         //注册ButterKnife
         unbinder = ButterKnife.bind(this)
         if(IsSupported()){
-            glSurfaceView.setRenderer(GLRender1())
+            glSurfaceView.setRenderer(GLRender2(this))
         }
     }
 
