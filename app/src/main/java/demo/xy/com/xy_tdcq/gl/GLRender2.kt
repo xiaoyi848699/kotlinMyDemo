@@ -9,9 +9,10 @@ import demo.xy.com.xy_tdcq.R
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
-import java.nio.IntBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+
+
 
 
 
@@ -28,12 +29,18 @@ class GLRender2 : GLSurfaceView.Renderer {
     var yspeed:Float = 0.toFloat()
     var z = -5.0f
 
-    var mBitmap: Bitmap? = null
+//    var mBitmap1: Bitmap? = null
 
     lateinit var activity:Activity
     constructor(activity:Activity){
         this.activity = activity
-        mBitmap = BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher)
+//        mBitmap1 = BitmapFactory.decodeResource(activity.resources, R.drawable.ic_home1)
+        mBitmap[0] = BitmapFactory.decodeResource(activity.resources, R.drawable.ic_home1)
+        mBitmap[1] = BitmapFactory.decodeResource(activity.resources, R.drawable.ic_home2)
+        mBitmap[2] = BitmapFactory.decodeResource(activity.resources, R.drawable.ic_home3)
+        mBitmap[3] = BitmapFactory.decodeResource(activity.resources, R.drawable.ic_home4)
+        mBitmap[4] = BitmapFactory.decodeResource(activity.resources, R.drawable.ic_home5)
+        mBitmap[5] = BitmapFactory.decodeResource(activity.resources, R.drawable.ic_home6)
     }
 
     //光线参数
@@ -41,52 +48,71 @@ class GLRender2 : GLSurfaceView.Renderer {
     var lightDiffuse = FloatBuffer.wrap(floatArrayOf(1.0f, 1.0f, 1.0f, 1.0f))
     var lightPosition = FloatBuffer.wrap(floatArrayOf(0.0f, 0.0f, 2.0f, 1.0f))
 
-    lateinit var normalsBuf: FloatBuffer
-    lateinit var verticesBuf: FloatBuffer
-    lateinit var texCoordsBuf: FloatBuffer
-    lateinit var indicesBuf: ByteBuffer
+//    lateinit var normalsBuf: FloatBuffer
+//    lateinit var verticesBuf: FloatBuffer
+//    lateinit var texCoordsBuf: FloatBuffer
+//    lateinit var indicesBuf: ByteBuffer
 
-    var filter = 1
-    lateinit var texture: IntArray
-    var vertices = floatArrayOf(
-            -1f, -1f, 1f,
-            1f, -1f, 1f,
-            1f, 1f, 1f,
-            -1f, 1f, 1f,
+    lateinit var vertexBuffer: FloatBuffer
+    lateinit var textCoodBuffer: FloatBuffer
 
-            -1f, -1f, -1f, -1f, 1f, -1f, 1f, 1f, -1f, 1f, -1f, -1f,
+//    var filter = 0
 
-            -1f, 1f, -1f, -1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, -1f,
+    var texture = IntArray(1)
+//    var vertices = floatArrayOf(
+//            -1f, -1f, 1f,
+//            1f, -1f, 1f,
+//            1f, 1f, 1f,
+//            -1f, 1f, 1f,
+//
+//            -1f, -1f, -1f, -1f, 1f, -1f, 1f, 1f, -1f, 1f, -1f, -1f,
+//
+//            -1f, 1f, -1f, -1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, -1f,
+//
+//            -1f, -1f, -1f, 1f, -1f, -1f, 1f, -1f, 1f, -1f, -1f, 1f,
+//
+//            1f, -1f, -1f, 1f, 1f, -1f, 1f, 1f, 1f, 1f, -1f, 1f,
+//
+//            -1f, -1f, -1f, -1f, -1f, 1f, -1f, 1f, 1f, -1f, 1f, -1f)
+//
+//    var normals = floatArrayOf(0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f,
+//
+//            0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f,
+//
+//            0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f,
+//
+//            0f, -1f, 0f, 0f, -1f, 0f, 0f, -1f, 0f, 0f, -1f, 0f,
+//
+//            1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f,
+//
+//            -1f, 0f, 0f, -1f, 0f, 0f, -1f, 0f, 0f, -1f, 0f, 0f)
+//
+//    var texCoords = floatArrayOf(1f, 0f, 0f, 0f, 0f, 1f, 1f, 1f, 0f, 0f, 0f, 1f, 1f, 1f, 1f, 0f, 1f, 1f, 1f, 0f, 0f, 0f, 0f, 1f, 0f, 1f, 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 1f, 1f, 1f, 1f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 1f, 1f)
+//
+//    var indices = byteArrayOf(
+//            0, 1, 3, 2,
+//            4, 5, 7, 6,
+//            8, 9, 11, 10,
+//            12, 13, 15, 14,
+//            16, 17, 19, 18,
+//            20, 21, 23, 22)
 
-            -1f, -1f, -1f, 1f, -1f, -1f, 1f, -1f, 1f, -1f, -1f, 1f,
+    private val verticesT = floatArrayOf(// 定义一个面的顶点坐标
+            -1.0f, -1.0f, 0.0f, // 0. 左-底-前
+            1.0f, -1.0f, 0.0f, // 1. 右-底-前
+            -1.0f, 1.0f, 0.0f, // 2. 左-顶-前
+            1.0f, 1.0f, 0.0f    // 3. 右-顶-前
+    )
+    private val textCoodT = floatArrayOf(0.0f, 1.0f, // A. 左-下
+            1.0f, 1.0f, // B. 右-下
+            0.0f, 0.0f, // C. 左-上
+            1.0f, 0.0f   // D. 右-上
+    )
 
-            1f, -1f, -1f, 1f, 1f, -1f, 1f, 1f, 1f, 1f, -1f, 1f,
-
-            -1f, -1f, -1f, -1f, -1f, 1f, -1f, 1f, 1f, -1f, 1f, -1f)
-
-    var normals = floatArrayOf(0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f,
-
-            0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f,
-
-            0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f,
-
-            0f, -1f, 0f, 0f, -1f, 0f, 0f, -1f, 0f, 0f, -1f, 0f,
-
-            1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f, 1f, 0f, 0f,
-
-            -1f, 0f, 0f, -1f, 0f, 0f, -1f, 0f, 0f, -1f, 0f, 0f)
-
-    var texCoords = floatArrayOf(1f, 0f, 0f, 0f, 0f, 1f, 1f, 1f, 0f, 0f, 0f, 1f, 1f, 1f, 1f, 0f, 1f, 1f, 1f, 0f, 0f, 0f, 0f, 1f, 0f, 1f, 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 1f, 1f, 1f, 1f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 1f, 1f)
-
-    var indices = byteArrayOf(
-            0, 1, 3, 2,
-            4, 5, 7, 6,
-            8, 9, 11, 10,
-            12, 13, 15, 14,
-            16, 17, 19, 18,
-            20, 21, 23, 22)
-
-
+    //图片数组
+    var mBitmap = arrayOfNulls<Bitmap>(6)
+    //变换角度
+    private val angle = floatArrayOf(0.0f, 90.0f, 180.0f, 270.0f, 90.0f, 270.0f)
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
 //        //gl?.glDisable用于禁用OpenGL某方面的特性，该处表示关闭抗抖动，可以提高性能
 //        gl?.glDisable(GL10.GL_DITHER)
@@ -121,25 +147,37 @@ class GLRender2 : GLSurfaceView.Renderer {
         // 基于源象素alpha通道值的半透明混合函数  
        gl?.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE)
 
-        //纹理相关  
-        val textureBuffer = IntBuffer.allocate(3)
-       gl?.glGenTextures(3, textureBuffer)
-        texture = textureBuffer.array()
+        //启用纹理
+        gl?.glEnable(GL10.GL_TEXTURE_2D)
+        //创建纹理
+        gl?.glGenTextures(1, texture, 0)
+        //绑定纹理
+        gl?.glBindTexture(GL10.GL_TEXTURE_2D, texture[0])
+        //生成纹理
+        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap[0], 0)
+        //线性滤波处理
+        gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,  GL10.GL_LINEAR)
+        gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,  GL10.GL_LINEAR)
 
-       gl?.glBindTexture(GL10.GL_TEXTURE_2D, texture[0])
-       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_NEAREST)
-       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST)
-        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0)
+//        //纹理相关
+//        val textureBuffer = IntBuffer.allocate(1)
+//       gl?.glGenTextures(1, textureBuffer)//函数根据纹理参数返回n个纹理索引
+//        texture = textureBuffer.array()
+//
+//       gl?.glBindTexture(GL10.GL_TEXTURE_2D, texture[0])
+//       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_NEAREST)
+//       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST)
+//        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap1, 0)
 
-       gl?.glBindTexture(GL10.GL_TEXTURE_2D, texture[1])
-       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR)
-       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR)
-        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0)
-
-       gl?.glBindTexture(GL10.GL_TEXTURE_2D, texture[2])
-       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR)
-       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR)
-        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap, 0)
+//       gl?.glBindTexture(GL10.GL_TEXTURE_2D, texture[1])
+//       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR)
+//       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR)
+//        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap2, 0)
+//
+//       gl?.glBindTexture(GL10.GL_TEXTURE_2D, texture[2])
+//       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR)
+//       gl?.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR)
+//        GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap3, 0)
 
         //深度测试相关  
        gl?.glClearDepthf(1.0f)
@@ -158,27 +196,43 @@ class GLRender2 : GLSurfaceView.Renderer {
         //开启混合  
        gl?.glEnable(GL10.GL_BLEND)
 
-        val nbb = ByteBuffer.allocateDirect(normals.size * 4)
-        nbb.order(ByteOrder.nativeOrder())
-        normalsBuf = nbb.asFloatBuffer()
-        normalsBuf.put(normals)
-        normalsBuf.position(0)
+//        val nbb = ByteBuffer.allocateDirect(normals.size * 4)
+//        nbb.order(ByteOrder.nativeOrder())
+//        normalsBuf = nbb.asFloatBuffer()
+//        normalsBuf.put(normals)
+//        normalsBuf.position(0)
+//
+//        val vbb = ByteBuffer.allocateDirect(vertices.size * 4)
+//        vbb.order(ByteOrder.nativeOrder())
+//        verticesBuf = vbb.asFloatBuffer()
+//        verticesBuf.put(vertices)
+//        verticesBuf.position(0)
+//
+//        val tbb = ByteBuffer.allocateDirect(texCoords.size * 4)
+//        tbb.order(ByteOrder.nativeOrder())
+//        texCoordsBuf = tbb.asFloatBuffer()
+//        texCoordsBuf.put(texCoords)
+//        texCoordsBuf.position(0)
+//
+//        indicesBuf = ByteBuffer.allocateDirect(indices.size)
+//        indicesBuf.put(indices)
+//        indicesBuf.position(0)
 
-        val vbb = ByteBuffer.allocateDirect(vertices.size * 4)
-        vbb.order(ByteOrder.nativeOrder())
-        verticesBuf = vbb.asFloatBuffer()
-        verticesBuf.put(vertices)
-        verticesBuf.position(0)
 
-        val tbb = ByteBuffer.allocateDirect(texCoords.size * 4)
-        tbb.order(ByteOrder.nativeOrder())
-        texCoordsBuf = tbb.asFloatBuffer()
-        texCoordsBuf.put(texCoords)
-        texCoordsBuf.position(0)
 
-        indicesBuf = ByteBuffer.allocateDirect(indices.size)
-        indicesBuf.put(indices)
-        indicesBuf.position(0)
+        //顶点
+        val vbbT = ByteBuffer.allocateDirect(verticesT.size * 4)
+        vbbT.order(ByteOrder.nativeOrder())
+        vertexBuffer = vbbT.asFloatBuffer()
+        vertexBuffer.put(verticesT)
+        vertexBuffer.position(0)
+
+        //纹理
+        val tbbT = ByteBuffer.allocateDirect(textCoodT.size * 4)
+        tbbT.order(ByteOrder.nativeOrder())
+        textCoodBuffer = tbbT.asFloatBuffer()
+        textCoodBuffer.put(textCoodT)
+        textCoodBuffer.position(0)
 
         mSwitch = false
     }
@@ -214,29 +268,67 @@ class GLRender2 : GLSurfaceView.Renderer {
         gl.glEnable(GL10.GL_LIGHTING)
 
         ////////////////
-        gl.glTranslatef(0.0f, 0.0f, z)
+//        gl.glTranslatef(0.0f, 0.0f, z)
+//
+//        //设置旋转
+//        gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f)
+//        gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f)
+//
+//        //设置纹理
+////        gl.glBindTexture(GL10.GL_TEXTURE_2D, texture[filter])
+//
+//        gl.glNormalPointer(GL10.GL_FLOAT, 0, normalsBuf)
+//        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, verticesBuf)
+//        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texCoordsBuf)
+//
+//        gl.glEnableClientState(GL10.GL_NORMAL_ARRAY)
+//        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY)
+//        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY)
+//
+//        //绘制四边形
+//        gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 24, GL10.GL_UNSIGNED_BYTE, indicesBuf)
+//
+//        gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY)
+//        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY)
+//        gl.glDisableClientState(GL10.GL_NORMAL_ARRAY)
 
-        //设置旋转
+        //启用灯光
+        gl.glEnable(GL10.GL_LIGHTING)
+
+        //启用顶点和纹理缓存
+        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY)
+        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY)
+        //移动和旋转设置
+        gl.glTranslatef(0.0f, 0.0f, -6.0f)
         gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f)
         gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f)
 
-        //设置纹理
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, texture[filter])
+        gl.glFrontFace(GL10.GL_CCW)    // 正前面为逆时针方向
+        gl.glEnable(GL10.GL_CULL_FACE) // 使能剔除面
+        gl.glCullFace(GL10.GL_BACK)    // 剔除背面（不显示）
 
-        gl.glNormalPointer(GL10.GL_FLOAT, 0, normalsBuf)
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, verticesBuf)
-        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texCoordsBuf)
-
-        gl.glEnableClientState(GL10.GL_NORMAL_ARRAY)
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY)
-        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY)
+        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer)
+        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY)  // 使能纹理坐标数组
+        gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textCoodBuffer) // 定义纹理坐标数组缓冲区
 
-        //绘制四边形
-        gl.glDrawElements(GL10.GL_TRIANGLE_STRIP, 24, GL10.GL_UNSIGNED_BYTE, indicesBuf)
+        //绘制六个面，贴图
+        for (i in 0..5) {
+            GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, mBitmap[i], 0)
+            gl.glPushMatrix()
+            if (i < 4)
+                gl.glRotatef(angle[i], 0.0f, 1.0f, 0.0f)//y轴为中心变换
+            else
+                gl.glRotatef(angle[i], 1.0f, 0.0f, 0.0f)//x轴为中心变换
+            gl.glTranslatef(0.0f, 0.0f, 1.0f)
+            gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4)
+            gl.glPopMatrix()
+        }
 
+        // 恢复原来的状态
         gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY)
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY)
-        gl.glDisableClientState(GL10.GL_NORMAL_ARRAY)
+
         //修改旋转角度
         xrot += 0.3f
         yrot += 0.2f
