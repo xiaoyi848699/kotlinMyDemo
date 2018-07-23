@@ -10,7 +10,7 @@ import java.nio.ShortBuffer;
 /**
  * Created by xy on 2018/7/23.
  */
-public class PointDataDay1 {
+public class PointData1 {
     static float[] triangleData = new float[]{
         0.1f,0.4f,0.0f,//上顶点
          -0.3f,0.0f,0.0f,//左顶点
@@ -50,7 +50,7 @@ public class PointDataDay1 {
            };
 
     /**
-     * 1.定义立方体的8个顶点
+     * 1.定义立方体的8个顶点 6个面
      * */
     static float[] cubeVertices = {
             //左面
@@ -94,7 +94,7 @@ public class PointDataDay1 {
      * 索引数组（6个面）
      * */
     static short[] indices={
-            //对应左边面
+            //对应左边面(两个三角形组成)
             0,1,2,//对应一个三角形
             1,2,3,//对应一个三角形
 
@@ -196,6 +196,7 @@ public class PointDataDay1 {
      * OpenGL 是一个非常底层的画图接口，它所使用的缓冲区存储结构是和我们的 java 程序中不相同的。
      * Java 是大端字节序(BigEdian)，而 OpenGL 所需要的数据是小端字节序(LittleEdian)。
      * 所以，我们在将 Java 的缓冲区转化为 OpenGL 可用的缓冲区时需要作一些工作。建立buff的方法如下
+     * 因为openGL是C语言实现的，所以要读缓冲区的数据就要先设置顶点指针再把缓冲区指针位置定位到0位置。
      * */
     public static Buffer bufferIntUtil(int []arr){
         IntBuffer mBuffer ;

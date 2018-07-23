@@ -8,25 +8,20 @@ import android.support.v7.app.AppCompatActivity
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import demo.xy.com.xy_tdcq.gl.GLRenderDay1
+import demo.xy.com.xy_tdcq.gl.GLRender1
 import demo.xy.com.xy_tdcq.view.MyGLSurfaceView
 
-
-class DoodleActivityDay1 : AppCompatActivity() {
-//    lateinit  var mView:GLSurfaceView
+class GLSurfaceViewActivity2 : AppCompatActivity() {
     @BindView(R.id.glsurfaceview) lateinit var glSurfaceView: MyGLSurfaceView
 
     var unbinder : Unbinder? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_doodle)
+        setContentView(R.layout.activity_glsurface_view2)
         //注册ButterKnife
         unbinder = ButterKnife.bind(this)
-//        mView = GLSurfaceView(this)
-//        setContentView(mView)
         if(IsSupported()){
-            glSurfaceView.setRenderer(GLRenderDay1())
+            glSurfaceView.setRenderer(GLRender1())
         }
     }
 
