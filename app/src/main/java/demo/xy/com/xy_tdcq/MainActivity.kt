@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     val context: Context = this
     val items = listOf(
             "全屏",
-            "画板",
+            "glsurfaceview day1",
             "test1",
             "test2",
             "test3",
@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                Toast.makeText(context,"你点击了$s-->$i",Toast.LENGTH_LONG).show()
             when(i){
                 0 -> startActivity(Intent(context,FullActivity::class.java))
+                1 -> startActivity(Intent(context,DoodleActivityDay1::class.java))
 
             }
         }

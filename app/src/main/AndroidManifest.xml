@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="demo.xy.com.xy_tdcq">
-
+    <!-- Tell the system this app requires OpenGL ES 3.1. -->
+    <uses-feature android:glEsVersion="0x00030001" android:required="true" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,8 +17,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FullActivity"
-            android:theme="@style/FullScreen"></activity>
+        <activity
+            android:name=".FullActivity"
+            android:theme="@style/FullScreen" />
+        <activity android:name=".DoodleActivityDay1"></activity>
     </application>
 
 </manifest>
