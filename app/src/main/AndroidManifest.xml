@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="demo.xy.com.xy_tdcq">
+    package="demo.xy.com.xytdcq">
 
     <!-- Tell the system this app requires OpenGL ES 3.1. -->
     <uses-feature
@@ -25,7 +25,8 @@
             android:name=".FullActivity"
             android:theme="@style/FullScreen" />
         <activity android:name=".GLSurfaceViewActivity1" />
-        <activity android:name=".GLSurfaceViewActivity2"></activity>
+        <activity android:name=".GLSurfaceViewActivity2" />
+        <activity android:name=".Jni1Activity"></activity>
     </application>
 
 </manifest>

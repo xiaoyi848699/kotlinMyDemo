@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <demo.xy.com.xy_tdcq.view.MyGLSurfaceView
+    <demo.xy.com.xytdcq.view.MyGLSurfaceView
         android:id="@+id/glsurfaceview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
