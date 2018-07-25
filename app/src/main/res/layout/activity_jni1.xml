@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="btnClick"
-            android:text="MD5"/>
+            android:text="JNI MD5"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,18 +35,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/rsa_btn1"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="btnClick"
-            android:text="加密"/>
-        <Button
-            android:id="@+id/rsa_btn2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="btnClick"
-            android:text="解密"/>
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/java_btn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="btnClick"
+                android:text="kotlin RSA 加密"/>
+            <Button
+                android:id="@+id/java_btn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="btnClick"
+                android:text="kotlin RSA 解密"/>
+            <Button
+                android:id="@+id/rsa_btn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="btnClick"
+                android:text="JNI rsa加密"/>
+            <Button
+                android:id="@+id/rsa_btn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="btnClick"
+                android:text="JNI rsa解密"/>
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +73,7 @@
                 android:id="@+id/data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="xiaoyi_tdcq"/>
+                android:text="这是加密数据xiaoyi_tdcq"/>
             <TextView
                 android:id="@+id/java_result1"
                 android:layout_width="match_parent"

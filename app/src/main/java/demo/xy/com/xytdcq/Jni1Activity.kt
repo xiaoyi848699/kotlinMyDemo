@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
@@ -20,7 +21,7 @@ class Jni1Activity : AppCompatActivity() {
     @BindView(R.id.jni_result2)  lateinit var jni_result2: TextView
     @BindView(R.id.data)  lateinit var data: TextView
 
-    lateinit var encryptStr:String
+    var encryptStr: String? = null
 
     var unbinder : Unbinder? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,15 +40,29 @@ class Jni1Activity : AppCompatActivity() {
                 java_result.text = "kotlin:"+EncryptionUtils.getMD5Str(str).toUpperCase()
                 jni_result.text = "jni:"+stringToMD5(str)
             }
-            R.id.rsa_btn1 -> {//加密
-                encryptStr = encryptRSA(data.text as String)
-                jni_result1.text = "加密后：$encryptStr"
+            R.id.java_btn1 -> {//kotlin加密
+                encryptStr = EncryptionUtils.publicEncrypt(data.text as String,EncryptionUtils.getPublicKey(EncryptionUtils.publicKey)).toString()
+                java_result1.text = "kotlin加密后：$encryptStr"
             }
-            R.id.rsa_btn2 -> {//解密
-                if(!TextUtils.isEmpty(jni_result1.text as String)){
-                    jni_result2.text = "解密后："+decryptRSA(encryptStr)
+            R.id.java_btn2 -> {//kotlin解密
+                if(!TextUtils.isEmpty(encryptStr)){
+                    java_result2.text = "kotlin解密后："+EncryptionUtils.privateDecrypt(encryptStr!!,EncryptionUtils.getPrivateKey(EncryptionUtils.privateKey))
+                }else{
+                    Toast.makeText(this,"请先加密",Toast.LENGTH_LONG).show()
                 }
             }
+            R.id.rsa_btn1 -> {//加密
+                encryptStr = encryptRSA(data.text as String)
+                jni_result1.text = "jni加密后：$encryptStr"
+            }
+            R.id.rsa_btn2 -> {//解密
+                if(null != encryptStr){
+                    jni_result2.text = "jni解密后："+decryptRSA(encryptStr!!)
+                }else{
+                    Toast.makeText(this,"请先加密",Toast.LENGTH_LONG).show()
+                }
+            }
+
         }
     }
 
