@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             "glsurfaceview4",
             "glsurfaceview5",
             "glsurfaceview6",
-            "JNI1")
+            "JNI1+RSA+MD5")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

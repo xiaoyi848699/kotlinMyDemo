@@ -20,7 +20,7 @@ object EncryptionUtils {
     val CHARSET = "UTF-8"
 
     val RSA_ALGORITHM = "RSA"
-    val CIPHER_RSA_ALGORITHM = "RSA/ECB/PKCS1Padding"
+    val CIPHER_RSA_ALGORITHM = "RSA/ECB/PKCS1Padding"//Cipher.getInstance不用这个会出现多出乱码问题，或者无法解析问题
 
     val publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCyZS4oR05xeYtlPh9voiwth44bEM0Tq2CZ+daRoV0FNPX4Qb9vzy441OpQbyDbpCP5ZTuUZXI5NYCkw5V7sH18zp2TmZ4XzPVADsXINmk0Om+fQwkfoEG6FpeTJEc74PMdP82kd74vOV0xjbAT5E7qOkVnH2hLnZn7c/MZt3IahQIDAQAB"
 

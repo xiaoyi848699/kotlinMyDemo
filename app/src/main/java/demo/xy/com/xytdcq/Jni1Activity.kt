@@ -19,9 +19,18 @@ class Jni1Activity : AppCompatActivity() {
     @BindView(R.id.jni_result)  lateinit var jni_result: TextView
     @BindView(R.id.jni_result1)  lateinit var jni_result1: TextView
     @BindView(R.id.jni_result2)  lateinit var jni_result2: TextView
+    @BindView(R.id.bas64_result1)  lateinit var bas64_result1: TextView
+    @BindView(R.id.bas64_result2)  lateinit var bas64_result2: TextView
+    @BindView(R.id.aes_result1)  lateinit var aes_result1: TextView
+    @BindView(R.id.aes_result2)  lateinit var aes_result2: TextView
+    @BindView(R.id.des_result1)  lateinit var des_result1: TextView
+    @BindView(R.id.des_result2)  lateinit var des_result2: TextView
     @BindView(R.id.data)  lateinit var data: TextView
 
     var encryptStr: String? = null
+    var base64EncryptStr: String? = null
+    var aesEncryptStr: String? = null
+    var desEncryptStr: String? = null
 
     var unbinder : Unbinder? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +69,39 @@ class Jni1Activity : AppCompatActivity() {
                     jni_result2.text = "jni解密后："+decryptRSA(encryptStr!!)
                 }else{
                     Toast.makeText(this,"请先加密",Toast.LENGTH_LONG).show()
+                }
+            }
+            R.id.base64_btn1 -> {//base64加密
+                base64EncryptStr = encryptBase64(data.text as String)
+                bas64_result1.text = "jni加密后：$base64EncryptStr"
+            }
+            R.id.base64_btn2 -> {//base64解密
+                if(null != base64EncryptStr){
+                    bas64_result2.text = "jni解密后："+decryptBase64(base64EncryptStr!!)
+                }else{
+                    Toast.makeText(this,"请先base64加密",Toast.LENGTH_LONG).show()
+                }
+            }
+            R.id.aes_btn1 -> {//aes加密
+                aesEncryptStr = encodeAES(data.text as String)
+                aes_result1.text = "jni加密后：$aesEncryptStr"
+            }
+            R.id.aes_btn2 -> {//aes解密
+                if(null != aesEncryptStr){
+                    aes_result2.text = "jni解密后："+decodeAES(aesEncryptStr!!)
+                }else{
+                    Toast.makeText(this,"请先AES加密",Toast.LENGTH_LONG).show()
+                }
+            }
+            R.id.des_btn1 -> {//des加密
+                desEncryptStr = encryptDES(data.text as String)
+                des_result1.text = "jni加密后：$desEncryptStr"
+            }
+            R.id.des_btn2 -> {//des解密
+                if(null != desEncryptStr){
+                    des_result2.text = "jni解密后："+decryptDES(desEncryptStr!!)
+                }else{
+                    Toast.makeText(this,"请先DES加密",Toast.LENGTH_LONG).show()
                 }
             }
 

@@ -28,6 +28,8 @@ add_library( # Sets the name of the library.
              src/main/cpp/native-lib.cpp
              src/main/cpp/MyBASE64.cpp
              src/main/cpp/MyRSA.cpp
+             src/main/cpp/My3DES.cpp
+             src/main/cpp/MyAES.cpp
              src/main/cpp/MyMD5.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
