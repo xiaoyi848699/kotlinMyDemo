@@ -2,6 +2,7 @@ package demo.xy.com.xytdcq
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import butterknife.BindView
@@ -12,7 +13,14 @@ import demo.xy.com.xytdcq.uitls.EncryptionUtils
 class Jni1Activity : AppCompatActivity() {
     @BindView(R.id.hint_tv) lateinit var hint_tv: TextView
     @BindView(R.id.java_result)  lateinit var java_result: TextView
+    @BindView(R.id.java_result1)  lateinit var java_result1: TextView
+    @BindView(R.id.java_result2)  lateinit var java_result2: TextView
     @BindView(R.id.jni_result)  lateinit var jni_result: TextView
+    @BindView(R.id.jni_result1)  lateinit var jni_result1: TextView
+    @BindView(R.id.jni_result2)  lateinit var jni_result2: TextView
+    @BindView(R.id.data)  lateinit var data: TextView
+
+    lateinit var encryptStr:String
 
     var unbinder : Unbinder? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +38,15 @@ class Jni1Activity : AppCompatActivity() {
                 var str = "123456"
                 java_result.text = "kotlin:"+EncryptionUtils.getMD5Str(str).toUpperCase()
                 jni_result.text = "jni:"+stringToMD5(str)
+            }
+            R.id.rsa_btn1 -> {//加密
+                encryptStr = encryptRSA(data.text as String)
+                jni_result1.text = "加密后：$encryptStr"
+            }
+            R.id.rsa_btn2 -> {//解密
+                if(!TextUtils.isEmpty(jni_result1.text as String)){
+                    jni_result2.text = "解密后："+decryptRSA(encryptStr)
+                }
             }
         }
     }

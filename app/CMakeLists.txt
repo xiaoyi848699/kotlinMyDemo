@@ -26,6 +26,8 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
              src/main/cpp/native-lib.cpp
+             src/main/cpp/MyBASE64.cpp
+             src/main/cpp/MyRSA.cpp
              src/main/cpp/MyMD5.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -53,4 +55,5 @@ target_link_libraries( # Specifies the target library.
                         # 链接动态库
                        libcrypto.a
                        libssl.a
+                       libz.so
                        ${log-lib} )

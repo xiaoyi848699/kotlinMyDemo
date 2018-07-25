@@ -1,4 +1,4 @@
-package demo.xy.com.xy_tdcq
+package demo.xy.com.xytdcq
 
 import org.junit.Test
 
