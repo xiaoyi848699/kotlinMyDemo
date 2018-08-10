@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gl.GLSurfaceViewActivity2">
+    tools:context=".surfaceView.GLSurfaceViewActivity2">
     <demo.xy.com.xytdcq.view.MyGLSurfaceView
         android:id="@+id/glsurfaceview"
         android:layout_width="match_parent"

@@ -14,7 +14,7 @@ import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import demo.xy.com.xytdcq.gl.GLSurfaceViewActivity
+import demo.xy.com.xytdcq.surfaceView.GLSurfaceViewActivity
 import demo.xy.com.xytdcq.view.DividerItemLinearLayout
 
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     val context: Context = this
     val items = listOf(
             "全屏",
-            "glsurfaceview",
+            "surfaceview",
             "JNI1+MD5+RSA+BASE64+AES+DES",
             "切换APP ICON",
             "贝塞尔曲线")

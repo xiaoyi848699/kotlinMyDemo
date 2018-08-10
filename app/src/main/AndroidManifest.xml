@@ -52,11 +52,11 @@
         <activity
             android:name=".FullActivity"
             android:theme="@style/FullScreen" />
-        <activity android:name=".gl.GLSurfaceViewActivity1" />
-        <activity android:name=".gl.GLSurfaceViewActivity2" />
+        <activity android:name=".surfaceView.GLSurfaceViewActivity1" />
+        <activity android:name=".surfaceView.GLSurfaceViewActivity2" />
         <activity android:name=".Jni1Activity" />
         <activity android:name=".ChangeAPPIconActivity" />
-        <activity android:name=".gl.GLSurfaceViewActivity"></activity>
+        <activity android:name=".surfaceView.GLSurfaceViewActivity"></activity>
     </application>
 
 </manifest>
