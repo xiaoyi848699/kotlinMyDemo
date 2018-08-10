@@ -1,10 +1,7 @@
 package demo.xy.com.xytdcq
 
-import android.app.ActivityManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -17,6 +14,7 @@ import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
+import demo.xy.com.xytdcq.gl.GLSurfaceViewActivity
 import demo.xy.com.xytdcq.view.DividerItemLinearLayout
 
 
@@ -32,17 +30,10 @@ class MainActivity : AppCompatActivity() {
     val context: Context = this
     val items = listOf(
             "全屏",
-            "glsurfaceview1",
-            "glsurfaceview2",
+            "glsurfaceview",
             "JNI1+MD5+RSA+BASE64+AES+DES",
-            "还原APP ICON",
-            "切换APP ICON1",
-            "切换APP ICON2")
-    private var mDefault: ComponentName? = null
-    private var mDefault2: ComponentName? = null
-    private var mDouble11: ComponentName? = null
-    private var mDouble12: ComponentName? = null
-    private var mPm: PackageManager? = null
+            "切换APP ICON",
+            "贝塞尔曲线")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,74 +51,24 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(context,"你点击了$s-->$i",Toast.LENGTH_LONG).show()
             when(i){
                 0 -> startActivity(Intent(context,FullActivity::class.java))
-                1 -> startActivity(Intent(context,GLSurfaceViewActivity1::class.java))
-                2 -> startActivity(Intent(context,GLSurfaceViewActivity2::class.java))
-                3 -> startActivity(Intent(context,Jni1Activity::class.java))
+                1 -> startActivity(Intent(context, GLSurfaceViewActivity::class.java))
+                2 -> startActivity(Intent(context,Jni1Activity::class.java))
+                3 -> startActivity(Intent(context,ChangeAPPIconActivity::class.java))
                 4 -> {
-                    disableComponent(this!!.mDouble11!!)
-                    disableComponent(this!!.mDouble12!!)
-                    enableComponent(this!!.mDefault2!!)
-                    restartApp()
                 }
                 5 -> {
-                    disableComponent(this!!.mDefault!!)
-                    disableComponent(this!!.mDouble12!!)
-                    enableComponent(this!!.mDouble11!!)
-                    restartApp()
-                }
-                6 -> {
-                    disableComponent(this!!.mDefault!!)
-                    disableComponent(this!!.mDouble11!!)
-                    enableComponent(this!!.mDouble12!!)
-                    restartApp()
                 }
 
             }
 
 
         }
-        //修改icon用(修改后  需要关闭后台进程 等待大概8s左右  桌面会自动切换)
-        mDefault = componentName
-        mDefault2 = ComponentName(
-                baseContext,
-                "demo.xy.com.xytdcq.MainActivity")
-        mDouble11 = ComponentName(
-                baseContext,
-                "demo.xy.com.xytdcq.Test11")
-        mDouble12 = ComponentName(
-                baseContext,
-                "demo.xy.com.xytdcq.Test12")
-        mPm = applicationContext.packageManager
+
 
 
     }
 
-    private fun enableComponent(componentName: ComponentName) {
-        mPm!!.setComponentEnabledSetting(componentName,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP)
-    }
 
-    private fun disableComponent(componentName: ComponentName) {
-        mPm!!.setComponentEnabledSetting(componentName,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP)
-    }
-    private fun restartApp(){
-        Toast.makeText(context,"重启APP",Toast.LENGTH_LONG).show()
-        //Intent 重启 Launcher 应用
-        val pm = packageManager
-        val intent = Intent(Intent.ACTION_MAIN)
-        intent.addCategory(Intent.CATEGORY_HOME)
-        intent.addCategory(Intent.CATEGORY_DEFAULT)
-        val resolves = pm.queryIntentActivities(intent, 0)
-        for (res in resolves) {
-            if (res.activityInfo != null) {
-                val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-                am.killBackgroundProcesses(res.activityInfo.packageName)
-            }
-        }
-    }
     class MainAdapter(val items : List<String>, val itemClickListener: (String,Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
