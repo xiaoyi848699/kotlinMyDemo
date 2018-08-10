@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@drawable/bg_blackf2_gray_corners"
+        android:orientation="vertical">
+
+
+        <!--<LinearLayout
+            android:id="@+id/ll_add_blank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_add_blank"
+                style="@style/rts_item_content_text"
+                android:text="空白" />
+
+            <View style="@style/rts_horizontal_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_add_homework"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_add_homework"
+                style="@style/rts_item_content_text"
+                android:text="作业" />
+
+            <View style="@style/rts_horizontal_light" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_add_take_pic"
+            style="@style/rts_item_content_text"
+            android:text="拍照" />
+
+        <View style="@style/rts_horizontal_light" />
+
+
+        <TextView
+            android:id="@+id/tv_add_photo"
+            style="@style/rts_item_content_text"
+            android:text="相册" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_change_ppt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View style="@style/rts_horizontal_light" />
+
+            <TextView
+                android:id="@+id/tv_change_ppt"
+                style="@style/rts_item_content_text"
+                android:text="PPT课件" />
+        </LinearLayout>
+
+        <View
+            style="@style/rts_horizontal_light"
+            android:visibility="invisible" />-->
+    </LinearLayout>
+    <ImageView
+        android:layout_width="12dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="-1dp"
+        android:background="@drawable/horn_pink20"/>
+
+</LinearLayout>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/sv_control"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:id="@+id/sv_tools"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            >
+
+            <RelativeLayout
+                android:id="@+id/add_lay"
+                style="@style/rst_bottom_lay"
+                android:layout_marginLeft="0dp">
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/rts_right_up"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="3dp"/>
+                <TextView
+                    style="@style/rts_item_header_text_pid"
+                    android:drawableLeft="@drawable/rts_add"
+                    android:text="添加" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/paint_layout"
+                style="@style/rst_bottom_lay">
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/rts_right_up"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="3dp"/>
+                <TextView
+                    android:id="@+id/paint_tv"
+                    style="@style/rts_item_header_text_pid"
+                    android:drawableLeft="@drawable/paint_curve"
+                    android:text="曲线" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/color_layout"
+                style="@style/rst_bottom_lay">
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/rts_right_up"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="3dp"/>
+                <TextView
+                    android:id="@+id/el_color"
+                    style="@style/rts_item_header_text_pid"
+                    android:drawableLeft="@drawable/rts_color_red"
+                    android:text="颜色" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/eraser_layout"
+                style="@style/rst_bottom_lay">
+                <!-- <ImageView
+                     android:layout_width="6dp"
+                     android:layout_height="6dp"
+                     android:background="@drawable/rts_right_up"
+                     android:layout_alignParentRight="true"
+                     android:layout_margin="3dp"/>-->
+                <TextView
+                    style="@style/rts_item_header_text_pid"
+                    android:drawableLeft="@drawable/rts_eraser"
+                    android:text="橡皮" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/cancel_layout"
+                style="@style/rst_bottom_lay">
+
+                <TextView
+                    style="@style/rts_item_header_text_pid"
+                    android:drawableLeft="@drawable/rts_paint_back"
+                    android:text="撤销" />
+            </RelativeLayout>
+            <!--<RelativeLayout
+                style="@style/rst_bottom_lay">
+
+                <TextView
+                    style="@style/rts_item_header_text_pid"
+                    android:drawableLeft="@drawable/rts_paint_back"
+                    android:text="重做" />
+            </RelativeLayout>-->
+            <RelativeLayout
+                android:id="@+id/delete_layout"
+                style="@style/rst_bottom_lay">
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/rts_right_up"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="3dp"/>
+                <TextView
+                    style="@style/rts_item_header_text_pid"
+                    android:drawableLeft="@drawable/rts_delete"
+                    android:text="清除" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/ppt_layout"
+                style="@style/rst_bottom_lay"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/rts_item_header_text_pid"
+                    android:drawableLeft="@drawable/rts_ppt"
+                    android:text="PPT" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/screen_cut_layout"
+                style="@style/rst_bottom_lay">
+
+                <TextView
+                    style="@style/rts_item_header_text_pid"
+                    android:drawableLeft="@drawable/rts_screen_cut"
+                    android:text="截屏" />
+            </RelativeLayout>
+            <ImageView
+                android:id="@+id/close_sv_tools"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="4dp"
+                android:visibility="gone"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/cancel_x_circle"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</merge>

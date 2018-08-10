@@ -49,5 +49,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.jakewharton:butterknife:8.8.1'
     kapt "com.jakewharton:butterknife-compiler:8.8.1"
+
+    //picasso图片加载
+    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

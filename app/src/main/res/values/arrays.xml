@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="rts_add_tools">
+        <item>空白页</item>
+        <item>相册</item>
+        <item>拍照</item>
+    </string-array>
+    <string-array name="rts_paint_tools">
+        <item>曲线</item>
+        <item>直线</item>
+        <item>矩形</item>
+        <item>圆形</item>
+    </string-array>
+    <string-array name="rts_eraser_tools">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
+
+    <integer-array name="material_colors">
+        <item>@color/material_red</item>
+        <item>@color/material_green</item>
+        <item>@color/material_blue</item>
+        <item>@color/material_yellow</item>
+    </integer-array>
+
+</resources>

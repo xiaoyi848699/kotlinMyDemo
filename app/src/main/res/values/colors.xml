@@ -29,6 +29,7 @@
     <color name="bg_gray">#e8e8e8</color>
     <color name="bg_gray_e6">#e6e6e6</color>
     <color name="bg_white">#ffffffff</color>
+    <color name="white">#ffffffff</color>
     <color name="bg_blue">#50a2f7</color>
     <color name="bg_green">#23d056</color>
     <color name="bg_recycle_divider">@color/default_bg</color>
@@ -116,5 +117,8 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
     <color name="dialog_bg">#80000000</color>
+    <color name="text_87">#878787</color>
+    <color name="black_26">#262626</color>
+    <color name="text_60">#606060</color>
 
 </resources>
