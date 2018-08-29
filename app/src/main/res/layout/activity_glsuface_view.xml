@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <FrameLayout
+        android:id="@+id/ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/background">
+
+    </FrameLayout>
+    <Button
+        android:id="@+id/btn_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="清除"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+    <TextView
+        android:id="@+id/tv_frame_rate"
+        android:textSize="20dp"
+        android:textColor="#FF0000"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true" />
+
+    <!-- <demo.xy.com.xytdcq.view.MyGLSurfaceView2
+         android:id="@+id/glsurfaceview"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent" />-->
+</RelativeLayout>

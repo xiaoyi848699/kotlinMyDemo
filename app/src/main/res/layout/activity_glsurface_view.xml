@@ -23,5 +23,11 @@
         android:layout_height="wrap_content"
         android:onClick="btnClick"
         android:text="surfaceview画板"/>
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="btnClick"
+        android:text="GLsurfaceview画板"/>
 
 </LinearLayout>
