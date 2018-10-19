@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
             "surfaceview",
             "JNI1+MD5+RSA+BASE64+AES+DES",
             "切换APP ICON",
+            "屏幕录制+视频压缩",
             "贝塞尔曲线")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,8 +55,7 @@ class MainActivity : AppCompatActivity() {
                 1 -> startActivity(Intent(context, GLSurfaceViewActivity::class.java))
                 2 -> startActivity(Intent(context,Jni1Activity::class.java))
                 3 -> startActivity(Intent(context,ChangeAPPIconActivity::class.java))
-                4 -> {
-                }
+                4 -> startActivity(Intent(context,ScreenRecordingAndCompress::class.java))
                 5 -> {
                 }
 
