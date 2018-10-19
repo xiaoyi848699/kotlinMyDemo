@@ -1,4 +1,4 @@
-package demo.xy.com.xytdcq
+package demo.xy.com.xytdcq.screen
 
 import android.Manifest
 import android.app.Activity
@@ -8,44 +8,28 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
-import android.os.Bundle
 import android.os.IBinder
 import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.vincent.videocompressor.VideoCompress
+import demo.xy.com.xytdcq.BaseAtivity
+import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.service.RecordService
 import demo.xy.com.xytdcq.uitls.LogUtil
 import demo.xy.com.xytdcq.uitls.PermissionUtils
 import demo.xy.com.xytdcq.uitls.VersionUtils
 import demo.xy.com.xytdcq.view.dialog.MyProgressDialog
 
-class ScreenRecordingAndCompress : AppCompatActivity() {
-    private val RECORD_REQUEST_CODE = 101
-    private val STORAGE_REQUEST_CODE = 102
+class ScreenRecordingAndCompress : BaseAtivity() {
+    override fun getLayout(): Int {
+       return R.layout.activity_screen_recording_and_compress
+    }
 
-    private var recordService: RecordService? = null
-    private val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
-    lateinit var mProjectionManager: MediaProjectionManager
-    lateinit var mMediaProjection: MediaProjection
-
-    private var dialog: MyProgressDialog? = null
-
-    var unbinder : Unbinder? = null
-
-    @BindView(R.id.text_tv)  lateinit var textView: TextView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_screen_recording_and_compress)
-        //注册ButterKnife
-        unbinder = ButterKnife.bind(this)
+    override fun setDataAndEvent() {
         val isAllGranted = PermissionUtils.checkPermissionAllGranted(this, permissions)
         if (!isAllGranted) {
             //弹提示框
@@ -57,6 +41,20 @@ class ScreenRecordingAndCompress : AppCompatActivity() {
         val intent = Intent(this, RecordService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
+
+    private val RECORD_REQUEST_CODE = 101
+    private val STORAGE_REQUEST_CODE = 102
+
+    private var recordService: RecordService? = null
+    private val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
+    lateinit var mProjectionManager: MediaProjectionManager
+    lateinit var mMediaProjection: MediaProjection
+
+    private var dialog: MyProgressDialog? = null
+
+
+    @BindView(R.id.text_tv)  lateinit var textView: TextView
+
     fun btnClick(v: View){
         when(v.id){
             R.id.button1 -> {
@@ -104,7 +102,6 @@ class ScreenRecordingAndCompress : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unbindService(connection)
-        unbinder?.unbind()//!!.为空会报异常
     }
 
     internal var compressListener: VideoCompress.CompressListener = object : VideoCompress.CompressListener {

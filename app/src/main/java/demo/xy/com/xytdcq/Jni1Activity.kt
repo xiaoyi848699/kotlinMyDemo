@@ -1,17 +1,23 @@
 package demo.xy.com.xytdcq
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import demo.xy.com.xytdcq.uitls.EncryptionUtils
 
-class Jni1Activity : AppCompatActivity() {
+class Jni1Activity : BaseAtivity() {
+
+    override fun getLayout(): Int {
+        return R.layout.activity_jni1
+    }
+    override fun setDataAndEvent() {
+        hint_tv.text = stringFromJNI()
+    }
+
+
+
     @BindView(R.id.hint_tv) lateinit var hint_tv: TextView
     @BindView(R.id.java_result)  lateinit var java_result: TextView
     @BindView(R.id.java_result1)  lateinit var java_result1: TextView
@@ -32,16 +38,6 @@ class Jni1Activity : AppCompatActivity() {
     var aesEncryptStr: String? = null
     var desEncryptStr: String? = null
 
-    var unbinder : Unbinder? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_jni1)
-        //注册ButterKnife
-        unbinder = ButterKnife.bind(this)
-
-        hint_tv.text = stringFromJNI()
-
-    }
     fun btnClick(v: View){
         when(v.id){
             R.id.md5_btn -> {
@@ -106,11 +102,6 @@ class Jni1Activity : AppCompatActivity() {
             }
 
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unbinder?.unbind()//!!.为空会报异常
     }
 
 

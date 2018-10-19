@@ -2,8 +2,6 @@ package demo.xy.com.xytdcq
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.Unbinder
+import demo.xy.com.xytdcq.screen.ScreenRecordingAndCompress
+import demo.xy.com.xytdcq.screen.ScreenSharingActivity
 import demo.xy.com.xytdcq.surfaceView.GLSurfaceViewActivity
 import demo.xy.com.xytdcq.view.DividerItemLinearLayout
 
@@ -21,29 +19,12 @@ import demo.xy.com.xytdcq.view.DividerItemLinearLayout
 
 
 
-class MainActivity : AppCompatActivity() {
-    //    lateinit可以在任何位置初始化并且可以初始化多次。而lazy在第一次被调用时就被初始化，想要被改变只能重新定义
-    //var是一个可变变量 val是一个只读变量，这种声明变量的方式相当于java中的final变量
-    @BindView(R.id.listview) lateinit var listview:RecyclerView
+class MainActivity : BaseAtivity() {
 
-    var unbinder : Unbinder? = null
-    val context: Context = this
-    val items = listOf(
-            "全屏",
-            "surfaceview",
-            "JNI1+MD5+RSA+BASE64+AES+DES",
-            "切换APP ICON",
-            "屏幕录制+视频压缩",
-            "贝塞尔曲线")
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        //注册ButterKnife
-        unbinder = ButterKnife.bind(this)
-
-
-
+    override fun getLayout(): Int {
+       return  R.layout.activity_main
+    }
+    override fun setDataAndEvent() {
         listview.layoutManager = LinearLayoutManager(this)
         listview.addItemDecoration(DividerItemLinearLayout(context,
                 R.drawable.bg_recycler_divider,
@@ -55,21 +36,29 @@ class MainActivity : AppCompatActivity() {
                 1 -> startActivity(Intent(context, GLSurfaceViewActivity::class.java))
                 2 -> startActivity(Intent(context,Jni1Activity::class.java))
                 3 -> startActivity(Intent(context,ChangeAPPIconActivity::class.java))
-                4 -> startActivity(Intent(context,ScreenRecordingAndCompress::class.java))
-                5 -> {
-                }
-
+                4 -> startActivity(Intent(context, ScreenRecordingAndCompress::class.java))
+                5 -> startActivity(Intent(context, ScreenSharingActivity::class.java))
+                6 ->{}
             }
-
-
         }
-
-
-
     }
 
+    //    lateinit可以在任何位置初始化并且可以初始化多次。而lazy在第一次被调用时就被初始化，想要被改变只能重新定义
+    //var是一个可变变量 val是一个只读变量，这种声明变量的方式相当于java中的final变量
+    @BindView(R.id.listview) lateinit var listview:RecyclerView
 
-    class MainAdapter(val items : List<String>, val itemClickListener: (String,Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+    val context: Context = this
+    val items = listOf(
+            "全屏",
+            "surfaceview",
+            "JNI1+MD5+RSA+BASE64+AES+DES",
+            "切换APP ICON",
+            "屏幕录制+视频压缩",
+            "websocket实时共享屏幕",
+            "贝塞尔曲线")
+
+
+    class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
@@ -83,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             holder.bind(items[position],position)
         }
 
-        class ViewHolder(val view:View, val itemClickListener: (String,Int) -> Unit): RecyclerView.ViewHolder(view){
+        class ViewHolder(val view:View, private val itemClickListener: (String, Int) -> Unit): RecyclerView.ViewHolder(view){
             var text_tv: TextView = view.findViewById(R.id.text_tv)
             fun bind(str: String,position:Int) {
 //                view.text_tv.text = str
@@ -98,10 +87,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        unbinder?.unbind()//!!.为空会报异常
-    }
 }
 
 

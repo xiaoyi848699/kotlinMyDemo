@@ -2,23 +2,17 @@ package demo.xy.com.xytdcq
 
 import android.content.ComponentName
 import android.content.pm.PackageManager
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 
 /**
  * 修改APP icon
  */
-class ChangeAPPIconActivity : AppCompatActivity() {
+class ChangeAPPIconActivity : BaseAtivity() {
+    override fun getLayout(): Int {
+       return  R.layout.activity_change_appicon
+    }
 
-//    private var mDefault: ComponentName? = null
-    private var mDefault2: ComponentName? = null
-    private var mDouble11: ComponentName? = null
-    private var mDouble12: ComponentName? = null
-    private var mPm: PackageManager? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_change_appicon)
+    override fun setDataAndEvent() {
         //修改icon用(修改后  需要关闭后台进程 等待大概10s左右  桌面会自动切换)
 //        mDefault = componentName
         mDefault2 = ComponentName(
@@ -32,6 +26,13 @@ class ChangeAPPIconActivity : AppCompatActivity() {
                 "demo.xy.com.xytdcq.Test12")
         mPm = applicationContext.packageManager
     }
+
+    //    private var mDefault: ComponentName? = null
+    private var mDefault2: ComponentName? = null
+    private var mDouble11: ComponentName? = null
+    private var mDouble12: ComponentName? = null
+    private var mPm: PackageManager? = null
+
     fun btnClick(v: View){
         when(v.id){
             R.id.button1 ->{

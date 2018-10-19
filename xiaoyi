@@ -1,0 +1,76 @@
+Work/fapk$ java -Djava.library.path=. -jar signapk.jar platform.x509.pem platform.pk8 SkyApplication_yubay_V1.2.114.apk SkyApplication_yubay_V1.2.114_sign.apk
+
+
+adb root
+adb remount
+adb shell
+su
+cd  /system/app
+rm -r SkyApplication
+
+第一步：先把原来已经存在的相同包名的APK删除，如：adb shell rm system/app/OutdoorMeter/OutdoorMeter.apk
+
+第二步：将data/data/目录下该应用的包名的目录删除掉，如：adb shell rm -rf data/data/com.runbo.outdoormeter/
+
+
+
+
+初始化
+git init
+
+链接远端仓库 – git remote add
+$ git remote add origin https://github.com/xiaoyi848699/NewStart.git
+
+
+克隆仓库 – git clone
+$ git clone https://github.com/xiaoyi848699/NewStart.git
+
+从服务器上拉取代码 – git pull
+$ git pull origin master
+
+暂存 – git add
+
+
+gradlew clean assembleRelease --stacktrace
+
+1、gradlew -v 查看当前项目所用的Gradle版本
+2、gradlew clean 清除9GAG/app目录下的build文件夹
+3、gradlew build 编译项目并生成相应的apk文件
+4、gradlew assembleDebug 编译并打Debug包
+5、gradlew assembleRelease 编译并打Release的包
+6、gradlew installRelease Release 模式打包并安装
+7、gradlew uninstallRelease 卸载Release模式包
+
+
+
+
+强制清除 gradle 依赖缓存
+gradlew build --refresh-dependencies
+
+
+assemble：对所有的 buildType 生成 apk 包。
+clean:移除所有的编译输出文件，比如apk
+check:执行lint检测编译。
+build:同时执行assemble和check命令
+
+build script   构建 脚本
+dependencies   [dɪ'pendənsɪz]  依赖关系
+repositories   仓库
+
+apply plugin  应用 插件
+Wrapper  包装器
+
+
+提交代码
+git commit -m "update"
+ git push origin master
+
+解决办法一:保留本地的更改,中止合并->重新合并->重新拉取
+$:git merge --abort
+$:git reset --merge
+$:git pull
+
+解决办法二:舍弃本地代码,远端版本覆盖本地版本(慎重)
+$:git fetch --all
+$:git reset --hard origin/master
+$:git fetch
