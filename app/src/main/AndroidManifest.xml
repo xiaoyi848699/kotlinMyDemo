@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -34,10 +33,10 @@
         </activity>
 
         <activity-alias
-            android:name=".Test12"
+            android:name=".Test11"
             android:enabled="false"
-            android:icon="@drawable/ic_home2"
-            android:label="xy_tdcq 双12"
+            android:icon="@drawable/ic_home1"
+            android:label="xy_tdcq 双11"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,10 +45,10 @@
             </intent-filter>
         </activity-alias>
         <activity-alias
-            android:name=".Test11"
+            android:name=".Test12"
             android:enabled="false"
-            android:icon="@drawable/ic_home1"
-            android:label="xy_tdcq 双11"
+            android:icon="@drawable/ic_home2"
+            android:label="xy_tdcq 双12"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -82,7 +81,12 @@
 
         <activity android:name=".screen.ScreenSharingActivity" />
         <activity android:name=".screen.ScreenServiceActivity" />
-        <activity android:name=".screen.ScreenClientActivity"></activity>
+        <activity android:name=".screen.ScreenClientActivity" />
+        <activity android:name=".screen.RtmpActivity"></activity>
+        <service android:name=".screen.ScreenRecorderService"
+            android:process=":screen_record"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

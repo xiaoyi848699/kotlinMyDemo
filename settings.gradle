@@ -1,1 +1,1 @@
-include ':app',':videocompressor'
+include ':app', ':videocompressor', ':rtmp-client'

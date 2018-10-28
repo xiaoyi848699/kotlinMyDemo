@@ -1,9 +1,7 @@
-package com.insthync.simplescreenrtmp;
+package demo.xy.com.xytdcq.screen;
 
 import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,7 +18,6 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Surface;
 
@@ -132,7 +129,7 @@ public class ScreenRecorderService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            Log.d(TAG, "Service receive broadcast action: " + action);
+            Log.e(TAG, "Service receive broadcast action: " + action);
             if (action == null) {
                 return;
             }
@@ -155,7 +152,7 @@ public class ScreenRecorderService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "Destroy service");
+        Log.e(TAG, "Destroy service");
         stopScreenCapture();
         unregisterReceiver(mBroadcastReceiver);
     }
@@ -168,7 +165,7 @@ public class ScreenRecorderService extends Service {
         mRtmpAddresss = intent.getStringExtra(EXTRA_RTMP_ADDRESS);
         mResultCode = intent.getIntExtra(EXTRA_RESULT_CODE, -1);
         mResultData = intent.getParcelableExtra(EXTRA_RESULT_DATA);
-        Log.d(TAG, "RTMP Address: " + mRtmpAddresss);
+        Log.e(TAG, "RTMP Address: " + mRtmpAddresss);
 
         if (mRtmpAddresss == null)
             return START_NOT_STICKY;
@@ -200,21 +197,21 @@ public class ScreenRecorderService extends Service {
         return null;
     }
 
-    private void showNotification() {
-        final Intent notificationIntent = new Intent(ACTION_STOP);
-        PendingIntent notificationPendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        final NotificationCompat.Action actionStop = new NotificationCompat.Action.Builder(android.R.drawable.ic_menu_close_clear_cancel, getString(R.string.action_stop), notificationPendingIntent).build();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.mipmap.ic_launcher)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setOnlyAlertOnce(true)
-                .setOngoing(true)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.casting_screen))
-                .addAction(actionStop);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NT_ID_CASTING, builder.build());
-    }
+//    private void showNotification() {
+//        final Intent notificationIntent = new Intent(ACTION_STOP);
+//        PendingIntent notificationPendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        final NotificationCompat.Action actionStop = new NotificationCompat.Action.Builder(android.R.drawable.ic_menu_close_clear_cancel, getString(R.string.action_stop), notificationPendingIntent).build();
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+//        builder.setSmallIcon(R.mipmap.ic_launcher)
+//                .setDefaults(Notification.DEFAULT_ALL)
+//                .setOnlyAlertOnce(true)
+//                .setOngoing(true)
+//                .setContentTitle(getString(R.string.app_name))
+//                .setContentText(getString(R.string.casting_screen))
+//                .addAction(actionStop);
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.notify(NT_ID_CASTING, builder.build());
+//    }
 
     private void dismissNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -228,11 +225,11 @@ public class ScreenRecorderService extends Service {
     }
 
     private boolean startScreenCapture() {
-        Log.d(TAG, "mResultCode: " + mResultCode + ", mResultData: " + mResultData);
+        Log.e(TAG, "mResultCode: " + mResultCode + ", mResultData: " + mResultData);
         if (mResultCode != 0 && mResultData != null) {
             setUpMediaProjection();
             startRecording();
-            showNotification();
+//            showNotification();
             return true;
         }
         return false;
@@ -243,7 +240,7 @@ public class ScreenRecorderService extends Service {
     }
 
     private void startRecording() {
-        Log.d(TAG, "startRecording");
+        Log.e(TAG, "startRecording");
 
         mStartTime = 0;
         mVideoTryingAgainTime = 0;
@@ -254,7 +251,7 @@ public class ScreenRecorderService extends Service {
 
         mRTMPMuxer = new RTMPMuxer();
         int result = mRTMPMuxer.open(mRtmpAddresss, mSelectedVideoWidth, mSelectedVideoHeight);
-        Log.d(TAG, "RTMP_URL open result: " + result);
+        Log.e(TAG, "RTMP_URL open result: " + result);
 
         // Start the video input.
         mVirtualDisplay = mMediaProjection.createVirtualDisplay("Recording Display", mSelectedVideoWidth,
@@ -354,7 +351,7 @@ public class ScreenRecorderService extends Service {
                 int index = mVideoEncoder.dequeueOutputBuffer(mVideoBufferInfo, VIDEO_TIMEOUT_US);
 
                 if (index == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                    Log.d(TAG, "Video Format changed " + mVideoEncoder.getOutputFormat());
+                    Log.e(TAG, "Video Format changed " + mVideoEncoder.getOutputFormat());
                 } else if (index == MediaCodec.INFO_TRY_AGAIN_LATER) {
                     if (mVideoTryingAgainTime == 0)
                         mVideoTryingAgainTime = System.currentTimeMillis();
@@ -363,7 +360,7 @@ public class ScreenRecorderService extends Service {
                 } else if (index >= 0) {
                     if (mVideoTryingAgainTime > 0) {
                         long tryAgainAfterTime = System.currentTimeMillis() - mVideoTryingAgainTime;
-                        Log.d(TAG, "Tried again after " + tryAgainAfterTime + " ms");
+                        Log.e(TAG, "Tried again after " + tryAgainAfterTime + " ms");
                         mVideoTryingAgainTime = 0;
                     }
                     ByteBuffer encodedData = mVideoEncoder.getOutputBuffer(index);
@@ -404,7 +401,7 @@ public class ScreenRecorderService extends Service {
                 int index = mAudioEncoder.dequeueOutputBuffer(mAudioBufferInfo, AUDIO_TIMEOUT_US);
 
                 if (index == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                    Log.d(TAG, "Audio Format changed " + mAudioEncoder.getOutputFormat());
+                    Log.e(TAG, "Audio Format changed " + mAudioEncoder.getOutputFormat());
                 } else if (index == MediaCodec.INFO_TRY_AGAIN_LATER) {
                     break;
                 } else if (index >= 0) {
@@ -439,16 +436,16 @@ public class ScreenRecorderService extends Service {
 
     private void writeVideoMuxer(boolean isHeader, int timestamp, byte[] bytes) {
         int rtmpConnectionState = mRTMPMuxer != null ? mRTMPMuxer.isConnected() : 0;
-        Log.d(TAG, "RTMP connection state: " + rtmpConnectionState + " timestamp: " + timestamp + " byte[] length: " + bytes.length);
+        Log.e(TAG, "RTMP connection state: " + rtmpConnectionState + " timestamp: " + timestamp + " byte[] length: " + bytes.length);
         int writeResult = mRTMPMuxer.writeVideo(bytes, 0, bytes.length, timestamp);
-        Log.d(TAG, "RTMP write video result: " + writeResult + " is header: " + isHeader);
+        Log.e(TAG, "RTMP write video result: " + writeResult + " is header: " + isHeader);
     }
 
     private void writeAudioMuxer(boolean isHeader, int timestamp, byte[] bytes) {
         int rtmpConnectionState = mRTMPMuxer != null ? mRTMPMuxer.isConnected() : 0;
-        Log.d(TAG, "RTMP connection state: " + rtmpConnectionState + " timestamp: " + timestamp + " byte[] length: " + bytes.length);
+        Log.e(TAG, "RTMP connection state: " + rtmpConnectionState + " timestamp: " + timestamp + " byte[] length: " + bytes.length);
         int writeResult = mRTMPMuxer.writeAudio(bytes, 0, bytes.length, timestamp);
-        Log.d(TAG, "RTMP write audio result: " + writeResult + " is header: " + isHeader);
+        Log.e(TAG, "RTMP write audio result: " + writeResult + " is header: " + isHeader);
     }
 
     private void stopScreenCapture() {

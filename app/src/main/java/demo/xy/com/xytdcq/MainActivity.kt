@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
+import demo.xy.com.xytdcq.screen.RtmpActivity
 import demo.xy.com.xytdcq.screen.ScreenRecordingAndCompress
 import demo.xy.com.xytdcq.screen.ScreenSharingActivity
 import demo.xy.com.xytdcq.surfaceView.GLSurfaceViewActivity
@@ -38,7 +39,8 @@ class MainActivity : BaseAtivity() {
                 3 -> startActivity(Intent(context,ChangeAPPIconActivity::class.java))
                 4 -> startActivity(Intent(context, ScreenRecordingAndCompress::class.java))
                 5 -> startActivity(Intent(context, ScreenSharingActivity::class.java))
-                6 ->{}
+                6 -> startActivity(Intent(context, RtmpActivity::class.java))
+                7 ->{}
             }
         }
     }
@@ -55,6 +57,7 @@ class MainActivity : BaseAtivity() {
             "切换APP ICON",
             "屏幕录制+视频压缩",
             "websocket实时共享屏幕",
+            "RTMP推流发送视频",
             "贝塞尔曲线")
 
 
