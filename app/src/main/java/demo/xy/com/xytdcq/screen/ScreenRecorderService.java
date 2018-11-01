@@ -290,6 +290,10 @@ public class ScreenRecorderService extends Service {
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, VIDEO_IFRAME_INTERVAL);
         format.setLong(MediaFormat.KEY_REPEAT_PREVIOUS_FRAME_AFTER, 1000000 / frameRate);
 
+//        BITRATE_MODE_CQ: 表示完全不控制码率，尽最大可能保证图像质量
+//        BITRATE_MODE_CBR: 表示编码器会尽量把输出码率控制为设定值
+//        BITRATE_MODE_VBR: 表示编码器会根据图像内容的复杂度（实际上是帧间变化量的大小）来动态调整输出码率，图像复杂则码率高，图像简单则码率低；
+        format.setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_CQ);
         // Create a MediaCodec encoder and configure it. Get a Surface we can use for recording into.
         try {
             mVideoEncoder = MediaCodec.createEncoderByType(VIDEO_MIME_TYPE);
