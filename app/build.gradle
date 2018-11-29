@@ -54,6 +54,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(':videocompressor')
     //    implementation 'net.butterflytv.utils:rtmp-client:3.0.1'
-    compile project(path: ':rtmp-client')
+    implementation project(path: ':rtmp-client')
     implementation project(':rtmp-client')
 }

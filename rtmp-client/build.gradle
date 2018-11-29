@@ -13,9 +13,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                cppFlags "-frtti -fexceptions"
-                arguments '-DANDROID_PLATFORM=android-15'
-                abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'mips', 'mips64'
+//                cppFlags "-frtti -fexceptions"
+//                arguments '-DANDROID_PLATFORM=android-21'
+                abiFilters  'armeabi-v7a'// 'x86', 'x86_64', 'mips', 'mips64','armeabi',, 'arm64-v8a'
             }
         }
     }
