@@ -7,7 +7,8 @@
         <activity android:name=".ShowBezierCurveActivity" />
         <activity android:name=".MsgPointActivity" />
         <activity android:name=".GuideActivity" />
-        <activity android:name=".HeartActivity"></activity>
+        <activity android:name=".HeartActivity" />
+        <activity android:name=".WaveActivity"></activity>
     </application>
 
 </manifest>

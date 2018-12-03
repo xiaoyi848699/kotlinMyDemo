@@ -29,6 +29,8 @@ class BCMainActivity : BCBaseAtivity() {
                 1 -> startActivity(Intent(context,MsgPointActivity::class.java))
                 2 -> startActivity(Intent(context,GuideActivity::class.java))
                 3 -> startActivity(Intent(context,HeartActivity::class.java))
+                4 -> startActivity(Intent(context,HeartActivity::class.java))
+                5 -> startActivity(Intent(context,WaveActivity::class.java))
             }
         }
     }

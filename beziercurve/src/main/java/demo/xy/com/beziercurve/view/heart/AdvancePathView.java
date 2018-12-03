@@ -155,6 +155,8 @@ public class AdvancePathView extends RelativeLayout {
         PointF pointFStart = this.pointFStart;
         PointF pointFEnd = this.pointFEnd;
 
+//        Log.e("TAG","moveHeart pointFStart:"+pointFStart.x+","+pointFStart.y+"  pointFEnd:"+pointFEnd.x+","+pointFEnd.y);
+//        Log.e("TAG","moveHeart pointLeft:"+pointLeft.x+","+pointLeft.y+"  pointRight:"+pointRight.x+","+pointRight.y);
 
         ValueAnimator animator = ValueAnimator.ofObject(new TypeE(pointLeft, pointRight), pointFStart, pointFEnd);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -200,12 +202,21 @@ public class AdvancePathView extends RelativeLayout {
         private PointF pointFFirst,pointFSecond;
 
         public TypeE(PointF start,PointF end){
+//            Log.e("TAG","TypeE start:"+start.x+","+start.y+"  end:"+end.x+","+end.y);
             this.pointFFirst =start;
             this.pointFSecond = end;
         }
 
+        /**
+         *
+         * @param fraction 动画执行时间 0-》1
+         * @param startValue 开始点
+         * @param endValue  结束点
+         * @return
+         */
         @Override
         public PointF evaluate(float fraction, PointF startValue, PointF endValue) {//三阶贝塞尔曲线公式 B(t)=P0(1-t)^3+3P1t(1-t)^2+3P2t^2(1-t)+P3t^3    t->[0,1]
+//            Log.e("TAG",fraction+"evaluate startValue:"+startValue.x+","+startValue.y+"  endValue:"+endValue.x+","+endValue.y);
             PointF result = new PointF();
             float left = 1 - fraction;
             result.x = (float) (startValue.x*Math.pow(left,3)+3*pointFFirst.x*Math.pow(left,2)*fraction+3*pointFSecond.x*Math.pow(fraction, 2)*left+endValue.x*Math.pow(fraction,3));
