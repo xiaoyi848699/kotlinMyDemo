@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import butterknife.BindView
+import demo.xy.com.beziercurve.BCMainActivity
 import demo.xy.com.xytdcq.screen.RtmpActivity
 import demo.xy.com.xytdcq.screen.ScreenRecordingAndCompress
 import demo.xy.com.xytdcq.screen.ScreenSharingActivity
@@ -31,7 +31,7 @@ class MainActivity : BaseAtivity() {
                 R.drawable.bg_recycler_divider,
                 DividerItemLinearLayout.VERTICAL_LIST))
         listview.adapter = MainAdapter(items){ s: String, i: Int ->
-            Toast.makeText(context,"你点击了$s-->$i",Toast.LENGTH_LONG).show()
+//            Toast.makeText(context,"你点击了$s-->$i",Toast.LENGTH_LONG).show()
             when(i){
                 0 -> startActivity(Intent(context,FullActivity::class.java))
                 1 -> startActivity(Intent(context, GLSurfaceViewActivity::class.java))
@@ -40,7 +40,7 @@ class MainActivity : BaseAtivity() {
                 4 -> startActivity(Intent(context, ScreenRecordingAndCompress::class.java))
                 5 -> startActivity(Intent(context, ScreenSharingActivity::class.java))
                 6 -> startActivity(Intent(context, RtmpActivity::class.java))
-                7 ->{}
+                7 ->startActivity(Intent(context, BCMainActivity::class.java))
             }
         }
     }

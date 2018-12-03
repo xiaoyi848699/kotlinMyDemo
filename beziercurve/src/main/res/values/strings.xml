@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BezierCurve</string>
+    <string name="bottom_my">消息</string>
+    <string name="bottom_Message">联系人</string>
+    <string name="bottom_video">动态</string>
+    <string name="bottom_round">看点</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

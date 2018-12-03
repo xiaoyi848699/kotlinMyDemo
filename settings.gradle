@@ -1,1 +1,1 @@
-include ':app', ':videocompressor', ':rtmp-client'
+include ':app', ':videocompressor', ':rtmp-client', ':beziercurve', ':dragindicator'
