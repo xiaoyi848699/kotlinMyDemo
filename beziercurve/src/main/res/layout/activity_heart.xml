@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="长按屏幕释放爱心"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/path_btn"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:onClick="btnClick"
+                android:clickable="true"
+                android:text="path"/>
+            <TextView
+                android:id="@+id/basic_btn"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:onClick="btnClick"
+                android:clickable="true"
+                android:text="basic"/>
+            <TextView
+                android:id="@+id/advance_btn"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:onClick="btnClick"
+                android:clickable="true"
+                android:text="advance"/>
+            <TextView
+                android:id="@+id/high_btn"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:onClick="btnClick"
+                android:clickable="true"
+                android:text="high"/>
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_below="@id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <demo.xy.com.beziercurve.view.heart.PathView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/path"
+            android:background="#ffffff" />
+        <demo.xy.com.beziercurve.view.heart.BasicPathView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/basic"
+            android:background="#ffffff" />
+        <demo.xy.com.beziercurve.view.heart.AdvancePathView
+            android:layout_width="match_parent"
+            android:id="@+id/advance"
+            android:visibility="gone"
+            android:layout_height="match_parent"/>
+
+        <demo.xy.com.beziercurve.view.heart.HearView
+            android:layout_width="match_parent"
+            android:id="@+id/high"
+            android:background="#ffffff"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+</RelativeLayout>

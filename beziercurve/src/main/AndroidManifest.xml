@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="demo.xy.com.beziercurve">
+
+    <application>
+        <activity android:name=".BCMainActivity" />
+        <activity android:name=".ShowBezierCurveActivity" />
+        <activity android:name=".MsgPointActivity" />
+        <activity android:name=".GuideActivity" />
+        <activity android:name=".HeartActivity"></activity>
+    </application>
+
+</manifest>

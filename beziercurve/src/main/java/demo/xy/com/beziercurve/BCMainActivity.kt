@@ -28,13 +28,14 @@ class BCMainActivity : BCBaseAtivity() {
                 0 -> startActivity(Intent(context,ShowBezierCurveActivity::class.java))
                 1 -> startActivity(Intent(context,MsgPointActivity::class.java))
                 2 -> startActivity(Intent(context,GuideActivity::class.java))
+                3 -> startActivity(Intent(context,HeartActivity::class.java))
             }
         }
     }
 
 
     val context: Context = this
-    val items = listOf("展示贝塞尔曲线", "QQ消息提示小红点", "ViewPage滑动引导动画")
+    val items = listOf("展示贝塞尔曲线", "QQ消息提示小红点", "ViewPage滑动引导动画", "爱心", "加购物车", "水波")
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {

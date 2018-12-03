@@ -58,7 +58,7 @@ class MainActivity : BaseAtivity() {
             "屏幕录制+视频压缩",
             "websocket实时共享屏幕",
             "RTMP推流发送视频",
-            "贝塞尔曲线")
+            "贝塞尔曲线以及应用")
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
