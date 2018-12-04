@@ -11,7 +11,6 @@ import com.guideview.LayoutStyle;
 import com.guideview.ViewInfo;
 
 /**
- * Created by zhaozhibo on 2017/11/6.
  * 在高亮区域正左方
  */
 

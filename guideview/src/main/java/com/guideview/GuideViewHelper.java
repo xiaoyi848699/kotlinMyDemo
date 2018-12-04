@@ -11,9 +11,6 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by zhaozhibo on 2017/10/31.
- */
 
 public class GuideViewHelper {
     private ViewGroup rootView;

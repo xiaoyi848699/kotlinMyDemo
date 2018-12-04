@@ -1,8 +1,5 @@
 package com.guideview;
 
-/**
- * Created by zhaozhibo on 2017/11/3.
- */
 
 public class ViewInfo {
     /**

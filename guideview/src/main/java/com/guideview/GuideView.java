@@ -18,9 +18,6 @@ import android.widget.FrameLayout;
 
 import java.util.List;
 
-/**
- * Created by zhaozhibo on 2017/10/31.
- */
 
 public class GuideView extends FrameLayout implements View.OnClickListener {
     private Paint maskPaint;

@@ -3,9 +3,6 @@ package com.guideview;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by zhaozhibo on 2017/11/6.
- */
 
 public abstract class LayoutStyle {
     protected int offset;
