@@ -8,7 +8,8 @@
         <activity android:name=".MsgPointActivity" />
         <activity android:name=".GuideActivity" />
         <activity android:name=".HeartActivity" />
-        <activity android:name=".WaveActivity"></activity>
+        <activity android:name=".WaveActivity" />
+        <activity android:name=".AddShopCartActivity"></activity>
     </application>
 
 </manifest>
