@@ -37,7 +37,7 @@ class BCMainActivity : BCBaseAtivity() {
 
 
     val context: Context = this
-    val items = listOf("展示贝塞尔曲线", "QQ消息提示小红点", "ViewPage滑动引导动画", "爱心", "加购物车", "水波")
+    private val items = listOf("展示贝塞尔曲线", "QQ消息提示小红点", "ViewPage滑动引导动画", "爱心", "加购物车", "水波")
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
