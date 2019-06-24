@@ -1,0 +1,211 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.jfrog.artifactory'//使用插件
+//apply plugin: 'maven-publish' //使用插件
+
+//def release_version = '0.0.1'//正式环境版本名
+
+
+//def packageName = 'com.xy.test' //包名(group id)
+
+//获取local.properties的内容
+//def properties = new Properties()
+//def propFile = project.rootProject.file('gradle.properties')
+//properties.load(propFile.newDataInputStream())
+
+//def runTasks = gradle.startParameter.taskNames
+
+
+//publishing {
+//    publications {
+//
+//        aar(MavenPublication) {
+//            groupId packageName
+////            if('assembleEnv_release' in runTasks){
+//            logger.error('正在打正式环境的包')
+//            properties["artifactory_version"] = release_version
+//            properties.store(propFile.newWriter(),null)
+////            }else if('assembleEnv_test' in runTasks){
+////                logger.error('正在打测试环境的包')
+////                properties["artifactory_version"] = test_version
+////                properties.store(propFile.newWriter(),null)
+////            }
+//            if(null==properties["artifactory_version"]){
+//                properties["artifactory_version"] = '1.0.0'
+//            }
+//            version = properties["artifactory_version"]
+//            artifactId project.getName()
+//
+//            // Tell maven to prepare the generated "* .aar" file for publishing
+//            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+//        }
+//    }
+//}
+
+
+
+
+/**
+ * 配置Jfrog Artifactory
+ */
+//artifactory {
+//    def contains_test = false
+//    def contains_release = false
+//    for (int i = 0; i <runTasks.size() ; i++) {
+//        def name = runTasks.get(i)
+//        if(name.contains("assembleEnv_test")){
+//            contains_test = true
+//        }else if (name.contains("assembleEnv_release")){
+//            contains_release = true
+//        }
+//        logger.error('任务名称===>'+name)
+//    }
+//
+////    if('assembleEnv_release' in runTasks || contains_release){
+////        def currUrl = 'http://39.104.112.193:8087/artifactory'
+////        properties["artifactory_contextUrl"] = currUrl
+////        properties["artifactory_password"] = "Yubay_Education_Release_235"
+////        properties.store(propFile.newWriter(),null)
+////    }else if('assembleEnv_test' in runTasks ||contains_test){
+//    def currUrl = 'http://192.168.2.138:8081/artifactory'
+//    properties["artifactory_contextUrl"] = currUrl
+//    properties["artifactory_password"] = "123456"
+//    properties.store(propFile.newWriter(),null)
+////    }
+//    logger.error('AAR上传地址==>'+properties["artifactory_contextUrl"] )
+//    contextUrl = properties["artifactory_contextUrl"]
+//
+////    def flavor = android.productFlavors[0].name
+////
+////    logger.error('flavor==================='+flavor)
+//
+//    publish {
+//
+//        repository {
+//            // The Artifactory repository key to publish to
+//            repoKey = 'gradle-release-local'
+//            username ="${artifactory_user}"
+//            password = properties["artifactory_password"]
+//
+//        }
+//        defaults {
+//            // Tell the Artifactory Plugin which artifacts should be published to Artifactory.
+//            publications('aar')
+//            publishArtifacts = true
+//
+//            // Properties to be attached to the published artifacts.
+//            properties = ['qa.level': 'basic', 'dev.team': 'core']
+//            // Publish generated POM files to Artifactory (true by default)
+//            publishPom = true
+//        }
+//    }
+//}
+
+//打包时间
+//def releaseTime() {
+//    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+//}
+android {
+
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+//    productFlavors {
+//        env_release {
+//            minSdkVersion 19
+//            targetSdkVersion 28
+//            versionCode 1
+//            versionName "1.0"
+//            flavorDimensions "env_release"
+//            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        }
+//        env_test {
+//            minSdkVersion 19
+//            targetSdkVersion 28
+//            versionCode 1
+//            versionName "1.0"
+//            flavorDimensions "env_test"
+//            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//
+//        }
+//    }
+
+//    sourceSets {
+//        main.java.srcDirs += 'src/environment_release/java'
+//        main.java.srcDirs += 'src/environment_test/java'
+//    }
+
+    // 批量打包
+//    libraryVariants.all { variant ->
+//        variant.outputs.all { output ->
+//            def outputFile = output.outputFile
+//            if (outputFile != null && outputFile.name.endsWith('.aar')) {
+//                //输出apk名称为：渠道名_版本名_时间.apk
+////                outputFileName = "V${defaultConfig.versionName}_${releaseTime()}.aar"
+//                outputFileName = "${project.getName()}-release.aar"
+//            }
+//        }
+//    }
+//    dataBinding {
+//        enabled = true
+//    }
+//    androidExtensions {//扩展插件可以节省findviewbyid(),实现与Data-Binding,Dagger框架的效果，不需要添加任何额外代码，也不影响任何运行时体验
+//        experimental = true
+//    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //base
+    implementation rootProject.ext.dependencies["appcompat-v7"]
+    implementation rootProject.ext.dependencies["design"]
+    implementation rootProject.ext.dependencies["recyclerview-v7"]
+    implementation rootProject.ext.dependencies["cardview-v7"]
+    implementation rootProject.ext.dependencies["support-v4"]
+    //okhttp-->log
+    implementation  rootProject.ext.dependencies["okhttp"]
+
+    //picasso图片加载
+    implementation  rootProject.ext.dependencies["picasso"]
+
+    //图片裁剪
+    implementation  rootProject.ext.dependencies["image-cropper"]
+
+
+//    implementation 'com.xy.test:mylibrary:0.0.1'//build.gradle中配置maven地址
+//    implementation('com.xy.test:mylibrary:0.0.1', {
+//        repositories {
+//            maven { url "http://192.168.2.138:8081/artifactory/gradle-release-local/" }
+//        }
+//    })
+//    env_releaseImplementation('net.yubay.education:yubay_education:' + test_version, {
+//        repositories {
+//            maven { url "http://192.168.2.138:8081/artifactory/gradle-release-local/" }
+//        }
+//    })
+
+    //图片压缩
+//    implementation 'com.github.pruas:Biscuit:v1.2.1'
+}
+
+

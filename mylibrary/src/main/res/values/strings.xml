@@ -1,0 +1,15 @@
+<resources>
+    <item name="view_tag_id" type="id"></item>
+    <string name="app_name">MyLibrary</string>
+    <string name="kindly_reminder">温馨提示</string>
+    <string name="btn_sure">确定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_delete">删除</string>
+    <string name="base_loading">数据加载中， 请稍候&#8230;</string>
+    <string name="btn_to_set">去设置</string>
+    <string name="btn_allow">允许</string>
+    <string name="i_konw">我知道了</string>
+    <string name="refuse_permission">请在设置中将权限设置为允许！</string>
+    <string name="sdk_not_available">SD卡不可用, 请插入SD卡重试!</string>
+    <string name="permissions_photo">调用相册权限，请到 “应用信息 -> 权限” 中授予！</string>
+</resources>

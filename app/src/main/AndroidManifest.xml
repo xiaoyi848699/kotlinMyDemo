@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="demo.xy.com.xytdcq">
-
     <!-- Tell the system this app requires OpenGL ES 3.1. -->
     <uses-feature
         android:glEsVersion="0x00030001"
-        android:required="true" />
-
-    <!-- 外置存储存取权限 -->
+        android:required="true" /> <!-- 外置存储存取权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -24,6 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".nkd.MainNKDActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,10 +31,10 @@
         </activity>
 
         <activity-alias
-            android:name=".Test12"
+            android:name=".Test11"
             android:enabled="false"
-            android:icon="@drawable/ic_home2"
-            android:label="xy_tdcq 双12"
+            android:icon="@drawable/ic_home1"
+            android:label="xy_tdcq 双11"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,10 +43,10 @@
             </intent-filter>
         </activity-alias>
         <activity-alias
-            android:name=".Test11"
+            android:name=".Test12"
             android:enabled="false"
-            android:icon="@drawable/ic_home1"
-            android:label="xy_tdcq 双11"
+            android:icon="@drawable/ic_home2"
+            android:label="xy_tdcq 双12"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -90,7 +88,7 @@
             android:exported="true"
             android:process=":screen_record" />
 
-        <activity android:name=".GuideActivity"></activity>
+        <activity android:name=".GuideActivity" />
     </application>
 
 </manifest>

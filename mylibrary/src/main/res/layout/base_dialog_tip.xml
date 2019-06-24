@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_white_corners"
+    android:minWidth="280dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/title_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="14dp"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="@string/kindly_reminder"/>
+        <View
+            style="@style/horizontal_light_thin_divider" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tip_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:minHeight="70dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <View
+        style="@style/horizontal_light_thin_divider"/>
+
+    <include layout="@layout/include_dialog_btn" />
+
+
+</LinearLayout>

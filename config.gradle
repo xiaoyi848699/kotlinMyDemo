@@ -1,0 +1,48 @@
+ext {
+
+    android = [
+            compileSdkVersion: 27,
+            buildToolsVersion: "28.0.3",
+            minSdkVersion    : 21,
+            targetSdkVersion : 23,
+            versionCode      : 1,
+            versionName      : "1.0.0"
+    ]
+
+
+    def dependVersion = [
+            support    : "27.1.1",
+            retrofit   : "2.2.0",
+            butterknife: "8.8.1",
+            dagger2    : "2.4"
+    ]
+
+    dependencies = [
+            //base
+            "appcompat-v7"            : "com.android.support:appcompat-v7:${dependVersion.support}",
+            "cardview-v7"             : "com.android.support:cardview-v7:${dependVersion.support}",
+            "recyclerview-v7"         : "com.android.support:recyclerview-v7:${dependVersion.support}",
+            "support-v4"              : "com.android.support:support-v4:${dependVersion.support}",
+            "design"                  : "com.android.support:design:${dependVersion.support}",
+
+            //network
+            "gson"                    : "com.google.code.gson:gson:2.8.4",
+            "okhttp"                  : "com.squareup.okhttp3:logging-interceptor:3.8.1",
+            "retrofit"                : "com.squareup.retrofit2:retrofit:${dependVersion.retrofit}",
+            "retrofit-converter-gson" : "com.squareup.retrofit2:converter-gson:${dependVersion.retrofit}",
+            "retrofit-adapter-rxjava2": "com.squareup.retrofit2:adapter-rxjava2:${dependVersion.retrofit}",
+
+            //di
+            "butterknife"             : "com.jakewharton:butterknife:${dependVersion.butterknife}",
+            "butterknife-compiler"    : "com.jakewharton:butterknife-compiler:${dependVersion.butterknife}",
+            "dagger"                  : "com.google.dagger:dagger:${dependVersion.dagger2}",
+            "dagger-compiler"         : "com.google.dagger:dagger-compiler:${dependVersion.dagger2}",
+            "annotation"              : "org.glassfish:javax.annotation:10.0-b28",
+
+            //picasso图片加载
+            "picasso"              : "com.squareup.picasso:picasso:2.5.2",
+            //图片裁剪
+            "image-cropper"              : "com.theartofdev.edmodo:android-image-cropper:2.3.+"
+
+    ]
+}

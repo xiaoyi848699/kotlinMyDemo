@@ -2,6 +2,8 @@ package demo.xy.com.xytdcq.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Environment;
 import android.text.TextUtils;
 
@@ -9,6 +11,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import demo.xy.com.mylibrary.APPUtils;
+import demo.xy.com.mylibrary.Utils;
+import demo.xy.com.xytdcq.MainActivity;
 import demo.xy.com.xytdcq.uitls.DevMountInfo;
 import demo.xy.com.xytdcq.uitls.LogUtil;
 
@@ -47,20 +52,35 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        //初始化存储路径
-        mountInfo = DevMountInfo.getInstance();
-        mountInfo.init(this);
-        extsdcardPath = mountInfo.getExternalSDCardPath();
-        File mFile = Environment.getExternalStorageDirectory();
-        if (null != Environment.getExternalStorageDirectory()) {
-            extneralPath = mFile.getPath();
-        }
-        if(!TextUtils.isEmpty(extneralPath)){
-            savePath = extneralPath;
-        }else if(!TextUtils.isEmpty(extsdcardPath)){
-            savePath = extsdcardPath;
-        }else {
-            savePath = "";
+        if (inMainProcess()) {
+            //初始化存储路径
+            mountInfo = DevMountInfo.getInstance();
+            mountInfo.init(this);
+            extsdcardPath = mountInfo.getExternalSDCardPath();
+            File mFile = Environment.getExternalStorageDirectory();
+            if (null != Environment.getExternalStorageDirectory()) {
+                extneralPath = mFile.getPath();
+            }
+            if(!TextUtils.isEmpty(extneralPath)){
+                savePath = extneralPath;
+            }else if(!TextUtils.isEmpty(extsdcardPath)){
+                savePath = extsdcardPath;
+            }else {
+                savePath = "";
+            }
+            // 加载系统默认设置，字体不随用户设置变化
+            Resources res = super.getResources();
+            Configuration config = new Configuration();
+            config.setToDefaults();
+            res.updateConfiguration(config, res.getDisplayMetrics());
+
+            //初始化异常捕获
+            Utils.initExceptionHandler(getApplicationContext(), MainActivity.class);
+
+            //初始化日志SD卡缓存路径
+            String saveLogPath = savePath+ "/writeLog/";
+            Utils.initLog(getApplicationContext(),saveLogPath);
+
         }
 
 
@@ -70,6 +90,12 @@ public class App extends Application {
 
     public static synchronized App getInstance() {
         return instance;
+    }
+
+    private boolean inMainProcess() {
+        String packageName = getPackageName();
+        String processName = APPUtils.getProcessName(this);
+        return packageName.equals(processName);
     }
 
     public  void  addActivity(Activity activity){
