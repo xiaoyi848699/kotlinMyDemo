@@ -9,7 +9,7 @@
 extern "C" {
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_stringFromJNI(
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_stringFromJNI(
             JNIEnv *env,
             jobject /* this */) {
         std::string hello = "Hello from C++";
@@ -21,7 +21,7 @@ extern "C" {
      */
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_stringToMD5(JNIEnv *env, jobject instance, jstring msg_) {
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_stringToMD5(JNIEnv *env, jobject instance, jstring msg_) {
         const char *msg = env->GetStringUTFChars(msg_, 0);
 
         std::string msgC;
@@ -39,7 +39,7 @@ extern "C" {
      */
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_decryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_decryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
         const char *msg = env->GetStringUTFChars(msg_, 0);
 
         std::string msgC;
@@ -61,7 +61,7 @@ extern "C" {
      */
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_encryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_encryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
 
 
         const char *msg = env->GetStringUTFChars(msg_, 0);
@@ -87,7 +87,7 @@ extern "C" {
 
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_encryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_encryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
         const char *msg = env->GetStringUTFChars(msg_, 0);
 
         std::string msgC;
@@ -106,7 +106,7 @@ extern "C" {
      */
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_decryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_decryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
         const char *msg = env->GetStringUTFChars(msg_, 0);
 
         std::string msgC;
@@ -125,7 +125,7 @@ extern "C" {
      */
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_encodeAES(JNIEnv *env, jobject instance, jstring msg_) {
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_encodeAES(JNIEnv *env, jobject instance, jstring msg_) {
         const char *msg = env->GetStringUTFChars(msg_, 0);
 
         std::string msgC;
@@ -151,7 +151,7 @@ extern "C" {
      */
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_decodeAES(JNIEnv *env, jobject instance, jstring msg_) {
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_decodeAES(JNIEnv *env, jobject instance, jstring msg_) {
         const char *msg = env->GetStringUTFChars(msg_, 0);
 
         std::string msgC;
@@ -176,7 +176,7 @@ extern "C" {
 
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_encryptDES(JNIEnv *env, jobject instance, jstring msg_) {
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_encryptDES(JNIEnv *env, jobject instance, jstring msg_) {
         const char *msg = env->GetStringUTFChars(msg_, 0);
 
         std::string msgC;
@@ -201,7 +201,7 @@ extern "C" {
      */
     __attribute ((visibility ("default")))
     JNIEXPORT jstring JNICALL
-    Java_demo_xy_com_xytdcq_Jni1Activity_decryptDES(JNIEnv *env, jobject instance, jstring msg_) {
+    Java_demo_xy_com_xytdcq_nkd_Jni1Activity_decryptDES(JNIEnv *env, jobject instance, jstring msg_) {
         const char *msg = env->GetStringUTFChars(msg_, 0);
 
         std::string msgC;

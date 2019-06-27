@@ -12,7 +12,10 @@ import com.guideview.GuideViewHelper
 import com.guideview.LightType
 import com.guideview.style.*
 
-class GuideActivity : BaseAtivity(), View.OnClickListener {
+/**
+ * 高亮导航
+ */
+class HighlightGuideActivity : BaseAtivity(), View.OnClickListener {
 
     private var helper: GuideViewHelper? = null
     override fun onClick(v: View?) {
@@ -20,7 +23,7 @@ class GuideActivity : BaseAtivity(), View.OnClickListener {
     }
 
     override fun getLayout(): Int {
-       return R.layout.activity_guide
+       return R.layout.activity_highlight_guide
     }
     @BindView(R.id.button5) lateinit var button5: Button
     @BindView(R.id.button6) lateinit var button6: Button

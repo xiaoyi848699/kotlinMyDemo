@@ -7,7 +7,7 @@
         android:id="@+id/viewpager_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/linearLayout_main_bottom"
+        android:layout_above="@id/linearLayout_main_bottom"
         android:persistentDrawingCache="animation" />
 
     <LinearLayout

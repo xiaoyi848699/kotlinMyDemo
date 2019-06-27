@@ -26,7 +26,7 @@ class BCMainActivity : BCBaseAtivity() {
         listview.adapter = MainAdapter(items){ s: String, i: Int ->
             when(i){
                 0 -> startActivity(Intent(context,ShowBezierCurveActivity::class.java))
-                1 -> startActivity(Intent(context,MsgPointActivity::class.java))
+//                1 -> startActivity(Intent(context,MsgPointActivity::class.java))
                 2 -> startActivity(Intent(context,GuideActivity::class.java))
                 3 -> startActivity(Intent(context,HeartActivity::class.java))
                 4 -> startActivity(Intent(context,AddShopCartActivity::class.java))

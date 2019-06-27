@@ -21,7 +21,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".nkd.MainNKDActivity"></activity>
+        <activity android:name=".nkd.EncryptionFileActivity"></activity>
+        <activity android:name=".fileManager.FileManagerActivity" />
+        <activity android:name=".nkd.MainNKDActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,7 +62,7 @@
             android:theme="@style/FullScreen" />
         <activity android:name=".surfaceView.GLSurfaceViewActivity1" />
         <activity android:name=".surfaceView.GLSurfaceViewActivity2" />
-        <activity android:name=".Jni1Activity" />
+        <activity android:name=".nkd.Jni1Activity" />
         <activity android:name=".ChangeAPPIconActivity" />
         <activity android:name=".surfaceView.GLSurfaceViewActivity" />
         <activity
@@ -88,7 +90,7 @@
             android:exported="true"
             android:process=":screen_record" />
 
-        <activity android:name=".GuideActivity" />
+        <activity android:name=".HighlightGuideActivity" />
     </application>
 
 </manifest>

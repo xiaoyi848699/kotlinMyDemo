@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
 import demo.xy.com.beziercurve.BCMainActivity
+import demo.xy.com.xytdcq.nkd.MainNKDActivity
 import demo.xy.com.xytdcq.screen.RtmpActivity
 import demo.xy.com.xytdcq.screen.ScreenRecordingAndCompress
 import demo.xy.com.xytdcq.screen.ScreenSharingActivity
@@ -35,13 +36,13 @@ class MainActivity : BaseAtivity() {
             when(i){
                 0 -> startActivity(Intent(context,FullActivity::class.java))
                 1 -> startActivity(Intent(context, GLSurfaceViewActivity::class.java))
-                2 -> startActivity(Intent(context,Jni1Activity::class.java))
+                2 -> startActivity(Intent(context, MainNKDActivity::class.java))
                 3 -> startActivity(Intent(context,ChangeAPPIconActivity::class.java))
                 4 -> startActivity(Intent(context, ScreenRecordingAndCompress::class.java))
                 5 -> startActivity(Intent(context, ScreenSharingActivity::class.java))
                 6 -> startActivity(Intent(context, RtmpActivity::class.java))
                 7 ->startActivity(Intent(context, BCMainActivity::class.java))
-                8 ->startActivity(Intent(context, GuideActivity::class.java))
+                8 ->startActivity(Intent(context, HighlightGuideActivity::class.java))
             }
         }
     }
@@ -54,7 +55,7 @@ class MainActivity : BaseAtivity() {
     val items = listOf(
             "全屏",
             "surfaceview",
-            "JNI1+MD5+RSA+BASE64+AES+DES",
+            "NDK",
             "切换APP ICON",
             "屏幕录制+视频压缩",
             "websocket实时共享屏幕",

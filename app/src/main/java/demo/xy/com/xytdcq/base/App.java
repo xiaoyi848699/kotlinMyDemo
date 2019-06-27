@@ -13,8 +13,8 @@ import java.util.List;
 
 import demo.xy.com.mylibrary.APPUtils;
 import demo.xy.com.mylibrary.Utils;
+import demo.xy.com.mylibrary.storage.DevMountInfo;
 import demo.xy.com.xytdcq.MainActivity;
-import demo.xy.com.xytdcq.uitls.DevMountInfo;
 import demo.xy.com.xytdcq.uitls.LogUtil;
 
 
