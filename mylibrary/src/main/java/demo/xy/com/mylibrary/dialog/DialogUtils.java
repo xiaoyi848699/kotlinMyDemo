@@ -54,7 +54,7 @@ public class DialogUtils {
                     LogUtil.e("DialogUtils show");
                     dialog = DialogFactory.createLoadingDialog(activity, msg,maxWaitTime);
                     dialog.setCancelable(isCanCanel);
-                        dialog.show();
+                    dialog.show();
                 }
             });
         } catch (Exception e) {

@@ -13,21 +13,20 @@ import demo.xy.com.xytdcq.nkd.interfaceI.NDKInterface
 import demo.xy.com.xytdcq.uitls.LogUtil
 import demo.xy.com.xytdcq.uitls.ToastUtil
 
+
+
 /**
- * 文件加密和解密
+ * "文件拆分与合并"
  */
-class EncryptionFileActivity : BaseAtivity() {
+class FileSplittingMergeActivity : BaseAtivity() {
 
-
-    // Used to load the 'native-lib' library on application startup.
     init {
-        System.loadLibrary("file-encrypt-lib")
+        System.loadLibrary("file-splite-merge")
     }
 
     override fun getLayout(): Int {
-       return  R.layout.activity_encryption_file
+       return R.layout.activity_file_splitting_merge
     }
-
 
     @BindView(R.id.path_tv) lateinit var pathTv: TextView
     private var filePath:String? = null
@@ -43,38 +42,43 @@ class EncryptionFileActivity : BaseAtivity() {
             R.id.getfile -> {
                 startActivityForResult(FileManagerActivity.getIntent(this, App.getInstance().savePath,true,200),100)
             }
-            R.id.encrypt ->{
+            R.id.file_split ->{
                 if(TextUtils.isEmpty(filePath)){
-                    ToastUtil.showToast(this,"请先选中加密文件")
+                    ToastUtil.showToast(this,"请先选中分割文件")
                 }else{
-                    decryptPath = filePath+"_ecrypt"
-                    try{
-                        NDKInterface.cryptorEncrypt(this!!.filePath!!, this!!.decryptPath!!)
-                        ToastUtil.showToast(this,"加密成功")
-                    }catch ( e:Throwable){
-                        ToastUtil.showToast(this,"加密失败")
-                        LogUtil.e("加密失败${e.message}")
-
+                    var strs =  filePath?.split(".")
+                    if(strs!!.size == 2){
+                        decryptPath = strs?.get(0)+"_%d."+strs?.get(1)
+                        try{
+                            NDKInterface.spliteFlie(this!!.filePath!!, this!!.decryptPath!!,5)
+                            ToastUtil.showToast(this,"文件分割成功")
+                        }catch ( e:Throwable){
+                            ToastUtil.showToast(this,"分割失败")
+                            LogUtil.e("分割失败${e.message}")
+                        }
+                    }else{
+                        ToastUtil.showToast(this,"文件错误")
                     }
+
 
                 }
             }
-            R.id.dencrypt ->{
+            R.id.file_merge ->{
                 if(TextUtils.isEmpty(decryptPath)){
-                    ToastUtil.showToast(this,"请先加密文件")
+                    ToastUtil.showToast(this,"请先分割文件")
                 }else{
                     try{
                         var strs =  filePath?.split(".")
                         if(strs!!.size == 2){
-                            var newPath = strs?.get(0)+"_decrypt."+strs?.get(1)
-                            NDKInterface.cryptorDecrypt(this!!.decryptPath!!,newPath)
-                            ToastUtil.showToast(this,"解密成功")
+                            var newPath = strs?.get(0)+"_merge."+strs?.get(1)
+                            NDKInterface.mergeFlie(this!!.decryptPath!!,newPath,5)
+                            ToastUtil.showToast(this,"文件合并成功")
                         }else{
                             ToastUtil.showToast(this,"文件错误")
                         }
                     }catch ( e:Throwable){
-                        ToastUtil.showToast(this,"解密失败")
-                        LogUtil.e("解密失败${e.message}")
+                        ToastUtil.showToast(this,"合并失败")
+                        LogUtil.e("合并失败${e.message}")
 
                     }
                 }

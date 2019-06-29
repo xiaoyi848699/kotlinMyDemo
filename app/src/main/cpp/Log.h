@@ -1,7 +1,3 @@
-//
-// Created by gzbd on 2016/12/7.
-//
-
 #ifndef RSADEMO_LOG_H
 #define RSADEMO_LOG_H
 

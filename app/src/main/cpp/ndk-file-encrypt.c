@@ -1,21 +1,21 @@
+#include <jni.h>
+#include <android/log.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <jni.h>
-#include <android/log.h>
 
-#define LOGI(FORMAT,...) __android_log_print(ANDROID_LOG_INFO,"xy",FORMAT,__VA_ARGS__)
-#define LOGE(FORMAT,...) __android_log_print(ANDROID_LOG_ERROR,"xy",FORMAT,__VA_ARGS__)
+#define MYLOGI(FORMAT,...) __android_log_print(ANDROID_LOG_INFO,"xy",FORMAT,__VA_ARGS__)
+#define MYLOGE(FORMAT,...) __android_log_print(ANDROID_LOG_ERROR,"xy",FORMAT,__VA_ARGS__)
 
 char password[] = "password";
-//加密demo.xy.com.xytdcq.nkd.encryption
+//加密文件
 JNIEXPORT void JNICALL
-Java_demo_xy_com_xytdcq_nkd_encryption_EncryptionFile_00024Companion_CryptorEncrypt(JNIEnv *env,  jclass jcls, jstring normal_path_jstr,jstring encrypt_path_jstr) {
-//    LOGE("CryptorEncrypt:%s","1");
+Java_demo_xy_com_xytdcq_nkd_interfaceI_NDKInterface_00024Companion_cryptorEncrypt(JNIEnv *env,  jobject job, jstring normal_path_jstr,jstring encrypt_path_jstr) {
+    MYLOGE("cryptorEncrypt:%s","1");
     //jstring -> char*
     const char* normal_path = (*env)->GetStringUTFChars(env,normal_path_jstr,NULL);
     const char* encrypt_path = (*env)->GetStringUTFChars(env,encrypt_path_jstr,NULL);
-//    LOGE("CryptorEncrypt:%s","2");
+    MYLOGE("cryptorEncrypt:%s","2");
     //打开文件
     FILE *normal_fp = fopen(normal_path, "rb");
     FILE *crypt_fp = fopen(encrypt_path, "wb");
@@ -36,9 +36,9 @@ Java_demo_xy_com_xytdcq_nkd_encryption_EncryptionFile_00024Companion_CryptorEncr
     (*env)->ReleaseStringUTFChars(env,normal_path_jstr,normal_path);
 }
 
-//解密
+//解密文件
 JNIEXPORT void JNICALL
-Java_demo_xy_com_xytdcq_nkd_encryption_EncryptionFile_00024Companion_CryptorDecrypt(JNIEnv *env, jclass jcls, jstring encrypt_path_jstr, jstring decrypt_path_jstr) {
+Java_demo_xy_com_xytdcq_nkd_interfaceI_NDKInterface_00024Companion_cryptorDecrypt(JNIEnv *env, jobject job, jstring encrypt_path_jstr, jstring decrypt_path_jstr) {
     const char* encrypt_path = (*env)->GetStringUTFChars(env,encrypt_path_jstr,NULL);
     const char* decrypt_path = (*env)->GetStringUTFChars(env,decrypt_path_jstr,NULL);
 

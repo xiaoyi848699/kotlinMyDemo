@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/getfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="btnClick"
+            android:text="选中文件"/>
+        <TextView
+            android:id="@+id/path_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/file_split"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="btnClick"
+        android:text="加密拆分"/>
+    <Button
+        android:id="@+id/file_merge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="btnClick"
+        android:text="解密合并"/>
+</LinearLayout>

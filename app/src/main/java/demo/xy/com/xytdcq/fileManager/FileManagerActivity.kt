@@ -9,6 +9,7 @@ import android.view.KeyEvent
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ListView
 import butterknife.BindView
+import demo.xy.com.mylibrary.dialog.DialogUtils
 import demo.xy.com.mylibrary.log.Write
 import demo.xy.com.mylibrary.storage.DevMountInfo
 import demo.xy.com.xytdcq.BaseAtivity
@@ -177,7 +178,7 @@ class FileManagerActivity : BaseAtivity() {
      * @param files
      */
     private fun inflateListView() {
-//        ProgressUtil.show(getString(R.string.loading_msg), true)
+        DialogUtils.show(this,"文件加载中",false)
         // 使用异步任务线程来处理，不阻碍主线程的运行
         object : AsyncTask<String, String, List<FileInfo>>() {
             override fun doInBackground(vararg params: String): List<FileInfo>? {
@@ -235,7 +236,7 @@ class FileManagerActivity : BaseAtivity() {
                 if (result != null) {
                     listFiles?.addAll(result)
                 }
-//                ProgressUtil.dismiss()
+                DialogUtils.dismiss()
                 // 更新显示列表数据
                 if (null == myAdapter) {
                     myAdapter = listFiles?.let {

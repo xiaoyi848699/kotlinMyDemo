@@ -33,7 +33,8 @@ class MainNKDActivity : BaseAtivity() {
             when (i) {
                 0 -> startActivity(Intent(context, Jni1Activity::class.java))
                 1 -> startActivity(Intent(context, EncryptionFileActivity::class.java))
-                2 -> startActivity(Intent(context, Jni1Activity::class.java))
+                2 -> startActivity(Intent(context, FileSplittingMergeActivity::class.java))
+                3 -> startActivity(Intent(context, IncrementalUpdateActivity::class.java))
             }
         }
     }
@@ -41,8 +42,9 @@ class MainNKDActivity : BaseAtivity() {
     val context: Context = this
     private val items = listOf(
             "MD5+RSA+BASE64+AES+DES",
-            "文件加密",
-            "文件拆分与合并")
+            "文件加密与解密",
+            "文件拆分与合并",
+            "apk增量更新")
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
