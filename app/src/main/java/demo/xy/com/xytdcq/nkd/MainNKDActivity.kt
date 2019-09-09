@@ -35,6 +35,7 @@ class MainNKDActivity : BaseAtivity() {
                 1 -> startActivity(Intent(context, EncryptionFileActivity::class.java))
                 2 -> startActivity(Intent(context, FileSplittingMergeActivity::class.java))
                 3 -> startActivity(Intent(context, IncrementalUpdateActivity::class.java))
+                4 -> startActivity(Intent(context, VoiceChangerActivity::class.java))
             }
         }
     }
@@ -44,7 +45,8 @@ class MainNKDActivity : BaseAtivity() {
             "MD5+RSA+BASE64+AES+DES",
             "文件加密与解密",
             "文件拆分与合并",
-            "apk增量更新")
+            "apk增量更新",
+            "FMOD仿QQ变声")
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
