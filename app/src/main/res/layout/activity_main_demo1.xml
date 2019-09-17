@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+   <LinearLayout 
+	    android:id="@+id/top_ly"
+	    android:layout_width="fill_parent"
+	    android:layout_height="60dp"
+	    android:gravity="center_vertical"
+	    android:orientation="horizontal"
+	    android:background="@color/color_dark_green"
+	    >
+	    <ImageView 
+	        android:id="@+id/iv1"
+	        android:layout_width="30dp"
+	        android:layout_height="30dp"
+	        android:layout_marginLeft="20dp"
+	        android:clickable="true"
+	        android:onClick="btnClick"/>
+	    <ImageView 
+	        android:id="@+id/iv2"
+	        android:layout_width="30dp"
+	        android:layout_height="30dp"
+	        android:layout_marginLeft="10dp"
+	        android:clickable="true"
+	        android:onClick="btnClick"/>
+	    <ImageView 
+	        android:id="@+id/iv3"
+	        android:layout_width="30dp"
+	        android:layout_height="30dp"
+	        android:layout_marginLeft="10dp"
+	        android:clickable="true"
+	        android:onClick="btnClick"/>
+	</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="vertical"
+        android:layout_below="@id/top_ly">
+	     <demo.xy.com.xytdcq.demo1.view.ParentViewPager
+           android:id="@+id/viewPager"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:background="#ffffff"/>
+	</LinearLayout>
+   
+
+</RelativeLayout>

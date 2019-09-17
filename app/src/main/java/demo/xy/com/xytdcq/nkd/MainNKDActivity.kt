@@ -9,10 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
-import demo.xy.com.mylibrary.storage.DevMountInfo
-import demo.xy.com.xytdcq.*
-import demo.xy.com.xytdcq.base.App
-import demo.xy.com.xytdcq.fileManager.FileManagerActivity
+import demo.xy.com.xytdcq.BaseAtivity
+import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.view.DividerItemLinearLayout
 
 class MainNKDActivity : BaseAtivity() {
@@ -46,7 +44,8 @@ class MainNKDActivity : BaseAtivity() {
             "文件加密与解密",
             "文件拆分与合并",
             "apk增量更新",
-            "FMOD仿QQ变声")
+            "FMOD仿QQ变声",
+            "ffmpeg视频播放")
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {

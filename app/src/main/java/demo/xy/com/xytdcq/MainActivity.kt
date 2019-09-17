@@ -10,6 +10,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
 import demo.xy.com.beziercurve.BCMainActivity
+import demo.xy.com.xytdcq.demo1.PhotoAnimActivity
+import demo.xy.com.xytdcq.demo1.RedPagerMainActivity
+import demo.xy.com.xytdcq.demo1.SlidingConflictActivity
 import demo.xy.com.xytdcq.nkd.MainNKDActivity
 import demo.xy.com.xytdcq.screen.RtmpActivity
 import demo.xy.com.xytdcq.screen.ScreenRecordingAndCompress
@@ -31,19 +34,21 @@ class MainActivity : BaseAtivity() {
         listview.addItemDecoration(DividerItemLinearLayout(context,
                 R.drawable.bg_recycler_divider,
                 DividerItemLinearLayout.VERTICAL_LIST))
-        listview.adapter = MainAdapter(items){ s: String, i: Int ->
+        listview.adapter = MainAdapter(itemsName){ s: String, i: Int ->
 //            Toast.makeText(context,"你点击了$s-->$i",Toast.LENGTH_LONG).show()
-            when(i){
-                0 -> startActivity(Intent(context,FullActivity::class.java))
-                1 -> startActivity(Intent(context, GLSurfaceViewActivity::class.java))
-                2 -> startActivity(Intent(context, MainNKDActivity::class.java))
-                3 -> startActivity(Intent(context,ChangeAPPIconActivity::class.java))
-                4 -> startActivity(Intent(context, ScreenRecordingAndCompress::class.java))
-                5 -> startActivity(Intent(context, ScreenSharingActivity::class.java))
-                6 -> startActivity(Intent(context, RtmpActivity::class.java))
-                7 ->startActivity(Intent(context, BCMainActivity::class.java))
-                8 ->startActivity(Intent(context, HighlightGuideActivity::class.java))
-            }
+            startActivity(Intent(context,itemsAC[i]))
+//            when(i){
+//                0 -> startActivity(Intent(context,FullActivity::class.java))
+//                1 -> startActivity(Intent(context, GLSurfaceViewActivity::class.java))
+//                2 -> startActivity(Intent(context, MainNKDActivity::class.java))
+//                3 -> startActivity(Intent(context,ChangeAPPIconActivity::class.java))
+//                4 -> startActivity(Intent(context, ScreenRecordingAndCompress::class.java))
+//                5 -> startActivity(Intent(context, ScreenSharingActivity::class.java))
+//                6 -> startActivity(Intent(context, RtmpActivity::class.java))
+//                7 ->startActivity(Intent(context, BCMainActivity::class.java))
+//                8 ->startActivity(Intent(context, HighlightGuideActivity::class.java))
+//                9 ->startActivity(Intent(context, CaiPiaoMainActivity::class.java))
+//            }
         }
     }
 
@@ -52,16 +57,34 @@ class MainActivity : BaseAtivity() {
     @BindView(R.id.listview) lateinit var listview:RecyclerView
 
     val context: Context = this
-    val items = listOf(
+    val itemsName = listOf(
             "全屏",
+            "彩票助手",
+            "随机瓜分红包",
+            "滑动事件冲突",
+            "照片动画",
             "surfaceview",
+            "高亮新手引导",
             "NDK",
             "切换APP ICON",
             "屏幕录制+视频压缩",
             "websocket实时共享屏幕",
             "RTMP推流发送视频",
-            "贝塞尔曲线以及应用",
-            "高亮新手引导")
+            "贝塞尔曲线以及应用")
+    val itemsAC = listOf(
+            FullActivity::class.java,
+            CaiPiaoMainActivity::class.java,
+            RedPagerMainActivity::class.java,
+            SlidingConflictActivity::class.java,
+            PhotoAnimActivity::class.java,
+            GLSurfaceViewActivity::class.java,
+            HighlightGuideActivity::class.java,
+            MainNKDActivity::class.java,
+            ChangeAPPIconActivity::class.java,
+            ScreenRecordingAndCompress::class.java,
+            ScreenSharingActivity::class.java,
+            RtmpActivity::class.java,
+            BCMainActivity::class.java)
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
@@ -74,7 +97,7 @@ class MainActivity : BaseAtivity() {
         override fun getItemCount(): Int = items.size
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//            holder.text_tv.text = items[position]
+//            holder.text_tv.text = itemsName[position]
             holder.bind(items[position],position)
         }
 

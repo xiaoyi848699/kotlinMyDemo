@@ -1,0 +1,94 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical" >
+
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+    	<TextView
+	        android:layout_width="100dp"
+	        android:layout_height="50dp"
+	        android:gravity="center"
+	        android:text="总金额:" />
+       <EditText 
+           android:id="@+id/total"
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+	        android:inputType="number|numberDecimal|numberSigned"
+	        android:maxLength="9"
+	        android:text="1000"
+           android:gravity="center_vertical"/> 
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+    	<TextView
+	        android:layout_width="100dp"
+	        android:layout_height="50dp"
+	        android:gravity="center"
+	        android:text="人数:" />
+       <EditText 
+           android:id="@+id/people"
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+	        android:inputType="number"
+	        android:maxLength="9"
+	        android:text="10"
+           android:gravity="center_vertical"/> 
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+    	<TextView
+	        android:layout_width="100dp"
+	        android:layout_height="50dp"
+	        android:gravity="center"
+	        android:text="最大:" />
+       <EditText 
+           android:id="@+id/max"
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+	        android:inputType="number|numberDecimal|numberSigned"
+	        android:maxLength="9"
+	        android:text="200"
+           android:gravity="center_vertical"/> 
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+    	<TextView
+	        android:layout_width="100dp"
+	        android:layout_height="50dp"
+	        android:gravity="center"
+	        android:text="最小:" />
+       <EditText 
+           android:id="@+id/min"
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+	        android:inputType="number|numberDecimal|numberSigned"
+	        android:maxLength="5"
+	        android:text="2"
+           android:gravity="center_vertical"/> 
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/calculate"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="calculate"
+        android:onClick="btnClick" />
+
+</LinearLayout>

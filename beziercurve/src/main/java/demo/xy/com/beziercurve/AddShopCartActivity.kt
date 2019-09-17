@@ -103,7 +103,7 @@ class AddShopCartActivity : AppCompatActivity(), ItemAdapter.AddClickListener, A
          */
         var mPointF =  PointF()
         override fun evaluate(fraction: Float, startValue: PointF?, endValue: PointF?): PointF {
-            return getBezierPoint(startValue!!, endValue!!, control!!, fraction)
+            return getBezierPoint(startValue!!, endValue!!, control, fraction)
         }
 
         /**
