@@ -11,6 +11,7 @@ import com.guideview.GuideView
 import com.guideview.GuideViewHelper
 import com.guideview.LightType
 import com.guideview.style.*
+import demo.xy.com.mylibrary.base.BaseAtivity
 
 /**
  * 高亮导航

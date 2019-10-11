@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
 import demo.xy.com.beziercurve.BCMainActivity
+import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.mylibrary.remoteWebView.WebViewActivity
 import demo.xy.com.xytdcq.demo1.PhotoAnimActivity
 import demo.xy.com.xytdcq.demo1.RedPagerMainActivity
 import demo.xy.com.xytdcq.demo1.SlidingConflictActivity
@@ -57,7 +59,7 @@ class MainActivity : BaseAtivity() {
     @BindView(R.id.listview) lateinit var listview:RecyclerView
 
     val context: Context = this
-    val itemsName = listOf(
+    private var itemsName = listOf(
             "全屏",
             "彩票助手",
             "随机瓜分红包",
@@ -70,8 +72,9 @@ class MainActivity : BaseAtivity() {
             "屏幕录制+视频压缩",
             "websocket实时共享屏幕",
             "RTMP推流发送视频",
-            "贝塞尔曲线以及应用")
-    val itemsAC = listOf(
+            "贝塞尔曲线以及应用",
+            "webview")
+    private var itemsAC = listOf(
             FullActivity::class.java,
             CaiPiaoMainActivity::class.java,
             RedPagerMainActivity::class.java,
@@ -84,7 +87,8 @@ class MainActivity : BaseAtivity() {
             ScreenRecordingAndCompress::class.java,
             ScreenSharingActivity::class.java,
             RtmpActivity::class.java,
-            BCMainActivity::class.java)
+            BCMainActivity::class.java,
+            WebViewActivity::class.java)
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
@@ -114,6 +118,12 @@ class MainActivity : BaseAtivity() {
         }
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        itemsName = emptyList()
+        itemsAC = emptyList()
     }
 
 }

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 //apply plugin: 'com.jfrog.artifactory'//使用插件
 //apply plugin: 'maven-publish' //使用插件
 
@@ -40,8 +42,6 @@ apply plugin: 'com.android.library'
 //        }
 //    }
 //}
-
-
 
 
 /**
@@ -172,6 +172,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -183,15 +184,19 @@ dependencies {
     implementation rootProject.ext.dependencies["cardview-v7"]
     implementation rootProject.ext.dependencies["support-v4"]
     //okhttp-->log
-    implementation  rootProject.ext.dependencies["okhttp"]
+    implementation rootProject.ext.dependencies["okhttp"]
 
     //picasso图片加载
-    implementation  rootProject.ext.dependencies["picasso"]
+    implementation rootProject.ext.dependencies["picasso"]
 
     //图片裁剪
-    implementation  rootProject.ext.dependencies["image-cropper"]
+    implementation rootProject.ext.dependencies["image-cropper"]
 
 
+    //butterknife
+    api rootProject.ext.dependencies["butterknife"]
+    api rootProject.ext.dependencies["butterknife-compiler"]
+    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
 //    implementation 'com.xy.test:mylibrary:0.0.1'//build.gradle中配置maven地址
 //    implementation('com.xy.test:mylibrary:0.0.1', {
 //        repositories {
@@ -206,6 +211,5 @@ dependencies {
 
     //图片压缩
 //    implementation 'com.github.pruas:Biscuit:v1.2.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
-
-

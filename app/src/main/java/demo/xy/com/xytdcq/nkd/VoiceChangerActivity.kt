@@ -1,6 +1,6 @@
 package demo.xy.com.xytdcq.nkd
 
-import demo.xy.com.xytdcq.BaseAtivity
+import demo.xy.com.mylibrary.base.BaseAtivity
 import demo.xy.com.xytdcq.R
 
 /**

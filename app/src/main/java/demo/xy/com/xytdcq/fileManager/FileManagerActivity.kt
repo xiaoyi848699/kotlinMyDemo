@@ -12,7 +12,7 @@ import butterknife.BindView
 import demo.xy.com.mylibrary.dialog.DialogUtils
 import demo.xy.com.mylibrary.log.Write
 import demo.xy.com.mylibrary.storage.DevMountInfo
-import demo.xy.com.xytdcq.BaseAtivity
+import demo.xy.com.mylibrary.base.BaseAtivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.bean.FileInfo
 import demo.xy.com.xytdcq.fileManager.adapter.FileListAdapter

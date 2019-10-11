@@ -15,6 +15,7 @@ class FullActivity : AppCompatActivity() {
         fullview.setOnClickListener{
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
+//        TestManager.getInstance(this)//内存泄漏测试
     }
 }
 

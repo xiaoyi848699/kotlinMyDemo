@@ -3,6 +3,7 @@ package demo.xy.com.xytdcq
 import android.content.ComponentName
 import android.content.pm.PackageManager
 import android.view.View
+import demo.xy.com.mylibrary.base.BaseAtivity
 
 /**
  * 修改APP icon

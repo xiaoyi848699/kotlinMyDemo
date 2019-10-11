@@ -1,4 +1,4 @@
-package demo.xy.com.xytdcq
+package demo.xy.com.mylibrary.base
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

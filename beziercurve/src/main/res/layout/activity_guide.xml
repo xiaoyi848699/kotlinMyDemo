@@ -21,6 +21,7 @@
             android:layout_height="56dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
+            android:background="@color/transparent"
             app:siIndicatorColor="@color/colorPrimary"
             app:siIndicatorColors="@array/indicator_colors"
             app:siSelectedTextColor="@android:color/white"

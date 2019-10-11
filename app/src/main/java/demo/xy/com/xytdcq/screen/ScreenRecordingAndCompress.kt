@@ -16,7 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
 import com.vincent.videocompressor.VideoCompress
-import demo.xy.com.xytdcq.BaseAtivity
+import demo.xy.com.mylibrary.base.BaseAtivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.service.RecordService
 import demo.xy.com.xytdcq.uitls.LogUtil

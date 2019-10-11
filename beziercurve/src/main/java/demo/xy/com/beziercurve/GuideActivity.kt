@@ -23,10 +23,10 @@ class GuideActivity : AppCompatActivity() {
 
     private fun initData() {
         fragList = ArrayList()
-        fragList!!.add(GuideFragment.newInstance(R.drawable.girl1))
-        fragList!!.add(GuideFragment.newInstance(R.drawable.girl2))
-        fragList!!.add(GuideFragment.newInstance(R.drawable.girl3))
-        fragList!!.add(GuideFragment.newInstance(R.drawable.girl4))
+        fragList!!.add(GuideFragment.newInstance(R.drawable.pic0))
+        fragList!!.add(GuideFragment.newInstance(R.drawable.pic1))
+        fragList!!.add(GuideFragment.newInstance(R.drawable.pic2))
+        fragList!!.add(GuideFragment.newInstance(R.drawable.pic3))
         list = ArrayList()
         for (str in titles) {
             list!!.add(str)

@@ -15,6 +15,8 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
 //        externalNativeBuild {
 //            cmake {
 //                cppFlags ""
@@ -45,6 +47,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    //内存泄漏检测工具leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
     //base
     implementation rootProject.ext.dependencies["appcompat-v7"]
     implementation rootProject.ext.dependencies["design"]
@@ -53,8 +60,8 @@ dependencies {
     implementation rootProject.ext.dependencies["support-v4"]
 
     //butterknife
-    implementation rootProject.ext.dependencies["butterknife"]
-    kapt rootProject.ext.dependencies["butterknife-compiler"]
+//    implementation rootProject.ext.dependencies["butterknife"]
+//    kapt rootProject.ext.dependencies["butterknife-compiler"]
 
     //picasso图片加载
     implementation rootProject.ext.dependencies["picasso"]

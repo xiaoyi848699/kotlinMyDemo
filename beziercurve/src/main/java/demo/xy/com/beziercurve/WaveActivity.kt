@@ -24,9 +24,14 @@ class WaveActivity : AppCompatActivity() {
         waveViewByBezier!!.resumeAnimation()
     }
 
+    override fun onStop() {
+        super.onStop()
+        waveViewByBezier?.stopAnimation()
+    }
 
     override fun onDestroy() {
+        waveViewByBezier?.clearAnimation()
+        waveViewByBezier = null
         super.onDestroy()
-        waveViewByBezier!!.stopAnimation()
     }
 }

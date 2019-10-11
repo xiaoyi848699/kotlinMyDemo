@@ -222,6 +222,7 @@ public class WaveViewByBezier extends View {
     public void stopAnimation() {
         if (valueAnimator != null) {
             valueAnimator.cancel();
+            valueAnimator.end();
         }
     }
 

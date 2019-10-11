@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.text.TextUtils
 import demo.xy.com.mylibrary.log.LogUtil
-import demo.xy.com.xytdcq.BaseAtivity
+import demo.xy.com.mylibrary.base.BaseAtivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.base.App
 import demo.xy.com.xytdcq.nkd.interfaceI.NDKInterface

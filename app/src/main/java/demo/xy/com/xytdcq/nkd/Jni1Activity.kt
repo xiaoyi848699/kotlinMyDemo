@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
-import demo.xy.com.xytdcq.BaseAtivity
+import demo.xy.com.mylibrary.base.BaseAtivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.uitls.EncryptionUtils
 

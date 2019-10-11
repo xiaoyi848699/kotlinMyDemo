@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import butterknife.BindView
+import demo.xy.com.mylibrary.base.BaseAtivity
 import demo.xy.com.mylibrary.log.LogUtil
 import demo.xy.com.xytdcq.adapter.HistoryAdapter
 import demo.xy.com.xytdcq.bean.Caipiao

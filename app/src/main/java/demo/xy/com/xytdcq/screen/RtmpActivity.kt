@@ -8,7 +8,7 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import demo.xy.com.xytdcq.BaseAtivity
+import demo.xy.com.mylibrary.base.BaseAtivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.uitls.PermissionUtils
 import demo.xy.com.xytdcq.uitls.VersionUtils

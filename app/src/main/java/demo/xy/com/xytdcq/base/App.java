@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +84,10 @@ public class App extends Application {
             Utils.initLog(getApplicationContext(),saveLogPath);
 
         }
-
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
 
 
 
@@ -95,6 +100,7 @@ public class App extends Application {
     private boolean inMainProcess() {
         String packageName = getPackageName();
         String processName = APPUtils.getProcessName(this);
+        demo.xy.com.mylibrary.log.LogUtil.e("packageName:"+packageName+",processName:"+processName);
         return packageName.equals(processName);
     }
 
