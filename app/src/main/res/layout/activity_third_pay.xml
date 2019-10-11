@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pay_main_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:onClick="btnClick"
+    android:background="@color/transparent" >
+
+    <LinearLayout
+        android:id="@+id/pay_content_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="160dp"
+        android:background="@color/white"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <View
+            style="@style/horizontal_light_thin_divider"/>
+        <TextView
+            android:id="@+id/pay_hint"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:textSize="12dp"/>
+        <EditText
+            android:id="@+id/pwd"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="40dp"/>
+        <Button
+            android:id="@+id/pay_comfirm"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/bg_recycle_divider"
+            android:onClick="btnClick"
+            android:text="确定"/>
+
+    </LinearLayout>
+</RelativeLayout>

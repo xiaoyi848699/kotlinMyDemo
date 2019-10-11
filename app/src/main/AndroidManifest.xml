@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="demo.xy.com.xytdcq">
     <!-- 外置存储存取权限 -->
     <uses-feature
@@ -21,8 +22,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".androidIPC.IPCMainActivity"></activity>
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".androidIPC.aidl.ThirdPayJavaActivity"></activity>
+        <activity android:name=".androidIPC.aidl.AIDLActivity" />
+        <activity android:name=".androidIPC.messenger.MessengerActivity" />
+        <activity android:name=".androidIPC.IPCMainActivity" />
         <activity android:name=".CaiPiaoMainActivity" />
         <activity android:name=".nkd.VoiceChangerActivity" />
         <activity android:name=".nkd.IncrementalUpdateActivity" />
@@ -86,24 +91,58 @@
         <activity android:name=".HighlightGuideActivity" />
         <activity
             android:name=".demo1.SlidingConflictActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".demo1.PhotoAnimActivity"
             android:exported="false"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".demo1.ScrollListViewHintActivity"></activity>
-        <activity android:name=".demo1.RedPagerMainActivity"></activity>
-        <activity android:name=".demo1.ShowResultActivity"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".demo1.ScrollListViewHintActivity" />
+        <activity android:name=".demo1.RedPagerMainActivity" />
+        <activity android:name=".demo1.ShowResultActivity" />
 
         <service
             android:name=".service.RecordService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
             android:name=".screen.ScreenRecorderService"
             android:enabled="true"
-            android:exported="true"
+            android:exported="false"
             android:process=":screen_record" />
+        <service
+            android:name=".androidIPC.messenger.MessengerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":ipc">
+            <intent-filter>
+                <action android:name="android.intent.action.MessengerService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".androidIPC.aidl.AIDLService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":ipc">
+            <intent-filter>
+                <action android:name="android.intent.action.AIDLService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".androidIPC.aidl.ThirdPayService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":ipc_pay">
+            <intent-filter>
+                <action android:name="com.alibaba.alipay.third_pay" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".androidIPC.aidl.ThirdPayActivity"
+            android:launchMode="singleTop"
+            android:process=":ipc_pay"
+            android:resizeableActivity="false"
+            android:theme="@style/MyDialogStyleInFromBottom" />
     </application>
 
 </manifest>

@@ -5,9 +5,10 @@ import android.content.Intent
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import butterknife.BindView
-import demo.xy.com.xytdcq.FullActivity
 import demo.xy.com.xytdcq.MainActivity
 import demo.xy.com.xytdcq.R
+import demo.xy.com.xytdcq.androidIPC.aidl.AIDLActivity
+import demo.xy.com.xytdcq.androidIPC.messenger.MessengerActivity
 import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.view.DividerItemLinearLayout
 
@@ -33,7 +34,8 @@ class IPCMainActivity : BaseActivity() {
             "Messenger",
             "AIDL")
     private var itemsAC = listOf(
-            FullActivity::class.java)
+            MessengerActivity::class.java,
+            AIDLActivity::class.java)
 
     override fun onDestroy() {
         super.onDestroy()

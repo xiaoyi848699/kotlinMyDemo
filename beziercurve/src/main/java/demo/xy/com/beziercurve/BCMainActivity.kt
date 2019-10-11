@@ -25,19 +25,19 @@ class BCMainActivity : BCBaseAtivity() {
                 DividerItemLinearLayout.VERTICAL_LIST))
         listview.adapter = MainAdapter(items){ s: String, i: Int ->
             when(i){
-                0 -> startActivity(Intent(context,ShowBezierCurveActivity::class.java))
+//                0 -> startActivity(Intent(context,ShowBezierCurveActivity::class.java))
 //                1 -> startActivity(Intent(context,MsgPointActivity::class.java))
-                2 -> startActivity(Intent(context,GuideActivity::class.java))
-                3 -> startActivity(Intent(context,HeartActivity::class.java))
-                4 -> startActivity(Intent(context,AddShopCartActivity::class.java))
-                5 -> startActivity(Intent(context,WaveActivity::class.java))
+                0 -> startActivity(Intent(context,GuideActivity::class.java))
+//                3 -> startActivity(Intent(context,HeartActivity::class.java))
+                1 -> startActivity(Intent(context,AddShopCartActivity::class.java))
+                2 -> startActivity(Intent(context,WaveActivity::class.java))
             }
         }
     }
 
 
     val context: Context = this
-    private val items = listOf("展示贝塞尔曲线", "QQ消息提示小红点", "ViewPage滑动引导动画", "爱心", "加购物车", "水波")
+    private val items = listOf(/*"展示贝塞尔曲线", "QQ消息提示小红点",*/ "ViewPage滑动引导动画", /*"爱心",*/ "加购物车", "水波")
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
