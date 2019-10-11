@@ -3,12 +3,12 @@ package demo.xy.com.xytdcq
 import android.content.ComponentName
 import android.content.pm.PackageManager
 import android.view.View
-import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.xytdcq.base.BaseActivity
 
 /**
  * 修改APP icon
  */
-class ChangeAPPIconActivity : BaseAtivity() {
+class ChangeAPPIconActivity : BaseActivity() {
     override fun getLayout(): Int {
        return  R.layout.activity_change_appicon
     }

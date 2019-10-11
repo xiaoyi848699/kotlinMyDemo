@@ -194,8 +194,8 @@ dependencies {
 
 
     //butterknife
-    api rootProject.ext.dependencies["butterknife"]
-    api rootProject.ext.dependencies["butterknife-compiler"]
+//    implementation rootProject.ext.dependencies["butterknife"]
+//    implementation rootProject.ext.dependencies["butterknife-compiler"]
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
 //    implementation 'com.xy.test:mylibrary:0.0.1'//build.gradle中配置maven地址
 //    implementation('com.xy.test:mylibrary:0.0.1', {

@@ -5,15 +5,15 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import butterknife.BindView
-import demo.xy.com.mylibrary.base.BaseAtivity
 import demo.xy.com.mylibrary.log.LogUtil
 import demo.xy.com.xytdcq.adapter.HistoryAdapter
+import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.bean.Caipiao
 import demo.xy.com.xytdcq.uitls.Quicksort
 import java.util.*
 
 
-class CaiPiaoMainActivity : BaseAtivity() {
+class CaiPiaoMainActivity : BaseActivity() {
     override fun getLayout(): Int {
         return R.layout.activity_cai_piao_main
     }

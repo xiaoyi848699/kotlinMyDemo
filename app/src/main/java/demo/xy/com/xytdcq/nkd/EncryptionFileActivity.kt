@@ -5,7 +5,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import butterknife.BindView
-import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.base.App
 import demo.xy.com.xytdcq.fileManager.FileManagerActivity
@@ -16,7 +16,7 @@ import demo.xy.com.xytdcq.uitls.ToastUtil
 /**
  * 文件加密和解密
  */
-class EncryptionFileActivity : BaseAtivity() {
+class EncryptionFileActivity : BaseActivity() {
 
 
     // Used to load the 'native-lib' library on application startup.

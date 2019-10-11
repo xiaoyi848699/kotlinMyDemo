@@ -10,8 +10,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
 import demo.xy.com.beziercurve.BCMainActivity
-import demo.xy.com.mylibrary.base.BaseAtivity
 import demo.xy.com.mylibrary.remoteWebView.WebViewActivity
+import demo.xy.com.xytdcq.androidIPC.IPCMainActivity
+import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.demo1.PhotoAnimActivity
 import demo.xy.com.xytdcq.demo1.RedPagerMainActivity
 import demo.xy.com.xytdcq.demo1.SlidingConflictActivity
@@ -26,7 +27,7 @@ import demo.xy.com.xytdcq.view.DividerItemLinearLayout
 
 
 
-class MainActivity : BaseAtivity() {
+class MainActivity : BaseActivity() {
 
     override fun getLayout(): Int {
        return  R.layout.activity_main
@@ -73,7 +74,8 @@ class MainActivity : BaseAtivity() {
             "websocket实时共享屏幕",
             "RTMP推流发送视频",
             "贝塞尔曲线以及应用",
-            "webview")
+            "webview",
+            "IPC")
     private var itemsAC = listOf(
             FullActivity::class.java,
             CaiPiaoMainActivity::class.java,
@@ -88,7 +90,8 @@ class MainActivity : BaseAtivity() {
             ScreenSharingActivity::class.java,
             RtmpActivity::class.java,
             BCMainActivity::class.java,
-            WebViewActivity::class.java)
+            WebViewActivity::class.java,
+            IPCMainActivity::class.java)
 
 
     class MainAdapter(private val items : List<String>, private val itemClickListener: (String, Int) -> Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {

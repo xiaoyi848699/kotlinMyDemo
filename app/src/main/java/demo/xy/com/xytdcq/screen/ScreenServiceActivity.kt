@@ -9,7 +9,7 @@ import android.os.Handler
 import android.view.View
 import android.widget.TextView
 import butterknife.BindView
-import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.uitls.HexUtil
 import demo.xy.com.xytdcq.uitls.LogUtil
@@ -18,7 +18,7 @@ import org.java_websocket.handshake.ClientHandshake
 import org.java_websocket.server.WebSocketServer
 import java.net.InetSocketAddress
 
-class ScreenServiceActivity : BaseAtivity(),ScreenCaputre.ScreenCaputreListener{
+class ScreenServiceActivity : BaseActivity(),ScreenCaputre.ScreenCaputreListener{
     override fun getLayout(): Int {
         return R.layout.activity_screen_service
     }

@@ -462,4 +462,21 @@ public class SlidingConflictActivity extends Activity {
 			return pagesSon.size();
 		}
 	}
+
+	@Override
+	protected void onDestroy() {
+		if(null != mViewFlow){
+			mViewFlow.stopAutoFlowTimer();
+			mViewFlow = null;
+		}
+		if(null != mViewFlow2){
+			mViewFlow2.stopAutoFlowTimer();
+			mViewFlow2 = null;
+		}
+		if(null != mViewFlow3){
+			mViewFlow3.stopAutoFlowTimer();
+			mViewFlow3 = null;
+		}
+		super.onDestroy();
+	}
 }

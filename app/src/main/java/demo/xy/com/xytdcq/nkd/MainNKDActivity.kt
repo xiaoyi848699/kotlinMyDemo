@@ -9,11 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
-import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.view.DividerItemLinearLayout
 
-class MainNKDActivity : BaseAtivity() {
+class MainNKDActivity : BaseActivity() {
 
     override fun getLayout(): Int {
         return R.layout.activity_main_nkd

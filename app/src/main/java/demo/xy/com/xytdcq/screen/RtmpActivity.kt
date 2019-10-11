@@ -8,12 +8,12 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.uitls.PermissionUtils
 import demo.xy.com.xytdcq.uitls.VersionUtils
 
-class RtmpActivity : BaseAtivity() {
+class RtmpActivity : BaseActivity() {
     private val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
     private val STORAGE_REQUEST_CODE = 102
     private val REQUEST_CODE = 1

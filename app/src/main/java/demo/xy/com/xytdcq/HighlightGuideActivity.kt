@@ -11,12 +11,12 @@ import com.guideview.GuideView
 import com.guideview.GuideViewHelper
 import com.guideview.LightType
 import com.guideview.style.*
-import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.xytdcq.base.BaseActivity
 
 /**
  * 高亮导航
  */
-class HighlightGuideActivity : BaseAtivity(), View.OnClickListener {
+class HighlightGuideActivity : BaseActivity(), View.OnClickListener {
 
     private var helper: GuideViewHelper? = null
     override fun onClick(v: View?) {

@@ -16,7 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
 import com.vincent.videocompressor.VideoCompress
-import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.service.RecordService
 import demo.xy.com.xytdcq.uitls.LogUtil
@@ -24,7 +24,7 @@ import demo.xy.com.xytdcq.uitls.PermissionUtils
 import demo.xy.com.xytdcq.uitls.VersionUtils
 import demo.xy.com.xytdcq.view.dialog.MyProgressDialog
 
-class ScreenRecordingAndCompress : BaseAtivity() {
+class ScreenRecordingAndCompress : BaseActivity() {
     override fun getLayout(): Int {
        return R.layout.activity_screen_recording_and_compress
     }

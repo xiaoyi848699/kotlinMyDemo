@@ -1,4 +1,4 @@
-package demo.xy.com.mylibrary.base
+package demo.xy.com.xytdcq.base
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -8,7 +8,7 @@ import butterknife.Unbinder
 /**
  * Created by xy on 2018/10/19.
  */
-abstract class BaseAtivity : AppCompatActivity(){
+abstract class BaseActivity : AppCompatActivity(){
     var unbinder : Unbinder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

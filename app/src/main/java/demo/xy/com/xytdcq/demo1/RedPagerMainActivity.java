@@ -21,10 +21,10 @@ public class RedPagerMainActivity extends Activity {
 		initView();
 	}
 	private void initView() {
-		total = (EditText) findViewById(R.id.total);
-		people = (EditText) findViewById(R.id.people);
-		max = (EditText) findViewById(R.id.max);
-		min = (EditText) findViewById(R.id.min);
+		total =  findViewById(R.id.total);
+		people =  findViewById(R.id.people);
+		max =  findViewById(R.id.max);
+		min =  findViewById(R.id.min);
 	}
 
 	public void btnClick(View v){

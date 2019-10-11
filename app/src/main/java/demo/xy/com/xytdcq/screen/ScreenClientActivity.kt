@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import butterknife.BindView
-import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.uitls.HexUtil
 import demo.xy.com.xytdcq.uitls.LogUtil
@@ -20,7 +20,7 @@ import java.io.IOException
 import java.net.URI
 import java.nio.ByteBuffer
 
-class ScreenClientActivity : BaseAtivity() {
+class ScreenClientActivity : BaseActivity() {
     override fun getLayout(): Int {
         return R.layout.activity_screen_client
     }

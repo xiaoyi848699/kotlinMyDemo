@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="demo.xy.com.xytdcq">
-    <!-- Tell the system this app requires OpenGL ES 3.1. -->
+    <!-- 外置存储存取权限 -->
+    <uses-feature
+        android:glEsVersion="0x00030001"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".base.App"
         android:allowBackup="true"
@@ -10,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CaiPiaoMainActivity"></activity>
+        <activity android:name=".androidIPC.IPCMainActivity"></activity>
+        <activity android:name=".CaiPiaoMainActivity" />
         <activity android:name=".nkd.VoiceChangerActivity" />
         <activity android:name=".nkd.IncrementalUpdateActivity" />
         <activity android:name=".nkd.FileSplittingMergeActivity" />
@@ -25,11 +38,35 @@
             </intent-filter>
         </activity>
 
+        <activity-alias
+            android:name=".Test12"
+            android:enabled="false"
+            android:icon="@drawable/ic_home2"
+            android:label="xy_tdcq 双12"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".Test11"
+            android:enabled="false"
+            android:icon="@drawable/ic_home1"
+            android:label="xy_tdcq 双11"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
         <activity
             android:name=".FullActivity"
             android:theme="@style/FullScreen" />
         <activity android:name=".surfaceView.GLSurfaceViewActivity1" />
-
         <activity android:name=".surfaceView.GLSurfaceViewActivity2" />
         <activity android:name=".nkd.Jni1Activity" />
         <activity android:name=".ChangeAPPIconActivity" />
@@ -44,75 +81,29 @@
         <activity android:name=".screen.ScreenRecordingAndCompress" />
         <activity android:name=".screen.ScreenSharingActivity" />
         <activity android:name=".screen.ScreenServiceActivity" />
-
         <activity android:name=".screen.ScreenClientActivity" />
-
         <activity android:name=".screen.RtmpActivity" />
         <activity android:name=".HighlightGuideActivity" />
         <activity
             android:name=".demo1.SlidingConflictActivity"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".demo1.PhotoAnimActivity"
             android:exported="false"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".demo1.ScrollListViewHintActivity">
-        </activity>
-        <activity
-            android:name=".demo1.RedPagerMainActivity" >
-        </activity>
-        <activity
-            android:name=".demo1.ShowResultActivity" >
-        </activity>
-        <activity-alias
-            android:name=".Test11"
-            android:enabled="false"
-            android:icon="@drawable/ic_home1"
-            android:label="xy_tdcq 双11"
-            android:targetActivity=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
-            android:name=".Test12"
-            android:enabled="false"
-            android:icon="@drawable/ic_home2"
-            android:label="xy_tdcq 双12"
-            android:targetActivity=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".demo1.ScrollListViewHintActivity"></activity>
+        <activity android:name=".demo1.RedPagerMainActivity"></activity>
+        <activity android:name=".demo1.ShowResultActivity"></activity>
 
         <service
             android:name=".service.RecordService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".screen.ScreenRecorderService"
             android:enabled="true"
             android:exported="true"
             android:process=":screen_record" />
-    </application> <!-- 外置存储存取权限 -->
-    <uses-feature
-        android:glEsVersion="0x00030001"
-        android:required="true" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    </application>
 
 </manifest>

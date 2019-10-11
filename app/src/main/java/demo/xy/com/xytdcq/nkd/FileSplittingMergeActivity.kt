@@ -5,7 +5,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import butterknife.BindView
-import demo.xy.com.mylibrary.base.BaseAtivity
+import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.base.App
 import demo.xy.com.xytdcq.fileManager.FileManagerActivity
@@ -18,7 +18,7 @@ import demo.xy.com.xytdcq.uitls.ToastUtil
 /**
  * "文件拆分与合并"
  */
-class FileSplittingMergeActivity : BaseAtivity() {
+class FileSplittingMergeActivity : BaseActivity() {
 
     init {
         System.loadLibrary("file-splite-merge")
