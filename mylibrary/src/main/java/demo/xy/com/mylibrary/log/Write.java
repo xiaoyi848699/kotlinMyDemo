@@ -88,13 +88,13 @@ public class Write
             return;
         }
         // 新建或打开日志文件
-        Date nowtime = new Date();
-        SimpleDateFormat logfile = new SimpleDateFormat("yyyy-MM-dd",
+        Date nowTime = new Date();
+        SimpleDateFormat logFile = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.getDefault());// 日志文件格式
-        String needWriteFiel = logfile.format(nowtime);
+        String needWriteFiel = logFile.format(nowTime);
         SimpleDateFormat myLogSdf = new SimpleDateFormat(
                 "MM-dd HH:mm:ss:SSS", Locale.getDefault());// 日志的输出格式
-        String needWriteMessage = myLogSdf.format(nowtime)  + " [" + tag + "]"+ " [" + text + "]";
+        String needWriteMessage = myLogSdf.format(nowTime)  + " [" + tag + "]"+ " [" + text + "]";
         par = MYLOG_PATH_SDCARD_DIR + needWriteFiel + "/";
         File parEnt = new File(par);
         try
@@ -103,7 +103,7 @@ public class Write
             {
                 boolean tempFlag = parEnt.mkdirs();
                 if(!tempFlag){
-                    Write.debug("2 make dirs fail!"+text);
+                    Write.debug("make dirs fail!"+text);
                 }
             }
             File[] f = parEnt.listFiles();
@@ -117,7 +117,6 @@ public class Write
             {
                 after = 1;
                 prefix = needWriteFiel + "-" + after + MYLOGFILEName;
-
             }
             else
             {
@@ -132,7 +131,7 @@ public class Write
             }
 
             path = par + prefix;
-            WriteFile.log2file(path, needWriteMessage, true);
+            WriteToFile.log2file(path, needWriteMessage, true);
 
         }
         catch (Exception e)
@@ -143,7 +142,7 @@ public class Write
     }
 
     /**
-     * 创建文件 并写入重要信息
+     * 创建文件 并写入内容
      * @param path
      * @return
      */
@@ -156,7 +155,7 @@ public class Write
         if (!isExist) {
             try {
                 file.createNewFile();
-                WriteFile.saveDataFile(path, CrashSnapshot.getDeviceInfo(mContext));
+                WriteToFile.saveDataFile(path, CrashSnapshot.getDeviceInfo(mContext));
             } catch (IOException e) {
                 Write.debug("getFileFromPath error:"+e.getMessage());
             }

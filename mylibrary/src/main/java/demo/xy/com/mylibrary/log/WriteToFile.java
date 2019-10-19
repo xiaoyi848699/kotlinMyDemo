@@ -12,16 +12,42 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Write the Log to the file
+ * Write the Log to SDCard file
  */
-public class WriteFile {
+public class WriteToFile {
 
     private static ExecutorService executor = null;
 
     protected static void setExecutor(ExecutorService executor) {
-        WriteFile.executor = executor;
+        WriteToFile.executor = executor;
     }
 
+    protected static void saveDataFile(String path, String str) {
+        PrintWriter out = null;
+        File file = new File(path);
+        if(file!=null ){
+            try {
+                out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
+                out.println(str);
+                out.flush();
+            } catch (FileNotFoundException e) {
+                Write.debug("saveDataFile error:"+e.getMessage());
+            } catch (IOException e) {
+                Write.debug("saveDataFile error:"+e.getMessage());
+            } finally {
+                try{
+                    if(null != out){
+                        out.close();
+                        out=null;
+                    }
+                } catch(Exception e){
+                    Write.debug("saveDataFile outputstream close error:"+e.getMessage());
+                }
+                Write.scanFile(file.getPath());
+            }
+        }
+
+    }
     /**
      *
      * @param path 文件路径或者文件名称
@@ -66,32 +92,6 @@ public class WriteFile {
                 }
             });
         }
-    }
-    protected static void saveDataFile(String path, String str) {
-        PrintWriter out = null;
-        File file = new File(path);
-        if(file!=null ){
-            try {
-                out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file, true), "UTF-8"));
-                out.println(str);
-                out.flush();
-            } catch (FileNotFoundException e) {
-                Write.debug("saveDataFile error:"+e.getMessage());
-            } catch (IOException e) {
-                Write.debug("saveDataFile error:"+e.getMessage());
-            } finally {
-                try{
-                    if(null != out){
-                        out.close();
-                        out=null;
-                    }
-                } catch(Exception e){
-                    Write.debug("saveDataFile outputstream close error:"+e.getMessage());
-                }
-                Write.scanFile(file.getPath());
-            }
-        }
-
     }
 
 }

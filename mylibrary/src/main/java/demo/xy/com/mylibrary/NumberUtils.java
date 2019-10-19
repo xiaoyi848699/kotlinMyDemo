@@ -33,6 +33,6 @@ public class NumberUtils {
         }
         DecimalFormat decimalFormat = new DecimalFormat(format);//格式化设置
         String data = decimalFormat.format(mDouble);
-        return  data.replace(",", ".");//法语、德语、俄罗斯语解析会返回“,”
+        return  data.replace(",", ".");//多语言解析会返回“,”
     }
 }
