@@ -91,11 +91,11 @@ public class Write
         Date nowTime = new Date();
         SimpleDateFormat logFile = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.getDefault());// 日志文件格式
-        String needWriteFiel = logFile.format(nowTime);
+        String needWriteFile = logFile.format(nowTime);
         SimpleDateFormat myLogSdf = new SimpleDateFormat(
                 "MM-dd HH:mm:ss:SSS", Locale.getDefault());// 日志的输出格式
         String needWriteMessage = myLogSdf.format(nowTime)  + " [" + tag + "]"+ " [" + text + "]";
-        par = MYLOG_PATH_SDCARD_DIR + needWriteFiel + "/";
+        par = MYLOG_PATH_SDCARD_DIR + needWriteFile + "/";
         File parEnt = new File(par);
         try
         {
@@ -106,32 +106,31 @@ public class Write
                     Write.debug("make dirs fail!"+text);
                 }
             }
-            File[] f = parEnt.listFiles();
-
+            File[] nFile = parEnt.listFiles();
             int len = 0;
-            if (null != f)
+            if (null != nFile)
             {
-                len = f.length;
+                len = nFile.length;
             }
             if (len == 0)
             {
                 after = 1;
-                prefix = needWriteFiel + "-" + after + MYLOGFILEName;
+                prefix = needWriteFile + "-" + after + MYLOGFILEName;
             }
             else
             {
-                prefix = needWriteFiel + "-" + after + MYLOGFILEName;
+                prefix = needWriteFile + "-" + after + MYLOGFILEName;
                 File file = new File(path);
                 long fileLen = file.length();
                 if (fileLen >= MAXLENGTH)
                 {
                     after = after + 1;
-                    prefix = needWriteFiel + "-" + after + MYLOGFILEName;
+                    prefix = needWriteFile + "-" + after + MYLOGFILEName;
                 }
             }
 
             path = par + prefix;
-            WriteToFile.log2file(path, needWriteMessage, true);
+            WriteToFile.logToFile(path, needWriteMessage, true);
 
         }
         catch (Exception e)
@@ -149,24 +148,27 @@ public class Write
     public static File getFileFromPath(String path) {
         boolean isExist;
         File file = new File(path);
-
         isExist = file.exists();
-
         if (!isExist) {
             try {
                 file.createNewFile();
-                WriteToFile.saveDataFile(path, CrashSnapshot.getDeviceInfo(mContext));
+                WriteToFile.saveDataToFile(path, CrashSnapshot.getDeviceInfo(mContext));
             } catch (IOException e) {
-                Write.debug("getFileFromPath error:"+e.getMessage());
+                Write.debug("getFileFromPath IOException:"+e.getMessage());
             }
         }
 
         return file;
     }
-    public static void scanFile(String dirPath)
+
+    /**
+     * 更新本地文件
+     * @param dirPath
+     */
+    public static void toScanFile(String dirPath)
     {
         if(null == mContext){
-            LogUtil.e("please call init method");
+            LogUtil.e("mContext is null");
             return;
         }
         if (hasKitkat())
