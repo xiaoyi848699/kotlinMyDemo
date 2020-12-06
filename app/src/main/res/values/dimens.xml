@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="ic_pid_w_h4">4dp</dimen>
+    <dimen name="ic_pid_w_h6">6dp</dimen>
+    <dimen name="ic_pid_w_h8">8dp</dimen>
+    <dimen name="ic_pid_w_h10">10dp</dimen>
+    <dimen name="ic_pid_w_h12">12dp</dimen>
+    <dimen name="ic_pid_w_h14">14dp</dimen>
+    <dimen name="ic_pid_w_h16">16dp</dimen>
+    <dimen name="ic_pid_w_h18">18dp</dimen>
+    <dimen name="ic_pid_w_h20">20dp</dimen>
+    <dimen name="ic_pid_w_h26">26dp</dimen>
+    <dimen name="ic_pid_w_h28">28dp</dimen>
+    <dimen name="ic_pid_w_h30">30dp</dimen>
+    <dimen name="ic_pid_w_h34">34dp</dimen>
+    <dimen name="ic_pid_w_h40">40dp</dimen>
+    <dimen name="ic_pid_w_h46">46dp</dimen>
+    <dimen name="ic_pid_w_h50">50dp</dimen>
+    <dimen name="ic_pid_w_h60">60dp</dimen>
+    <dimen name="ic_pid_w_h70">70dp</dimen>
+    <dimen name="ic_pid_w_h100">100dp</dimen>
+
+</resources>

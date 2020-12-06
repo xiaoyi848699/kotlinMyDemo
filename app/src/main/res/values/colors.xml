@@ -88,7 +88,7 @@
 
     <color name="red_bag_sign_red">#ff0000</color>
     <color name="red_bag_gray">#cccccc</color>
-    <color name="protective_color">#C7EDCC</color>
+    <color name="protective_color">#10C7EDCC</color>
     <color name="black60t">#99000000</color>
     <color name="white30t">#4CFFFFFF</color>
     <color name="white20t">#33FFFFFF</color>
@@ -99,6 +99,7 @@
 
     <color name="p_p_item_select">#ebebeb</color>
     <color name="btn_yellow">#ffb966</color>
+    <color name="btn_yellow50">#50ffb966</color>
     <color name="btn_blue">#6ccbff</color>
     <color name="white_tr20">#99ffffff</color>
 

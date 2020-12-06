@@ -41,7 +41,7 @@ public class ShowResultActivity extends Activity {
 				SimpleAdapter mAdapter = new SimpleAdapter(ShowResultActivity.this, datas, R.layout.item_views1, new String[]{"str"}, new int[]{R.id.textView1});
 				mListView.setAdapter(mAdapter);
 			}else{
-				Toast.makeText(ShowResultActivity.this, "input error", 1).show();
+				Toast.makeText(ShowResultActivity.this, "input error", Toast.LENGTH_LONG).show();
 			}
 
 		};

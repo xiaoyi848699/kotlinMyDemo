@@ -18,6 +18,8 @@ class GLSurfaceViewActivity : AppCompatActivity() {
             R.id.button2 ->startActivity(Intent(this, GLSurfaceViewActivity2::class.java))
             R.id.button3 ->startActivity(Intent(this, SurfaceViewDoodleActivity::class.java))
             R.id.button4 ->startActivity(Intent(this, GLSurfaceViewDoodleActivity::class.java))
+            R.id.button5 ->startActivity(Intent(this, DrawingBoardViewActivity::class.java))
+            R.id.button6 ->startActivity(Intent(this, FramLayoutActivity::class.java))
         }
     }
 }

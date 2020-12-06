@@ -24,7 +24,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".androidIPC.aidl.ThirdPayJavaActivity"></activity>
+        <activity android:name=".surfaceView.FramLayoutActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/FullScreen" ></activity>
+        <activity android:name=".androidIPC.aidl.ThirdPayJavaActivity" />
         <activity android:name=".androidIPC.aidl.AIDLActivity" />
         <activity android:name=".androidIPC.messenger.MessengerActivity" />
         <activity android:name=".androidIPC.IPCMainActivity" />
@@ -44,10 +47,10 @@
         </activity>
 
         <activity-alias
-            android:name=".Test12"
+            android:name=".Test11"
             android:enabled="false"
-            android:icon="@drawable/ic_home2"
-            android:label="xy_tdcq 双12"
+            android:icon="@drawable/ic_home1"
+            android:label="xy_tdcq 双11"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,10 +59,10 @@
             </intent-filter>
         </activity-alias>
         <activity-alias
-            android:name=".Test11"
+            android:name=".Test12"
             android:enabled="false"
-            android:icon="@drawable/ic_home1"
-            android:label="xy_tdcq 双11"
+            android:icon="@drawable/ic_home2"
+            android:label="xy_tdcq 双12"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -78,6 +81,10 @@
         <activity android:name=".surfaceView.GLSurfaceViewActivity" />
         <activity
             android:name=".surfaceView.SurfaceViewDoodleActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".surfaceView.DrawingBoardViewActivity"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreen" />
         <activity

@@ -22,6 +22,7 @@ public class MyLine extends Action {
             paint.setColor(color);
             paint.setStrokeWidth(size);
         }
+        canvas.drawColor(selectColor);
         canvas.drawLine(startX, startY, stopX, stopY, paint);
     }
 

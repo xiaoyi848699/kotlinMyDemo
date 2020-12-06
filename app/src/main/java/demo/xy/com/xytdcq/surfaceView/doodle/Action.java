@@ -15,9 +15,46 @@ public abstract class Action {
     protected float stopY;
     protected int color = Color.BLACK;
     protected int size;
+    protected int selectColor = 0xFF0000; // 背景颜色
     //撤销画笔使用、判断是否是自己的画笔(1:自己、0:对方)、默认是自己的接收到的时候修改
     public byte isSelf = 1;
     protected String account;
+    protected float startIndexX = 0;
+    protected float startIndexY = 0;
+    protected float endIndexX = 0;
+    protected float endIndexY = 0;
+
+    public float getStartIndexX() {
+        return startIndexX;
+    }
+
+    public void setStartIndexX(float startIndexX) {
+        this.startIndexX = startIndexX;
+    }
+
+    public float getStartIndexY() {
+        return startIndexY;
+    }
+
+    public void setStartIndexY(float startIndexY) {
+        this.startIndexY = startIndexY;
+    }
+
+    public float getEndIndexX() {
+        return endIndexX;
+    }
+
+    public void setEndIndexX(float endIndexX) {
+        this.endIndexX = endIndexX;
+    }
+
+    public float getEndIndexY() {
+        return endIndexY;
+    }
+
+    public void setEndIndexY(float endIndexY) {
+        this.endIndexY = endIndexY;
+    }
 
     public String getAccount() {
         return account;

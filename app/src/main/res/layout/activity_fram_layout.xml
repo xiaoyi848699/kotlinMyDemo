@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <demo.xy.com.xytdcq.surfaceView.MyScrollView
+            android:id="@+id/move_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white">
+
+                <demo.xy.com.xytdcq.surfaceView.hightDoodle.DrawingView
+                    android:id="@+id/drawing_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center" />
+
+                <demo.xy.com.xytdcq.surfaceView.hightDoodle.FrameLayoutView
+                    android:id="@+id/end_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1500dp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="true"
+                    android:background="@color/btn_yellow50"
+                    android:layout_gravity="center" >
+                    <demo.xy.com.xytdcq.surfaceView.hightDoodle.DrawingBoardView
+                        android:id="@+id/doodle_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="1500dp"
+                        android:background="@color/transparent"
+                        android:layout_centerVertical="true"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center" />
+                </demo.xy.com.xytdcq.surfaceView.hightDoodle.FrameLayoutView>
+            </LinearLayout>
+        </demo.xy.com.xytdcq.surfaceView.MyScrollView>
+        <ImageView
+            android:id="@+id/open_sv_tools"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="4dp"
+            android:visibility="gone"
+            android:background="@drawable/pen_circle"/>
+        <include
+            layout="@layout/rts_control_layout_left"
+            />
+        <include
+            layout="@layout/rts_control_layout_top"
+            />
+    </RelativeLayout>
+</RelativeLayout>

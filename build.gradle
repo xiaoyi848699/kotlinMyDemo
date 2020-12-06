@@ -3,12 +3,12 @@ apply from: "config.gradle"
 buildscript {
     ext.kotlin_version = '1.3.10'
     ext.butterknife_version = '8.6.0'
-    repositories {
+    repositories {//插件获取的仓库中的jar或者aar
         google()
         jcenter()
         mavenCentral()
     }
-    dependencies {
+    dependencies {//构建需要的插件
         classpath 'com.android.tools.build:gradle:3.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 //        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
@@ -19,7 +19,7 @@ buildscript {
 }
 
 allprojects {
-    repositories {
+    repositories {//代码运行中需要获取的仓库中的jar或者aar
         google()
         jcenter()
         mavenCentral()

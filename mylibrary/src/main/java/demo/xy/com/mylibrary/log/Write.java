@@ -23,6 +23,8 @@ public class Write
      */
     public static  String MYLOG_PATH_SDCARD_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/writeLog/";
     public static Context mContext;
+    private boolean isExist;
+
     public static void init(Context context, String savePath) {
         MYLOG_PATH_SDCARD_DIR = savePath;
         mContext = context;

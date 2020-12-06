@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <demo.xy.com.xytdcq.surfaceView.MyScrollView
+            android:id="@+id/move_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <demo.xy.com.xytdcq.surfaceView.hightDoodle.DrawingBoardView
+                    android:id="@+id/doodle_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1500dp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </demo.xy.com.xytdcq.surfaceView.MyScrollView>
+
+
+        <ImageView
+            android:id="@+id/iv_pre_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:src="@drawable/rts_pre" />
+
+        <ImageView
+            android:id="@+id/iv_next_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:src="@drawable/rts_next" />
+        <RelativeLayout
+            android:id="@+id/ppt_content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:clickable="true"
+            android:splitMotionEvents="false"
+            android:layout_centerHorizontal="true"
+            android:background="@color/transparent">
+            <demo.xy.com.xytdcq.view.pull.PullRecycler
+                android:id="@+id/ppt_pull_recycler"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/rts_expandable_bg" />
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/open_sv_tools"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="4dp"
+            android:visibility="gone"
+            android:background="@drawable/pen_circle"/>
+        <include
+            layout="@layout/rts_control_layout_bottom"
+            />
+        <include
+            layout="@layout/rts_control_layout_left"
+            />
+        <include
+            layout="@layout/rts_control_layout_top"
+            />
+    </RelativeLayout>
+</RelativeLayout>

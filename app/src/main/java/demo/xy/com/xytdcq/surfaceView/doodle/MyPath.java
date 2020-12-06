@@ -1,8 +1,10 @@
 package demo.xy.com.xytdcq.surfaceView.doodle;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 
 /**
  * 路径
@@ -46,7 +48,9 @@ public class MyPath extends Action {
             startY = stopY;
         }
 //        path.lineTo(mx, my);
+        canvas.drawColor(selectColor);
         canvas.drawPath(path, paint);
+
 //        canvas.drawPoint(x, y, paint);
     }
 
