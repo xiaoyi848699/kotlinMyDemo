@@ -1,6 +1,7 @@
 package demo.xy.com.xytdcq.surfaceView
 
 import android.graphics.Color
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -13,12 +14,10 @@ import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.surfaceView.doodle.ActionTypeEnum
 import demo.xy.com.xytdcq.surfaceView.doodle.BlankPage
 import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel
-import demo.xy.com.xytdcq.surfaceView.hightDoodle.BasePath
-import demo.xy.com.xytdcq.surfaceView.hightDoodle.DrawCallback
-import demo.xy.com.xytdcq.surfaceView.hightDoodle.DrawingBoardView
-import demo.xy.com.xytdcq.surfaceView.hightDoodle.FrameLayoutView
-import demo.xy.com.xytdcq.uitls.LogUtil
+import demo.xy.com.xytdcq.surfaceView.hightDoodle.*
 import demo.xy.com.xytdcq.uitls.ToastUtil
+import demo.xy.com.xytdcq.uitls.Utils
+import kotlin.math.abs
 
 
 class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
@@ -72,6 +71,8 @@ class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
 
     private var paths: ArrayList<BasePath>? = null
 
+    private lateinit var textView:TextView
+
     override fun getLayout(): Int {
         return R.layout.activity_fram_layout;
     }
@@ -116,7 +117,7 @@ class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
 //        endView.addView(textInfo, layoutParamsTextInfo)
 
         val layoutParamsTextInfo2 = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 50)
-        val textView = TextView(this)
+        textView = TextView(this)
         textView.text = "init TextView"
         textView.setTextColor(Color.RED)
         textView.gravity = Gravity.CENTER_VERTICAL
@@ -127,14 +128,12 @@ class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
         endView.addView(textView, layoutParamsTextInfo2)
     }
 
-    override fun callBack(view: BasePath?, width:Int, height:Int) {
+    override fun callBackAddView(view: BasePath, width: Float, height: Float) {
         paths?.add(view!!);
-        val layoutParamsTextInfo2 = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        layoutParamsTextInfo2.width = width+2
-        layoutParamsTextInfo2.height = height+2
-
-        LogUtil.e("xiaoyi callBack$view")
-        endView.addView(view,layoutParamsTextInfo2)
+        val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        layoutParams.width = (width + 1).toInt()
+        layoutParams.height = (height + 1).toInt()
+        endView.addView(view,layoutParams)
     }
 
 
@@ -177,6 +176,9 @@ class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
         dealPenView();
         resetLeftTools1(0);
         wb_move.setImageResource(R.drawable.wb_move_s);
+        if (isSelectedView) {
+            updateSelectAll(false)
+        }
     }
     private fun select() {
         isCanMove = false
@@ -185,14 +187,8 @@ class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
         dealPenView();
         resetLeftTools1(1);
         wb_select.setImageResource(R.drawable.wb_select_s)
-        updateSelectAll(true)
-        isSelectView = true
-    }
-
-    fun updateSelectAll(isSelect:Boolean) {
-        for (b in this!!.paths!!) {
-            b.isSelect = isSelect
-        }
+//        updateSelectAll(true)
+//        isSelectedView = true
     }
 
     private fun selectPen() {
@@ -202,7 +198,9 @@ class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
         dealPenView();
         resetLeftTools1(2);
         wb_pen.setImageResource(R.drawable.wb_pen_s);
-        updateSelectAll(false)
+        if (isSelectedView) {
+            updateSelectAll(false)
+        }
     }
 
     private fun resetLeftTools1(index:Int) {
@@ -254,8 +252,17 @@ class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
     private var downY:Float = 0.0f;
     private var lastX:Float = 0.0f;
     private var lastY:Float = 0.0f;
-    private var isSelectView:Boolean = false;
+    private var isSelectedView:Boolean = false // 框选完成后是否有选中的view
+    private var isSelectView:Boolean = false // 移动框选的时候是否有选中view
+    private lateinit var startPoint:Point // 单次事件的起始点
+    private lateinit var movePoint:Point // 单次事件的移动点
+    private lateinit var selectAreStartPoint:Point // 选择区域的起始点
+    private lateinit var selectAreMovePoint:Point // 选择区域的结束点
 
+    private var deleteMinX = 0f
+    private var deleteMinY = 0f
+    private var deleteMaxX = 0f
+    private var deleteMaxY = 0f
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         if (event != null) {
             when(event.action) {
@@ -264,30 +271,92 @@ class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
                     downY = event.y
                     lastX = event.x
                     lastY = event.y
-                    if (isSelectView) {
+                    startPoint = Point(downX,downY)
+                    isSelectView = false
+                    if (isSelectedView) {
                         // 判断如果是上次范围内，这继续移动
 
                         // 不是上次范围内则取消选择
+//                        if (abs(event.x - startPoint.x) < 8 && abs(event.y - startPoint.y) < 8) {
+                            // 判断为点击（如果在区域外则取消选择）
+                            if (!(downX in deleteMinX..deleteMaxX && downY in deleteMinY..deleteMaxY)) {
+//                            if (!(Utils.getInterval(selectAreStartPoint.x, deleteMinX, selectAreMovePoint.x, deleteMaxX) &&
+//                                            Utils.getInterval(selectAreStartPoint.y, deleteMinY, selectAreMovePoint.y, deleteMaxY))) {
+//                                cancleSelectView ()
+                                isSelectedView = false
+                                updateSelectAll(false)
+
+                                // 重新创建选择区域
+                                endView.isDrawSelect = true
+                                endView.startPoint = startPoint
+                            }
+//                        }
                     } else {
                        // 创建选择区域
+                        endView.isDrawSelect = true
+                        endView.startPoint = startPoint
                     }
                 }
                 MotionEvent.ACTION_MOVE ->{
                     var moveX = event.x - lastX
                     var moveY = event.y - lastY
-                    if (Math.abs(moveX) > 10 || Math.abs(moveY) > 10) {
+                    movePoint = Point(event.x,event.y)
+                    if (abs(moveX) > 8 || abs(moveY) > 8) {
                         lastX = event.x
                         lastY = event.y
-                        if (isSelectView) {
+                        if (isSelectedView) {
                             // 移动view
-                            updateMove(moveX, moveY)
+                            updateMove(moveX, moveY, false)
                         } else {
-                            // 选择view
+                            // 选择view区域绘制
+                            endView.endPoint = movePoint
+                            endView.invalidate()
+
+                            // 判断是否有选中的view
+                            checkSelectView()
                         }
                     }
                 }
                 MotionEvent.ACTION_UP ->{
+                    movePoint = Point(event.x,event.y)
+                    if (isSelectedView) {
+                        updateMove(event.x - lastX,event.y - lastY, true)
+                        lastX = event.x
+                        lastY = event.y
+                        Log.i("xiaoyi", "有选择的ACTION_UP...")
+                        if (abs(event.x - startPoint.x) < 8 && abs(event.y - startPoint.y) < 8) {
+                            Log.i("xiaoyi", "有选择的ACTION_UP..222." + event.x + "," + deleteMinX + "，" + event.y + "," + deleteMinY)
+                            // 判断是否是删除点击
+                            if ((event.x in deleteMinX..(deleteMinX + 50) && event.y in deleteMinY..(deleteMinY + 50))) {
+                                Log.i("xiaoyi", "点击删除...")
+                                deleteSelectAll()
+                                isSelectedView = false
+                            }
+                        }
+                    } else {
+                        // 判断是否有选中的view
+                        checkSelectView()
 
+                        // 抬起时如果选择有view
+                        if (checkAllViewIsSelect()) {
+                            Log.i("xiaoyi", "有选择的view")
+                            isSelectedView = true
+
+                            // 确定最后的框选区域（暂时保留显示）
+                            selectAreStartPoint = startPoint
+                            selectAreMovePoint = movePoint
+
+                            // 找出公共区域出来添加可选中删除的按钮
+                            findSelectArea()
+                        } else {
+                            Log.i("xiaoyi", "无选择的view")
+                            // 取消选择框效果
+                            updateSelectAll(false)
+                            isSelectedView = false
+                        }
+                        cancleSelectView ()
+
+                    }
                 }
             }
             return true
@@ -296,11 +365,115 @@ class FramLayoutActivity : BaseActivity(), DrawCallback, View.OnTouchListener {
         return super.onTouchEvent(event)
     }
 
-    fun updateMove(moveX:Float, moveY:Float) {
+    // 找出并绘制共同区域，增加删除按钮
+    private fun findSelectArea() {
+        deleteMinX = 0f
+        deleteMinY = 0f
+        deleteMaxX = 0f
+        deleteMaxY = 0f
         for (b in this!!.paths!!) {
-            b.move(moveX, moveY)
-            b.y = b.startPoint.y
-            b.x = b.startPoint.x
+            if (b is DeleteArea) {
+                endView.removeView(b)
+                this!!.paths!!.remove(b)
+                continue
+            }
+            if (b.isSelect) {
+                if (deleteMinX == 0f || b.startPoint.x < deleteMinX) {
+                    deleteMinX = b.startPoint.x
+                }
+                if (deleteMinY == 0f || b.startPoint.y < deleteMinY) {
+                    deleteMinY = b.startPoint.y
+                }
+                if (b.endPoint.x > deleteMaxX) {
+                    deleteMaxX = b.endPoint.x
+                }
+                if (b.endPoint.y > deleteMaxY) {
+                    deleteMaxY = b.endPoint.y
+                }
+            }
+
         }
+        deleteMinX -= 10
+        deleteMinY -= 10
+        deleteMaxX += 10
+        deleteMaxY += 10
+        var deleteAreaView = DeleteArea(this)
+        deleteAreaView.startPoint = Point(deleteMinX,deleteMinY)
+        deleteAreaView.endPoint = Point(deleteMaxX,deleteMaxY)
+        deleteAreaView.viewWidth = deleteMaxX - deleteMinX
+        deleteAreaView.viewHeight = deleteMaxY - deleteMinY
+        deleteAreaView.x = deleteMinX
+        deleteAreaView.y = deleteMinY
+        deleteAreaView.isSelect = true
+        callBackAddView(deleteAreaView, deleteAreaView.viewWidth, deleteAreaView.viewHeight)
+
+    }
+
+    private fun updateSelectAll(isSelect:Boolean) {
+        for (b in this!!.paths!!) {
+            b.isSelect = isSelect
+            if (!isSelect) {
+                if (b is DeleteArea) {
+                    endView.removeView(b)
+                    this!!.paths!!.remove(b)
+                }
+            }
+        }
+    }
+
+    /**
+     * 删除选中图形曲线
+     */
+    private fun deleteSelectAll() {
+        var newPaths: ArrayList<BasePath> = arrayListOf()
+        for (b in this!!.paths!!) {
+            if (b.isSelect) {
+                endView.removeView(b)
+            } else {
+                newPaths.add(b)
+            }
+        }
+        this!!.paths!!.clear()
+        if (newPaths.size > 0) {
+            this!!.paths!!.addAll(newPaths)
+        }
+    }
+
+    private fun cancleSelectView () {
+        endView.isDrawSelect = false
+        endView.startPoint = null
+        endView.endPoint = null
+        endView.invalidate()
+    }
+
+    private fun updateMove(moveX:Float, moveY:Float,isMoveEnd:Boolean) {
+        deleteMinX += moveX;
+        deleteMaxX += moveX;
+        deleteMinY += moveY;
+        deleteMaxY += moveY;
+        for (b in this!!.paths!!) {
+            if (b.isSelect) {
+                b.move(moveX, moveY,isMoveEnd)
+                b.y = b.startPoint.y
+                b.x = b.startPoint.x
+            }
+        }
+    }
+
+    // 框选返回传入view判断是否被选择
+    private fun checkSelectView() {
+        for (b in this!!.paths!!) {
+           b.checkIsSelect(startPoint.x, movePoint.x, startPoint.y, movePoint.y)
+        }
+    }
+
+    // 遍历所有的view 是否有选中的
+    private fun checkAllViewIsSelect(): Boolean {
+        for (b in this!!.paths!!) {
+            if (b.isSelect) {
+                return true
+            }
+        }
+        return false
     }
 }

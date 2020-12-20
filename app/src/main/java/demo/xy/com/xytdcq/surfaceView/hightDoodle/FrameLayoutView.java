@@ -2,6 +2,8 @@ package demo.xy.com.xytdcq.surfaceView.hightDoodle;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +16,35 @@ import android.widget.ImageView;
 import demo.xy.com.xytdcq.R;
 
 public class FrameLayoutView extends FrameLayout {
+    private boolean isDrawSelect = false;
+    protected Paint paint;
+    private Point startPoint;
+    private Point endPoint;
+
+    public boolean isDrawSelect() {
+        return isDrawSelect;
+    }
+
+    public void setDrawSelect(boolean drawSelect) {
+        isDrawSelect = drawSelect;
+    }
+
+    public Point getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(Point startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public Point getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(Point endPoint) {
+        this.endPoint = endPoint;
+    }
+
     public FrameLayoutView(@NonNull Context context) {
         super(context);
         initView(context);
@@ -60,6 +91,22 @@ public class FrameLayoutView extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (isDrawSelect() && startPoint != null && endPoint != null) {
+            if (paint == null) {
+                paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setDither(true);
+                paint.setStrokeWidth(1);
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setStrokeJoin(Paint.Join.ROUND);
+                paint.setStrokeCap(Paint.Cap.ROUND);
+            }
+//            canvas.drawColor(0x50C7EDCC);
+            paint.setColor(Color.GRAY);
+            paint.setStrokeWidth(1);
+            canvas.drawRect(startPoint.getX(), startPoint.getY(), endPoint.getX() , endPoint.getY(), paint);
+        }
+
     }
 
     @Override

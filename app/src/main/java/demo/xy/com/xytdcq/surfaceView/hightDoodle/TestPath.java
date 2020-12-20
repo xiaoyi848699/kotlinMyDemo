@@ -16,16 +16,6 @@ import java.util.ArrayList;
 import demo.xy.com.mylibrary.log.LogUtil;
 
 public class TestPath extends BasePath {
-//    private ArrayList<Point> points = new ArrayList<>();
-//    private Point startPoint;
-//    private Point endPoint;
-//    private float viewWidth;
-//    private float viewHeight;
-//
-//    protected int color = Color.RED;
-//    protected int size = 2;
-//    private Paint paint;
-//    private Path path;
     public TestPath(Context context) {
         super(context);
     }
@@ -33,38 +23,6 @@ public class TestPath extends BasePath {
     public TestPath(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
-//
-//    public Point getStartPoint() {
-//        return startPoint;
-//    }
-//
-//    public void setStartPoint(Point startPoint) {
-//        this.startPoint = startPoint;
-//    }
-//
-//    public Point getEndPoint() {
-//        return endPoint;
-//    }
-//
-//    public void setEndPoint(Point endPoint) {
-//        this.endPoint = endPoint;
-//    }
-//
-//    public float getViewWidth() {
-//        return viewWidth;
-//    }
-//
-//    public void setViewWidth(float viewWidth) {
-//        this.viewWidth = viewWidth;
-//    }
-//
-//    public float getViewHeight() {
-//        return viewHeight;
-//    }
-//
-//    public void setViewHeight(float viewHeight) {
-//        this.viewHeight = viewHeight;
-//    }
 
     public TestPath(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -75,21 +33,37 @@ public class TestPath extends BasePath {
     }
 
     @Override
+    public void relaseData() {
+        if (points != null) {
+            points.clear();
+        }
+    }
+
+    @Override
+    public boolean isNeedInvalidateOnMoveStatusChane() {
+        return false;
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (paint == null) {
             paint = new Paint();
             paint.setAntiAlias(true);
             paint.setDither(true);
-            paint.setColor(color);
             paint.setStrokeWidth(size);
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeJoin(Paint.Join.ROUND);
             paint.setStrokeCap(Paint.Cap.ROUND);
 
-            if (isSelect()) {
-                paint.setShadowLayer(6,6,6,Color.GREEN);
-            }
+        }
+        paint.setColor(color);
+        paint.setStrokeWidth(size);
+        if (isSelect()) {
+            paint.setShadowLayer(4,4,4,Color.GRAY);
+        } else {
+            paint.setShadowLayer(0,0,0,color);
+
         }
         if (points == null || points.size() < 1) {
             return;
@@ -117,11 +91,12 @@ public class TestPath extends BasePath {
 
         LogUtil.i("xiaoyi","TestPath...onDraw");
         if (isSelect()) {
-            canvas.drawColor(0x50C7EDCC);
+            canvas.drawColor(0x30C7EDCC);
             paint.setColor(Color.GRAY);
-            paint.setShadowLayer(0,0,0,Color.GRAY);
+            paint.setStrokeWidth(1);
+            paint.setShadowLayer(1,1,1,Color.GRAY);
             if ( startPoint != null && endPoint != null) {
-                canvas.drawRect(0, 0, endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY(), paint);
+                canvas.drawRect(1, 1, getWidth()-2, getHeight()-2, paint);
             }
         }
     }
@@ -137,5 +112,4 @@ public class TestPath extends BasePath {
         }
         invalidate();
     }
-
 }

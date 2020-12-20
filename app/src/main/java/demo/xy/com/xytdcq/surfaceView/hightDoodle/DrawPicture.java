@@ -28,4 +28,14 @@ public class DrawPicture extends BasePath {
     public DrawPicture(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
+
+    @Override
+    public void relaseData() {
+
+    }
+
+    @Override
+    public boolean isNeedInvalidateOnMoveStatusChane() {
+        return false;
+    }
 }

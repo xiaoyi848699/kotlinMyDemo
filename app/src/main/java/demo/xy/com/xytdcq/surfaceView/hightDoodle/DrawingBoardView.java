@@ -18,10 +18,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -390,7 +386,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                 testPath.setX(testPath.getStartPoint().getX());
                 if (drawCallback != null) {
 //                    TestPath testPathT = testPath;
-                    drawCallback.callBack(testPath,(int)testPath.getViewWidth(),(int)testPath.getViewHeight());
+                    drawCallback.callBackAddView(testPath,(int)testPath.getViewWidth(),(int)testPath.getViewHeight());
 //                    TextView textView = new TextView(context);
 //                    textView.setBackgroundColor(Color.GRAY);
 //                    textView.setText("aaa bbb");

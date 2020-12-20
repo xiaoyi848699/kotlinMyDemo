@@ -11,6 +11,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import demo.xy.com.mylibrary.log.LogUtil;
+import demo.xy.com.xytdcq.uitls.Utils;
 
 /**
  * 形状基类，所有涂鸦板上的绘制的形状继承该基类
@@ -23,6 +24,8 @@ public abstract class BasePath extends View {
     protected String drawType = PathType.LINE.toString();
     protected int index = 0;
     protected boolean isSelect = false; // 是否选择
+    protected boolean isMoveEnd = true; // 是否在移动结束
+    protected boolean isRemove = false; // 是否删除
 
     protected ArrayList<Point> points = new ArrayList<>();
     protected Point startPoint;
@@ -66,8 +69,19 @@ public abstract class BasePath extends View {
     }
 
     public void setSelect(boolean select) {
-        isSelect = select;
-        invalidate();
+        // 状态改变才刷新界面
+        if (isSelect != select) {
+            isSelect = select;
+            invalidate();
+        }
+    }
+
+    public boolean isRemove() {
+        return isRemove;
+    }
+
+    public void setRemove(boolean remove) {
+        isRemove = remove;
     }
 
     public Point getStartPoint() {
@@ -118,33 +132,32 @@ public abstract class BasePath extends View {
         this.size = size;
     }
 
-    public void checkIsSelect(int minX,int maxX,int minY,int maxY) {
-        if (isSelect()) {
-            return;
-        }
-        if (getInterval(minX,startPoint.getX(),maxX,startPoint.getX() + getViewWidth()) ||
-            getInterval(minY,startPoint.getY(),maxY,startPoint.getY() + getViewHeight())) {
+    public void checkIsSelect(float minX,float maxX,float minY,float maxY) {
+        if (Utils.getInterval(minX,startPoint.getX(),maxX,endPoint.getX()) &&
+                Utils.getInterval(minY,startPoint.getY(),maxY,endPoint.getY())) {
             setSelect(true);
+        } else {
+            // 没有选中
+            setSelect(false);
         }
     }
 
-    public void move(float moveX, float moveY) {
+    public void move(float moveX, float moveY, boolean isMoveEnd) {
         offsetX = moveX;
         offsetY = moveY;
         startPoint.setY(startPoint.getY() + moveY);
         startPoint.setX(startPoint.getX() + moveX);
-    }
-
-
-    //求交集
-    private boolean getInterval(int s1,float e1,int s2,float e2){
-        if(e1 < s2 || e2 < s1) {
-            LogUtil.i("两集合无交集");
-            return false;
-        }else{
-            LogUtil.i("两集合的交集为：[" + Math.max(s1,s2) + ","  +  Math.min(e1,e2) + "]");
-            return true;
+        endPoint.setX(startPoint.getX() + getViewWidth());
+        endPoint.setY(startPoint.getY() + getViewHeight());
+        if (isMoveEnd != this.isMoveEnd) {
+            this.isMoveEnd = isMoveEnd;
+            if (isNeedInvalidateOnMoveStatusChane()) {
+                invalidate();
+            }
         }
     }
 
+    public abstract void relaseData();
+
+    public abstract boolean isNeedInvalidateOnMoveStatusChane();
 }

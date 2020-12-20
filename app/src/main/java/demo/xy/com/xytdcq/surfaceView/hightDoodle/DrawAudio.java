@@ -26,4 +26,14 @@ public class DrawAudio extends BasePath {
     public DrawAudio(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
+
+    @Override
+    public void relaseData() {
+
+    }
+
+    @Override
+    public boolean isNeedInvalidateOnMoveStatusChane() {
+        return false;
+    }
 }
