@@ -69,6 +69,7 @@ public class DrawPicture extends BasePath {
 
     public void setSelectPic(boolean selectPic) {
         isSelectPic = selectPic;
+        LogUtil.e("DrawPicture","setSelectPic" + isSelectPic);
         invalidate();
     }
 
@@ -283,7 +284,12 @@ public class DrawPicture extends BasePath {
                     }
                     return true;
                 }
-                if (operate == 10) {
+                if (operate == 0) {
+                    if (changeCallback != null) {
+                        changeCallback.deleteSelfCallBack(vid);
+                    }
+                    return true;
+                }else if (operate == 10) {
                     setX(event.getRawX()-downX);
                     setY(event.getRawY()-downY);
                     // 起始点和结束底单都会变动

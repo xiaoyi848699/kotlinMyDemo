@@ -19,6 +19,7 @@ import demo.xy.com.xytdcq.surfaceView.doodle.BlankPage
 import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.*
 import demo.xy.com.xytdcq.uitls.BitmapUtil
+import demo.xy.com.xytdcq.uitls.LogUtil
 import demo.xy.com.xytdcq.uitls.ScreenCenter
 import demo.xy.com.xytdcq.uitls.ToastUtil
 import kotlin.math.abs
@@ -456,6 +457,20 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     }
 
     /**
+     * 取消多选
+     */
+    private fun cancleSelectAll() {
+        isSelectedView = false
+        for (b in this!!.paths!!) {
+            b.isSelect = false
+            if (b is DeleteArea) {
+                endView.removeView(b)
+                this!!.paths!!.remove(b)
+            }
+        }
+    }
+
+    /**
      * 删除选中图形曲线
      */
     private fun deleteSelectAll() {
@@ -523,6 +538,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                         return
                     }
                     var imageView = DrawPicture(this)
+                    changeSelectCallBack(imageView.vid) // 更新选择自己
                     imageView.startPoint = Point(centerPoint.x - addImageWidth / 2,centerPoint.y - addImageWidth / 2)
                     imageView.endPoint = Point(centerPoint.x + addImageWidth / 2,centerPoint.y + addImageWidth / 2)
                     imageView.viewWidth = addImageWidth
@@ -532,7 +548,6 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                     imageView.setChangeCallback(this)
                     isSelectedSinglePic = true
                     callBackAutoAddView(imageView)
-                    changeSelectCallBack(imageView.vid) // 更新选择自己
                     // 变成可选择
                     select()
                 }
@@ -543,6 +558,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                         return
                     }
                     var imageView = DrawPicture(this)
+                    changeSelectCallBack(imageView.vid) // 更新选择自己
                     imageView.startPoint = Point(centerPoint.x - addImageWidth / 2,centerPoint.y - addImageWidth / 2)
                     imageView.endPoint = Point(centerPoint.x + addImageWidth / 2,centerPoint.y + addImageWidth / 2)
                     imageView.viewWidth = addImageWidth
@@ -552,7 +568,6 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                     imageView.setChangeCallback(this)
                     isSelectedSinglePic = true
                     callBackAutoAddView(imageView)
-                    changeSelectCallBack(imageView.vid) // 更新选择自己
                     // 变成可选择
                     select()
                 }
@@ -567,13 +582,38 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         centerPoint = Point((ScreenCenter.getDisplayWidth() / 2).toFloat(), (ScreenCenter.getDisplayHeight()/2).toFloat())
     }
 
-    override fun changeSelectCallBack(viewId: String?) {
+    override fun deleteSelfCallBack(viewId: String?) {
+        var newPaths: ArrayList<BasePath> = arrayListOf()
         for (b in this!!.paths!!) {
-            if (b is DrawPicture && b.vid != viewId) {
-                b.isSelectPic = false
+            if (b.vid ==viewId || b.isRemove) {
+                endView.removeView(b)
+            } else {
+                newPaths.add(b)
             }
-
         }
+        this!!.paths!!.clear()
+        if (newPaths.size > 0) {
+            this!!.paths!!.addAll(newPaths)
+        }
+    }
+
+    override fun changeSelectCallBack(viewId: String?) {
+//        LogUtil.e("DrawPicture", "changeSelectCallBack viewId：$viewId")
+        for (b in this!!.paths!!) {
+            if (b is DrawPicture) {
+//                LogUtil.e("DrawPicture", "changeSelectCallBack vid：" + b.vid)
+                if (b.vid != viewId) {
+                    b.isSelectPic = false
+                }
+            } else {
+                b.isSelect = false
+                if (b is DeleteArea) {
+                    endView.removeView(b)
+                    this!!.paths!!.remove(b)
+                }
+            }
+        }
+        isSelectedView = false
     }
 
     override fun changeCallBack(viewId: String?, startPoint: Point?,endPoint: Point?, width: Float, height: Float) {
@@ -584,7 +624,6 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                 b.viewWidth = width
                 b.viewHeight = height
             }
-
         }
     }
 }
