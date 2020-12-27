@@ -21,38 +21,38 @@
             >
             <ImageView
                 android:id="@+id/wb_normal"
-                android:layout_width="@dimen/ic_pid_w_h20"
-                android:layout_height="@dimen/ic_pid_w_h20"
+                android:layout_width="@dimen/ic_pid_w_h24"
+                android:layout_height="@dimen/ic_pid_w_h24"
                 android:layout_margin="2dp"
                 android:src="@drawable/wb_normal_s"/>
             <ImageView
                 android:id="@+id/wb_big"
-                android:layout_width="@dimen/ic_pid_w_h20"
-                android:layout_height="@dimen/ic_pid_w_h20"
+                android:layout_width="@dimen/ic_pid_w_h24"
+                android:layout_height="@dimen/ic_pid_w_h24"
                 android:layout_margin="2dp"
                 android:src="@drawable/wb_big_n"/>
             <ImageView
                 android:id="@+id/wb_bigger"
-                android:layout_width="@dimen/ic_pid_w_h20"
-                android:layout_height="@dimen/ic_pid_w_h20"
+                android:layout_width="@dimen/ic_pid_w_h24"
+                android:layout_height="@dimen/ic_pid_w_h24"
                 android:layout_margin="2dp"
                 android:src="@drawable/wb_bigger_n"/>
             <ImageView
                 android:id="@+id/wb_black"
-                android:layout_width="@dimen/ic_pid_w_h20"
-                android:layout_height="@dimen/ic_pid_w_h20"
+                android:layout_width="@dimen/ic_pid_w_h24"
+                android:layout_height="@dimen/ic_pid_w_h24"
                 android:layout_margin="2dp"
                 android:src="@drawable/wb_black_s"/>
             <ImageView
                 android:id="@+id/wb_blue"
-                android:layout_width="@dimen/ic_pid_w_h20"
-                android:layout_height="@dimen/ic_pid_w_h20"
+                android:layout_width="@dimen/ic_pid_w_h24"
+                android:layout_height="@dimen/ic_pid_w_h24"
                 android:layout_margin="2dp"
                 android:src="@drawable/wb_blue_n"/>
             <ImageView
                 android:id="@+id/wb_red"
-                android:layout_width="@dimen/ic_pid_w_h20"
-                android:layout_height="@dimen/ic_pid_w_h20"
+                android:layout_width="@dimen/ic_pid_w_h24"
+                android:layout_height="@dimen/ic_pid_w_h24"
                 android:layout_margin="2dp"
                 android:src="@drawable/wb_red_n"/>
         </LinearLayout>

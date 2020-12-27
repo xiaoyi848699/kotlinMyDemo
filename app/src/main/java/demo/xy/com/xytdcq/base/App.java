@@ -78,7 +78,7 @@ public class App extends Application {
             res.updateConfiguration(config, res.getDisplayMetrics());
 
             //初始化异常捕获
-            Utils.initExceptionHandler(getApplicationContext(), MainActivity.class);
+//            Utils.initExceptionHandler(getApplicationContext(), MainActivity.class);
 
             //初始化日志SD卡缓存路径
             String saveLogPath = savePath+ "/writeLog/";

@@ -21,9 +21,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import demo.xy.com.mylibrary.picture.ImageLibraryHelper;
 import demo.xy.com.xytdcq.uitls.BitmapUtil;
 import demo.xy.com.xytdcq.uitls.FastClick;
-import demo.xy.com.xytdcq.uitls.ImageLibraryHelper;
 import demo.xy.com.xytdcq.uitls.LogUtil;
 import demo.xy.com.xytdcq.uitls.PermissionUtils;
 import demo.xy.com.xytdcq.uitls.ToastUtil;

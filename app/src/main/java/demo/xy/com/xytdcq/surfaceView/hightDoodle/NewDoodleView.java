@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import demo.xy.com.mylibrary.picture.ImageLibraryHelper;
 import demo.xy.com.xytdcq.surfaceView.doodle.Action;
 import demo.xy.com.xytdcq.surfaceView.doodle.ActionTypeEnum;
 import demo.xy.com.xytdcq.surfaceView.doodle.DoodleChannel;
@@ -35,7 +36,6 @@ import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel;
 import demo.xy.com.xytdcq.surfaceView.doodle.TransactionData;
 import demo.xy.com.xytdcq.uitls.BitmapUtil;
 import demo.xy.com.xytdcq.uitls.FastClick;
-import demo.xy.com.xytdcq.uitls.ImageLibraryHelper;
 import demo.xy.com.xytdcq.uitls.LogUtil;
 import demo.xy.com.xytdcq.uitls.PermissionUtils;
 import demo.xy.com.xytdcq.uitls.ToastUtil;

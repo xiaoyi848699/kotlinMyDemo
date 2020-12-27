@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".surfaceView.FramLayoutActivity"
+        <activity android:name=".surfaceView.BlackBoardAcivity"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreen" ></activity>
         <activity android:name=".androidIPC.aidl.ThirdPayJavaActivity" />

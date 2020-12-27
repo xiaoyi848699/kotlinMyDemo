@@ -285,7 +285,7 @@ public class ImageLibraryHelper {
         if(PermissionUtils.checkPermissionAllGranted(activity,peemissions)){
             takePic(title, activity);
         }else{
-            PermissionUtils.requestPermissions(activity,"",peemissions,101);
+            PermissionUtils.requestPermissions(activity,"此功能需要使用到相机和存储权限",peemissions,101);
         }
 
     }

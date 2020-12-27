@@ -66,26 +66,26 @@ public class FrameLayoutView extends FrameLayout {
     }
 
     private void initView(Context context) {
-        Rect anchorRect = new Rect();
-        Rect rootViewRect = new Rect();
-
-        getGlobalVisibleRect(anchorRect);
-        getGlobalVisibleRect(rootViewRect);
-
-        // 创建 imageView
-        ImageView imageView = new ImageView(context);
-        imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.a));
-        addView(imageView);
-
-        // 调整显示区域大小
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imageView.getLayoutParams();
-        params.width = 100;
-        params.height = 100;
-        imageView.setLayoutParams(params);
-
-        // 设置居中显示
-        imageView.setY(200);
-        imageView.setX(200);
+//        Rect anchorRect = new Rect();
+//        Rect rootViewRect = new Rect();
+//
+//        getGlobalVisibleRect(anchorRect);
+//        getGlobalVisibleRect(rootViewRect);
+//
+//        // 创建 imageView
+//        ImageView imageView = new ImageView(context);
+//        imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.a));
+//        addView(imageView);
+//
+//        // 调整显示区域大小
+//        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imageView.getLayoutParams();
+//        params.width = 100;
+//        params.height = 100;
+//        imageView.setLayoutParams(params);
+//
+//        // 设置居中显示
+//        imageView.setY(200);
+//        imageView.setX(200);
     }
 
     @Override
@@ -104,7 +104,10 @@ public class FrameLayoutView extends FrameLayout {
 //            canvas.drawColor(0x50C7EDCC);
             paint.setColor(Color.GRAY);
             paint.setStrokeWidth(1);
-            canvas.drawRect(startPoint.getX(), startPoint.getY(), endPoint.getX() , endPoint.getY(), paint);
+            canvas.drawRect(startPoint.getX() < endPoint.getX() ? startPoint.getX() : endPoint.getX(),
+                    startPoint.getY() < endPoint.getY() ? startPoint.getY() :endPoint.getY(),
+                    endPoint.getX() > startPoint.getX() ? endPoint.getX() : startPoint.getX(),
+                    endPoint.getY() > startPoint.getY() ? endPoint.getY(): startPoint.getY(), paint);
         }
 
     }

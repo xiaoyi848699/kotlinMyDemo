@@ -15,21 +15,41 @@ import java.util.ArrayList;
 
 import demo.xy.com.mylibrary.log.LogUtil;
 
-public class TestPath extends BasePath {
-    public TestPath(Context context) {
+public class DrawPath extends BasePath {
+    public DrawPath(Context context) {
         super(context);
     }
 
-    public TestPath(Context context, @Nullable AttributeSet attrs) {
+    public DrawPath(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TestPath(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public DrawPath(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public TestPath(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public DrawPath(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    @Override
+    public void setViewHeight(float viewHeight) {
+        super.setViewHeight(viewHeight + size * 2);
+    }
+
+    @Override
+    public void setViewWidth(float viewWidth) {
+        super.setViewWidth(viewWidth + size * 2);
+    }
+
+    @Override
+    public void setX(float x) {
+        super.setX(x - size);
+    }
+
+    @Override
+    public void setY(float y) {
+        super.setY(y - size);
     }
 
     @Override
@@ -106,8 +126,8 @@ public class TestPath extends BasePath {
     }
     public void addAll(ArrayList<Point> points) {
         for (Point p:points) {
-            p.setX(p.getX() - startPoint.getX());
-            p.setY(p.getY() - startPoint.getY());
+            p.setX(p.getX() - startPoint.getX() + size); // 偏移 使得靠边的线不会出现一部分不可见
+            p.setY(p.getY() - startPoint.getY() + size);
             this.points.add(p);
         }
         invalidate();

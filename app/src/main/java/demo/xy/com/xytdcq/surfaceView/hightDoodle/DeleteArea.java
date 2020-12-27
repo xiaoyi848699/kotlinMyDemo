@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.ImageView;
 
 import demo.xy.com.xytdcq.R;
 
@@ -84,9 +85,9 @@ public class DeleteArea extends BasePath {
 
         if (isMoveEnd) {
             // 绘制删除按钮
-            Rect rect = new Rect(0,0,79,80); // 绘制大小
+//            Rect rect = new Rect(0,0,79,80); // 绘制大小
             RectF rectF = new RectF(0,0,40,40); // 绘制地方
-            canvas.drawBitmap(deleteBitmap, rect, rectF, paint);
+            canvas.drawBitmap(deleteBitmap, null, rectF, paint);
         }
     }
 

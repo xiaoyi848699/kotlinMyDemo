@@ -1,5 +1,5 @@
 package demo.xy.com.xytdcq.surfaceView.hightDoodle;
 
-public interface DrawCallback {
+public interface IDrawCallback {
     void callBackAddView(BasePath view, float width, float height);
 }

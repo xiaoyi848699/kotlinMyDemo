@@ -18,6 +18,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.squareup.picasso.Picasso
+import demo.xy.com.mylibrary.picture.ImageLibraryHelper
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.surfaceView.doodle.*
 import demo.xy.com.xytdcq.surfaceView.utils.PicassoTarget

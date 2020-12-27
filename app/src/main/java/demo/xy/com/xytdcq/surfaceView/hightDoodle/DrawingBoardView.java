@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import demo.xy.com.mylibrary.picture.ImageLibraryHelper;
 import demo.xy.com.xytdcq.surfaceView.doodle.Action;
 import demo.xy.com.xytdcq.surfaceView.doodle.ActionTypeEnum;
 import demo.xy.com.xytdcq.surfaceView.doodle.DoodleChannel;
@@ -35,7 +36,6 @@ import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel;
 import demo.xy.com.xytdcq.surfaceView.doodle.TransactionData;
 import demo.xy.com.xytdcq.uitls.BitmapUtil;
 import demo.xy.com.xytdcq.uitls.FastClick;
-import demo.xy.com.xytdcq.uitls.ImageLibraryHelper;
 import demo.xy.com.xytdcq.uitls.LogUtil;
 import demo.xy.com.xytdcq.uitls.PermissionUtils;
 import demo.xy.com.xytdcq.uitls.ToastUtil;
@@ -105,9 +105,9 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
     private int currentPage = 0;//当前页面是第几页
 
 
-    private DrawCallback drawCallback;
+    private IDrawCallback drawCallback;
 
-    public void setDrawCallback(DrawCallback drawCallback) {
+    public void setDrawCallback(IDrawCallback drawCallback) {
         this.drawCallback = drawCallback;
     }
 
@@ -270,7 +270,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         reDraw();
     }
     private ArrayList<Point> points = new ArrayList<>();
-    private TestPath testPath = null;
+    private DrawPath drawPath = null;
     private float minX;
     private float minY;
     private float maxX;
@@ -328,7 +328,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                     paintSize = 1;
                 }
                 points.clear();
-                testPath = new TestPath(context);
+                drawPath = new DrawPath(context);
                 maxX = minX = touchX;
                 maxY = minY = touchY;
                 Point point = new Point(touchX,touchY);
@@ -362,19 +362,19 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                 }
                 onPaintActionEnd(touchX, touchY);
                 Point endPoint = new Point(touchX,touchY);
-                testPath.setStartPoint(new Point(minX, minY));
-                testPath.setEndPoint(new Point(maxX, maxY));
+                drawPath.setStartPoint(new Point(minX, minY));
+                drawPath.setEndPoint(new Point(maxX, maxY));
 //                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) testPath.getLayoutParams();
 //                layoutParams.width = (int) (maxX-minX);
 //                layoutParams.height = (int) (maxY-minY);
 //                testPath.setLayoutParams(layoutParams);
-                testPath.setViewWidth(maxX-minX);
-                testPath.setViewHeight(maxY-minY);
+                drawPath.setViewWidth(maxX-minX);
+                drawPath.setViewHeight(maxY-minY);
 //                testPath.setBackgroundColor(0x50C7EDCC);
 //                testPath.setBackgroundColor(Color.TRANSPARENT);
                 points.add(endPoint);
-                if (testPath != null) {
-                    testPath.addAll(points);
+                if (drawPath != null) {
+                    drawPath.addAll(points);
                 }
 //                ViewGroup.LayoutParams params = testPath.getLayoutParams();
 //                params.width = 400;
@@ -382,11 +382,11 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
 //                testPath.setLayoutParams(params);
 
                 // 设置居中显示
-                testPath.setY(testPath.getStartPoint().getY());
-                testPath.setX(testPath.getStartPoint().getX());
+                drawPath.setY(drawPath.getStartPoint().getY());
+                drawPath.setX(drawPath.getStartPoint().getX());
                 if (drawCallback != null) {
 //                    TestPath testPathT = testPath;
-                    drawCallback.callBackAddView(testPath,(int)testPath.getViewWidth(),(int)testPath.getViewHeight());
+                    drawCallback.callBackAddView(drawPath,(int) drawPath.getViewWidth(),(int) drawPath.getViewHeight());
 //                    TextView textView = new TextView(context);
 //                    textView.setBackgroundColor(Color.GRAY);
 //                    textView.setText("aaa bbb");

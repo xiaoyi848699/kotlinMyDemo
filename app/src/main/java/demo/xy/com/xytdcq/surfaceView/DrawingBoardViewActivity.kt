@@ -19,6 +19,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.squareup.picasso.Picasso
+import demo.xy.com.mylibrary.picture.ImageLibraryHelper
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.surfaceView.doodle.*
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.DrawingBoardView
@@ -28,7 +29,6 @@ import demo.xy.com.xytdcq.view.popup.MYPopupWindowFactory
 import demo.xy.com.xytdcq.view.pull.PullRecycler
 
 class DrawingBoardViewActivity : AppCompatActivity() ,PicassoTarget.PicassoCallBack{
-
 
     val  RTS_BLANK = "blank"//白板创建页面指定的字符串
 

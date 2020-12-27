@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,7 +21,6 @@ import demo.xy.com.xytdcq.surfaceView.doodle.MyLine;
 import demo.xy.com.xytdcq.surfaceView.doodle.MyPath;
 import demo.xy.com.xytdcq.surfaceView.doodle.MyRect;
 import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel;
-import demo.xy.com.xytdcq.surfaceView.doodle.TransactionData;
 import demo.xy.com.xytdcq.uitls.LogUtil;
 
 public class DrawingView  extends View {
@@ -42,12 +38,12 @@ public class DrawingView  extends View {
 
     private int paintColor = rts_black/*= Color.BLACK*/; // 默认画笔颜色
     private float paintSize;//画笔大小(修改让其传输)
-    private DrawCallback drawCallback;
+    private IDrawCallback drawCallback;
     private int paintType;//画笔类型(修改让其传输)
     public void setPageList(List<PageChannel> pageList) {
         this.pageList = pageList;
     }
-    public void setDrawCallback(DrawCallback drawCallback) {
+    public void setDrawCallback(IDrawCallback drawCallback) {
         this.drawCallback = drawCallback;
     }
 
@@ -109,7 +105,7 @@ public class DrawingView  extends View {
 
 
     private ArrayList<Point> points = new ArrayList<>();
-    private TestPath testPath = null;
+    private DrawPath drawPath = null;
     private float minX;
     private float minY;
     private float maxX;
@@ -158,9 +154,9 @@ public class DrawingView  extends View {
                     paintSize = 1;
                 }
                 points.clear();
-                testPath = new TestPath(context);
+                drawPath = new DrawPath(context);
                 Point point = new Point(touchX,touchY);
-                testPath.setStartPoint(point);
+                drawPath.setStartPoint(point);
                 points.add(point);
                 onPaintActionStart(touchX, touchY);
                 break;
@@ -171,18 +167,18 @@ public class DrawingView  extends View {
             case MotionEvent.ACTION_UP:
                 onPaintActionEnd(touchX, touchY);
                 Point endPoint = new Point(touchX,touchY);
-                testPath.setEndPoint(endPoint);
-                testPath.setViewWidth(600);
-                testPath.setViewHeight(600);
-                testPath.setBackgroundColor(Color.TRANSPARENT);
+                drawPath.setEndPoint(endPoint);
+                drawPath.setViewWidth(600);
+                drawPath.setViewHeight(600);
+                drawPath.setBackgroundColor(Color.TRANSPARENT);
                 points.add(endPoint);
-                if (testPath != null) {
-                    testPath.addAll(points);
+                if (drawPath != null) {
+                    drawPath.addAll(points);
                 }
 
                 // 设置居中显示
-                testPath.setY(testPath.getStartPoint().getY());
-                testPath.setX(testPath.getStartPoint().getX());
+                drawPath.setY(drawPath.getStartPoint().getY());
+                drawPath.setX(drawPath.getStartPoint().getX());
                 if (drawCallback != null) {
 //                    TestPath testPathT = testPath;
 //                    drawCallback.callBack(testPath);

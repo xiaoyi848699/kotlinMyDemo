@@ -26,6 +26,7 @@ public abstract class BasePath extends View {
     protected boolean isSelect = false; // 是否选择
     protected boolean isMoveEnd = true; // 是否在移动结束
     protected boolean isRemove = false; // 是否删除
+    protected int listIndex; // 存放对象的列表中的位置，用于刷新数据
 
     protected ArrayList<Point> points = new ArrayList<>();
     protected Point startPoint;
@@ -40,20 +41,42 @@ public abstract class BasePath extends View {
     protected Paint paint;
     protected Path path;
 
+    protected IChangeCallback changeCallback;
+
     public BasePath(Context context) {
         super(context);
+        vid = String.valueOf(System.currentTimeMillis());
     }
 
     public BasePath(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        vid = String.valueOf(System.currentTimeMillis());
     }
 
     public BasePath(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        vid = String.valueOf(System.currentTimeMillis());
     }
 
     public BasePath(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        vid = String.valueOf(System.currentTimeMillis());
+    }
+
+    public void setChangeCallback(IChangeCallback changeCallback) {
+        this.changeCallback = changeCallback;
+    }
+
+    public String getVid() {
+        return vid;
+    }
+
+    public int getListIndex() {
+        return listIndex;
+    }
+
+    public void setListIndex(int listIndex) {
+        this.listIndex = listIndex;
     }
 
     public String getDrawType() {
