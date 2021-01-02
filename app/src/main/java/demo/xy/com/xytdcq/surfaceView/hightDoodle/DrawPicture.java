@@ -159,7 +159,7 @@ public class DrawPicture extends BasePath {
 
         if (/*isSelectPic() || */isSelect()) {
             canvas.drawColor(0x30888888);
-            paint.setColor(Color.GRAY);
+            paint.setColor(Color.BLUE);
             paint.setStrokeWidth(1);
 //        paint.setShadowLayer(1,1,1,Color.GRAY);
 //        PathEffect effects = new DashPathEffect(new float[]{12,6},0);
@@ -168,7 +168,7 @@ public class DrawPicture extends BasePath {
         }
 
         if (isSelectPic()) {
-            paint.setColor(Color.GRAY);
+            paint.setColor(Color.BLUE);
             paint.setStrokeWidth(1);
             initPoint();
             // 横向顶部

@@ -1,7 +1,6 @@
 package demo.xy.com.xytdcq.surfaceView.hightDoodle;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,17 +8,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -30,16 +28,15 @@ import demo.xy.com.xytdcq.uitls.LogUtil;
 import demo.xy.com.xytdcq.uitls.Utils;
 
 /**
- * 文字
+ * 文字(暂时未用到  使用DrawText)
  */
 @SuppressLint("AppCompatCustomView")
-public class DrawText extends EditText implements IBasePath {
-    private final String TAG = DrawText.class.getSimpleName();
+public class DrawLayoutText extends RelativeLayout implements IBasePath {
+    private final String TAG = DrawLayoutText.class.getSimpleName();
     private String text; // 文字
     private float operateImageSize = 40;
     private int minWidthSize = 100;
     private int minHeightSize = 100;
-    private int lineHeightSize = 40;
 
     protected String vid;
     protected String sid = "root";
@@ -80,23 +77,25 @@ public class DrawText extends EditText implements IBasePath {
     private float downHeight = 0;
 
     private Context mContext;
-
-    public DrawText(Context context) {
+    private EditText mEditText;
+    private ImageView deteleImage;
+    private ImageView scaleImage;
+    public DrawLayoutText(Context context) {
         super(context);
         init(context);
     }
 
-    public DrawText(Context context, @Nullable AttributeSet attrs) {
+    public DrawLayoutText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public DrawText(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public DrawLayoutText(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
-    public DrawText(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public DrawLayoutText(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }
@@ -104,27 +103,46 @@ public class DrawText extends EditText implements IBasePath {
     private void init(Context context){
         mContext = context;
         vid = String.valueOf(System.currentTimeMillis());
-        setHint("输入文本");
-        setTextColor(getContext().getResources().getColor(R.color.black));
-        setBackgroundResource(R.color.transparent);
-        setTextSize(getContext().getResources().getDimensionPixelSize(R.dimen.ic_pid_w_h12));
-        setLongClickable(false);
-        setTextIsSelectable(false);
-        setGravity(Gravity.TOP);
-
-        deleteBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_image);
-        scaleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoom_image);
-        minWidthSize = (int) getContext().getResources().getDimension(R.dimen.ic_pid_w_h100);
-        int widthSize = (int) getContext().getResources().getDimension(R.dimen.ic_pid_w_h300);
-        lineHeightSize = (int) getContext().getResources().getDimension(R.dimen.ic_pid_w_h24);
-        operateImageSize = getContext().getResources().getDimension(R.dimen.ic_pid_w_h26);
-        minHeightSize = (int) (lineHeightSize +  operateImageSize * 2);
-        int padding = (int) (operateImageSize);
-        setPadding(padding,padding,padding,padding);
-        setMinWidth(widthSize);
-        setViewWidth(widthSize);
-        setMinHeight(minHeightSize);
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+        View view = layoutInflater.inflate(R.layout.item_edittext,null);
+        mEditText = view.findViewById(R.id.edittext);
+        deteleImage = view.findViewById(R.id.detele_image);
+        scaleImage = view.findViewById(R.id.scale_image);
+//        mEditText = new EditText(mContext);
+//        mEditText.setHint("输入文本");
+//        mEditText.setPadding(10,10,10,10);
+//        mEditText.setTextColor(getContext().getResources().getColor(R.color.black));
+//        mEditText.setBackgroundResource(R.drawable.edittext_bg_gray_corners);
+//        mEditText.setTextSize(getContext().getResources().getDimensionPixelSize(R.dimen.ic_pid_w_h12));
+//        deleteBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_image);
+//        scaleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoom_image);
+//        minWidthSize = (int) getContext().getResources().getDimension(R.dimen.ic_pid_w_h120);
+//        minHeightSize = (int) getContext().getResources().getDimension(R.dimen.ic_pid_w_h60);
+//        operateImageSize = getContext().getResources().getDimension(R.dimen.ic_pid_w_h18);
+//        mEditText.setMinWidth(minWidthSize);
+        setViewWidth(minWidthSize);
+//        mEditText.setMinHeight(minHeightSize);
         setViewHeight(minHeightSize);
+//
+//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        layoutParams.setMargins((int)(operateImageSize * 0.6),(int)(operateImageSize * 0.6),(int)(operateImageSize * 0.6),(int)(operateImageSize * 0.6));
+        addView(view);
+        mEditText.setOnFocusChangeListener(new OnFocusChangeListener(){
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                LogUtil.w("mEditText onFocusChange " + hasFocus);
+                if (hasFocus) {
+                    setSelectEdit(true);
+                    invalidate();
+                    deteleImage.setVisibility(GONE);
+                    scaleImage.setVisibility(GONE);
+                } else {
+                    deteleImage.setVisibility(VISIBLE);
+                    scaleImage.setVisibility(VISIBLE);
+                }
+            }
+        });
     }
 
     public void setChangeCallback(IChangeCallback changeCallback) {
@@ -141,7 +159,6 @@ public class DrawText extends EditText implements IBasePath {
 
     public void setSelectEdit(boolean selectEdit) {
         isSelectEdit = selectEdit;
-        invalidate();
     }
 
     public int getListIndex() {
@@ -206,14 +223,6 @@ public class DrawText extends EditText implements IBasePath {
 
     public void setViewWidth(float viewWidth) {
         this.viewWidth = viewWidth;
-        // 宽度改变时 最小高度需要根据文字长度来计算
-        String text = getText().toString();
-        if (TextUtils.isEmpty(text)) {
-            return;
-        }
-        float textWidth = getPaint().measureText(text);
-        int line = (int) Math.max(1, Math.ceil(textWidth / (getViewWidth() - operateImageSize * 2)));
-        minHeightSize = (int) (lineHeightSize * line +  operateImageSize * 2);
     }
 
     public float getViewHeight() {
@@ -287,21 +296,18 @@ public class DrawText extends EditText implements IBasePath {
             paint.setStrokeCap(Paint.Cap.ROUND);
 
         }
-        // 自己绘制edittext的边框
-        paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(1);
-        int margin = (int)(operateImageSize * 0.8);
-        canvas.drawRoundRect(margin, margin, getWidth()-margin, getHeight()-margin, 10,10, paint);
 
-        // 绘制选择时的边框
-        if (isSelectEdit() || isSelect()) {
-            paint.setColor(Color.BLUE);
+        canvas.drawColor(0x30853214);
+        if (isSelect()) {
+            canvas.drawColor(0x30888888);
+            paint.setColor(Color.GRAY);
             paint.setStrokeWidth(1);
-            margin = (int)(operateImageSize * 0.5);
-            canvas.drawRect(margin, margin, getWidth()-margin, getHeight()-margin, paint);
+            canvas.drawRect(1, 1, getWidth()-1, getHeight()-1, paint);
         }
 
         if (isSelectEdit()) {
+            paint.setColor(Color.GRAY);
+            paint.setStrokeWidth(1);
             if (deleteBitmap == null || deleteBitmap.isRecycled()) {
                 deleteBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_image);
             }
@@ -317,51 +323,35 @@ public class DrawText extends EditText implements IBasePath {
         super.onDraw(canvas);
     }
 
-    @Override
+//    @Override
     public void setFocusable(boolean focusable) {
+        LogUtil.w("setFocusable " + focusable);
         if (!focusable) {
-            KeyBoardUtils.closeKeybord(this, mContext);
-        }
-        super.setFocusable(focusable);
-    }
-
-    @Override
-    protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
-        LogUtil.e(TAG,"onFocusChanged" + focused);
-        if (!focused) {
+            deteleImage.setVisibility(GONE);
+            scaleImage.setVisibility(GONE);
+            mEditText.setFocusable(false);
+            mEditText.setFocusableInTouchMode(false);
+            KeyBoardUtils.closeKeybord(mEditText, mContext);
             setSelectEdit(true);
+            invalidate();
         }
-        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+//        super.setFocusable(focusable);
     }
 
-    @Override
-    protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-        super.onTextChanged(text, start, lengthBefore, lengthAfter);
-        if (text == null) {
-            return;
-        }
-        float textWidth = getPaint().measureText(text.toString());
-        int line = (int) Math.ceil(textWidth / (getViewWidth() - operateImageSize * 2));
-        LogUtil.e(TAG,"onTextChanged need textWidth" + textWidth + ",line:" + line);
-        // 如果高度不够实现自动增长
-        if (getViewHeight() < (lineHeightSize * line +  operateImageSize * 2)) {
-            float viewHeight = (line * lineHeightSize +  operateImageSize * 2);
-            ViewGroup.LayoutParams layoutParams = getLayoutParams();
-            layoutParams.height = (int) viewHeight;
-            setLayoutParams(layoutParams);
-            setViewHeight(viewHeight);
-            invalidate();
-            setEndPoint(new Point(getStartPoint().getX(), getStartPoint().getY() + viewHeight));
-        }
-    }
+//    @Override
+//    protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
+//        LogUtil.e(TAG,"onFocusChanged" + focused);
+//        if (!focused) {
+//            setSelectEdit(true);
+//        }
+//        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+//    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         LogUtil.e(TAG,"onTouchEvent" + BlackBoardAcivity.sBlackBoardStatus + isSelect);
         // 不是移动  或移动多选的情况自己不拦截触摸
         if (BlackBoardAcivity.sBlackBoardStatus != 2 || isSelect) {
-            LogUtil.e(TAG,"super.onTouchEvent(event)");
-            getParent().requestDisallowInterceptTouchEvent(false);
             return super.onTouchEvent(event);
         }
         switch (event.getAction()) {
@@ -428,10 +418,10 @@ public class DrawText extends EditText implements IBasePath {
             case MotionEvent.ACTION_UP:
                 LogUtil.e(TAG,"ACTION_UP");
                 if (!isSelectEdit) {
-                    setFocusable(true);
-                    setFocusableInTouchMode(true);
-                    requestFocus();
-                    KeyBoardUtils.openKeybord(this,mContext);
+                    mEditText.setFocusable(true);
+                    mEditText.setFocusableInTouchMode(true);
+                    mEditText.requestFocus();
+                    KeyBoardUtils.openKeybord(mEditText,mContext);
 //                    ((Activity)mContext).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                     if (changeCallback != null) {
                         changeCallback.changeSelectCallBack(vid);

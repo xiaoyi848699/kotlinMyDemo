@@ -10,13 +10,12 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-import demo.xy.com.mylibrary.log.LogUtil;
 import demo.xy.com.xytdcq.uitls.Utils;
 
 /**
  * 形状基类，所有涂鸦板上的绘制的形状继承该基类
  */
-public abstract class BasePath extends View {
+public abstract class BasePath extends View implements IBasePath{
     protected String vid;
     protected String sid = "root";
     protected String uid;
@@ -182,5 +181,4 @@ public abstract class BasePath extends View {
 
     public abstract void relaseData();
 
-    public abstract boolean isNeedInvalidateOnMoveStatusChane();
 }

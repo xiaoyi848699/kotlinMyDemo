@@ -20,7 +20,11 @@
     <dimen name="ic_pid_w_h50">50dp</dimen>
     <dimen name="ic_pid_w_h60">60dp</dimen>
     <dimen name="ic_pid_w_h70">70dp</dimen>
+    <dimen name="ic_pid_w_h80">80dp</dimen>
     <dimen name="ic_pid_w_h100">100dp</dimen>
+    <dimen name="ic_pid_w_h120">120dp</dimen>
+    <dimen name="ic_pid_w_h150">150dp</dimen>
     <dimen name="ic_pid_w_h200">200dp</dimen>
+    <dimen name="ic_pid_w_h300">300dp</dimen>
 
 </resources>

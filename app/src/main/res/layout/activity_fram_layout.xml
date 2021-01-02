@@ -57,5 +57,16 @@
         <include
             layout="@layout/rts_control_layout_top"
             />
+        <TextView
+            android:id="@+id/hint_add_editview"
+            android:layout_width="@dimen/ic_pid_w_h120"
+            android:layout_height="@dimen/ic_pid_w_h34"
+            android:text="单击添加文本"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:background="@color/black_tranparent80"
+            android:gravity="center"/>
     </RelativeLayout>
 </RelativeLayout>

@@ -112,7 +112,7 @@ public class DrawPath extends BasePath {
         LogUtil.i("xiaoyi","TestPath...onDraw");
         if (isSelect()) {
             canvas.drawColor(0x30C7EDCC);
-            paint.setColor(Color.GRAY);
+            paint.setColor(Color.BLUE);
             paint.setStrokeWidth(1);
             paint.setShadowLayer(1,1,1,Color.GRAY);
             if ( startPoint != null && endPoint != null) {

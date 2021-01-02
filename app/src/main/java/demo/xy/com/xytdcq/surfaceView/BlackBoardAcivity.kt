@@ -5,10 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.*
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import butterknife.BindView
 import butterknife.OnClick
 import demo.xy.com.mylibrary.picture.ImageLibraryHelper
@@ -19,7 +16,6 @@ import demo.xy.com.xytdcq.surfaceView.doodle.BlankPage
 import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.*
 import demo.xy.com.xytdcq.uitls.BitmapUtil
-import demo.xy.com.xytdcq.uitls.LogUtil
 import demo.xy.com.xytdcq.uitls.ScreenCenter
 import demo.xy.com.xytdcq.uitls.ToastUtil
 import kotlin.math.abs
@@ -29,7 +25,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     companion object {
 
         @kotlin.jvm.JvmField
-        var sBlackBoardStatus = 0 // 标记画板状态 0：画笔， 1：移动，2：选择 3：橡皮
+        var sBlackBoardStatus = 0 // 标记画板状态 0：画笔， 1：移动，2：选择 3：橡皮，4 添加文字
         @JvmStatic
         fun startInstance(context: Context, homeworkId: String?, questionId: String?, course: String?) {
             val intent = Intent(context, BlackBoardAcivity::class.java)
@@ -77,6 +73,9 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     lateinit var wb_rectangle: ImageView
     @BindView(R.id.wb_redo)
     lateinit var wb_redo: ImageView
+    @BindView(R.id.hint_add_editview)
+    lateinit var hintAddEditview: TextView
+
     private var currentPageNum = 0
     private var pageList: ArrayList<PageChannel>? = null
     private var pageList2: ArrayList<PageChannel>? = null
@@ -87,13 +86,14 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     private var isSelectPen = true // 是否选择画笔
     private var isCanMove = false // 是否可以移动
 
-    private var paths: ArrayList<BasePath>? = null
+    private var paths: ArrayList<IBasePath>? = null
 
     private lateinit var textView:TextView
 
     override fun getLayout(): Int {
         return R.layout.activity_fram_layout;
     }
+
 
     override fun setDataAndEvent() {
         addImageWidth = resources.getDimension(R.dimen.ic_pid_w_h200)
@@ -132,22 +132,22 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 //        textInfo.textSize = 18f
 //        textInfo.setBackgroundColor(Color.CYAN)
 //        textInfo.setPadding(5, 0, 0, 0)
-//        textInfo.text = "什么配电系统参数"
+//        textInfo.text = "什么系统参数"
 //        endView.addView(textInfo, layoutParamsTextInfo)
 
-        val layoutParamsTextInfo2 = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 50)
-        textView = TextView(this)
-        textView.text = "init TextView"
-        textView.setTextColor(Color.RED)
-        textView.gravity = Gravity.CENTER_VERTICAL
-        textView.textSize = 18f
-        textView.setBackgroundColor(Color.GRAY)
-        textView.y = 80f
-        textView.x = 80f
-        endView.addView(textView, layoutParamsTextInfo2)
+//        val layoutParamsTextInfo2 = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 50)
+//        textView = TextView(this)
+//        textView.text = "init TextView"
+//        textView.setTextColor(Color.RED)
+//        textView.gravity = Gravity.CENTER_VERTICAL
+//        textView.textSize = 18f
+//        textView.setBackgroundColor(Color.GRAY)
+//        textView.y = 80f
+//        textView.x = 80f
+//        endView.addView(textView, layoutParamsTextInfo2)
     }
 
-    override fun callBackAddView(view: BasePath, width: Float, height: Float) {
+    override fun callBackAddView(view: IBasePath, width: Float, height: Float) {
 //        paths?.add(view!!);
 //        val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 //        layoutParams.width = (view.viewWidth).toInt()
@@ -156,26 +156,36 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         callBackAutoAddView(view)
     }
 
-    fun callBackAutoAddView(view: BasePath) {
-        view.x = view.startPoint.x
-        view.y = view.startPoint.y
-        if (view is DrawPicture) {
-            var index = 0;
-            for (v in this.paths!!) {
-                // 找到最后一张图片的位置 然后在他后面添加图片
-                if (v is DrawPicture) {
-                    index++
-                } else {
-                    break
+    fun callBackAutoAddView(view: IBasePath) {
+        if (view is BasePath) {
+            view.x = view.startPoint.x
+            view.y = view.startPoint.y
+            if (view is DrawPicture) {
+                var index = 0;
+                for (v in this.paths!!) {
+                    // 找到最后一张图片的位置 然后在他后面添加图片
+                    if (v is DrawPicture) {
+                        index++
+                    } else {
+                        break
+                    }
                 }
-            }
-            paths?.add(index, view)
-            val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            layoutParams.width = (view.viewWidth).toInt()
-            layoutParams.height = (view.viewHeight).toInt()
-            endView.addView(view,index,layoutParams)
+                paths?.add(index, view)
+                val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                layoutParams.width = (view.viewWidth).toInt()
+                layoutParams.height = (view.viewHeight).toInt()
+                endView.addView(view,index,layoutParams)
 
-        } else {
+            } else {
+                paths?.add(view!!)
+                val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                layoutParams.width = (view.viewWidth).toInt()
+                layoutParams.height = (view.viewHeight).toInt()
+                endView.addView(view,layoutParams)
+            }
+        } else if (view is DrawText) {
+            view.x = view.startPoint.x
+            view.y = view.startPoint.y
             paths?.add(view!!)
             val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             layoutParams.width = (view.viewWidth).toInt()
@@ -196,8 +206,8 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
             R.id.wb_pen ->selectPen() // 画笔
             R.id.wb_eraser ->selectTools(1)//橡皮
             R.id.wb_image ->selectTools(2)
-            R.id.wb_text ->selectTools(2)//PPT
-            R.id.wb_audio ->selectTools(3)
+            R.id.wb_text ->selectTools(3)//PPT
+            R.id.wb_audio ->selectTools(4)
 
             R.id.wb_curve ->selectPen()
             R.id.wb_straight ->selectPen()
@@ -254,7 +264,23 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         }
     }
 
+    private fun selectText() {
+        sBlackBoardStatus = 4
+        isCanMove = false
+        isSelectPen = false
+        doodleView.visibility = View.GONE
+        dealPenView();
+        resetLeftTools1(5);
+        wb_text.setImageResource(R.drawable.wb_text_s);
+        if (isSelectedView) {
+            updateSelectAll(false)
+        }
+        // 提示用户点击添加输入框
+        hintAddEditview.visibility = View.VISIBLE
+    }
+
     private fun resetLeftTools1(index:Int) {
+        hintAddEditview.visibility = View.GONE
         move_scrollview.setmIsCanMove(isCanMove)
         if (index != 0) {
             wb_move.setImageResource(R.drawable.wb_move_n);
@@ -299,7 +325,12 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
             2 -> {
                 ImageLibraryHelper.showTakePicDialog("添加图片",this@BlackBoardAcivity);
             }
-            3 -> doodleView.saveScreen()
+            3 -> {
+                selectText();
+            }
+            4 -> doodleView.saveScreen()
+            5 -> doodleView.saveScreen()
+            6 -> doodleView.saveScreen()
         }
     }
 
@@ -324,6 +355,9 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         if (event != null) {
             when(event.action) {
                 MotionEvent.ACTION_DOWN ->{
+                    if (sBlackBoardStatus == 4) {
+                        return true
+                    }
                     downX = event.x
                     downY = event.y
                     lastX = event.x
@@ -350,6 +384,9 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                     }
                 }
                 MotionEvent.ACTION_MOVE ->{
+                    if (sBlackBoardStatus == 4) {
+                        return true
+                    }
                     var moveX = event.x - lastX
                     var moveY = event.y - lastY
                     movePoint = Point(event.x,event.y)
@@ -371,6 +408,10 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                 }
                 MotionEvent.ACTION_UP ->{
                     movePoint = Point(event.x,event.y)
+                    if (sBlackBoardStatus == 4) {
+                        addEditTextView(movePoint)
+                        return true
+                    }
                     if (isSelectedView) {
                         updateMove(event.x - lastX,event.y - lastY, true)
                         lastX = event.x
@@ -393,7 +434,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                         // 抬起时如果选择有view
                         if (checkAllViewIsSelect()) {
                             isSelectedView = true
-                            sBlackBoardStatus = 3
+                            sBlackBoardStatus = 2
 
                             // 确定最后的框选区域（暂时保留显示）
                             selectAreStartPoint = startPoint
@@ -412,9 +453,20 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                 }
             }
             return true
-
         }
         return super.onTouchEvent(event)
+    }
+
+    private fun addEditTextView(point: Point) {
+        var drawText = DrawText(this)
+        changeSelectCallBack(drawText.vid) // 更新选择自己
+        drawText.startPoint = point
+        drawText.endPoint = Point(point.x + drawText.viewWidth,point.y + drawText.viewHeight)
+        drawText.setChangeCallback(this)
+        isSelectedSinglePic = false
+        callBackAutoAddView(drawText)
+        // 添加完成后切换成移动
+        select()
     }
 
     // 找出并绘制共同区域，增加删除按钮
@@ -467,6 +519,9 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
             if (b is DrawPicture ) {
                 b.isSelectPic = false
             }
+            if (!isSelect && b is DrawText) {
+                b.isFocusable = false
+            }
             if (!isSelect) {
                 if (b is DeleteArea) {
                     endView.removeView(b)
@@ -494,12 +549,20 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
      * 删除选中图形曲线
      */
     private fun deleteSelectAll() {
-        var newPaths: ArrayList<BasePath> = arrayListOf()
+        var newPaths: ArrayList<IBasePath> = arrayListOf()
         for (b in this!!.paths!!) {
-            if (b.isSelect || b.isRemove) {
-                endView.removeView(b)
-            } else {
-                newPaths.add(b)
+            if (b is BasePath) {
+                if (b.isSelect || b.isRemove) {
+                    endView.removeView(b)
+                } else {
+                    newPaths.add(b)
+                }
+            } else if (b is DrawText) {
+                if (b.isSelect || b.isRemove) {
+                    endView.removeView(b)
+                } else {
+                    newPaths.add(b)
+                }
             }
         }
         this!!.paths!!.clear()
@@ -527,8 +590,13 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 //                b.x = b.startPoint.x //卡顿
 //                b.scrollTo(b.startPoint.x.toInt(), b.startPoint.y.toInt()) // 反方向内部移动
 //                b.scrollBy(b.startPoint.x.toInt(), b.startPoint.y.toInt()) // 不适合
-                b.translationX = b.startPoint.x
-                b.translationY = b.startPoint.y
+                if (b is BasePath) {
+                    b.translationX = b.startPoint.x
+                    b.translationY = b.startPoint.y
+                } else if (b is DrawText) {
+                    b.translationX = b.startPoint.x
+                    b.translationY = b.startPoint.y
+                }
             }
         }
     }
@@ -609,12 +677,21 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     }
 
     override fun deleteSelfCallBack(viewId: String?) {
-        var newPaths: ArrayList<BasePath> = arrayListOf()
+        var newPaths: ArrayList<IBasePath> = arrayListOf()
         for (b in this!!.paths!!) {
-            if (b.vid ==viewId || b.isRemove) {
-                endView.removeView(b)
-            } else {
-                newPaths.add(b)
+            if (b is BasePath) {
+                if (b.vid ==viewId || b.isRemove) {
+                    endView.removeView(b)
+                } else {
+                    newPaths.add(b)
+                }
+            } else if (b is DrawText) {
+                if (b.vid ==viewId || b.isRemove) {
+                    endView.removeView(b)
+                } else {
+                    newPaths.add(b)
+                }
+
             }
         }
         this!!.paths!!.clear()
@@ -628,8 +705,14 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         for (b in this!!.paths!!) {
             if (b is DrawPicture) {
 //                LogUtil.e("DrawPicture", "changeSelectCallBack vid：" + b.vid)
+                // 取消其他的图片选择
                 if (b.vid != viewId) {
                     b.isSelectPic = false
+                }
+            }else if (b is DrawText) {
+                // 取消其他的输入框选择
+                if (b.vid != viewId) {
+                    b.isSelectEdit = false
                 }
             } else {
                 b.isSelect = false
