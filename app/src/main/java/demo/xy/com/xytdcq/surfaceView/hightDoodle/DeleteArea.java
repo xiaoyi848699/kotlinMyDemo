@@ -24,6 +24,7 @@ import demo.xy.com.xytdcq.R;
 public class DeleteArea extends BasePath {
     private Bitmap deleteBitmap;
     private Point startPoint;
+    private float operateImageSize = 40;
     public DeleteArea(Context context) {
         super(context);
         init();
@@ -31,6 +32,7 @@ public class DeleteArea extends BasePath {
 
     private void init() {
         deleteBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_image);
+        operateImageSize = getContext().getResources().getDimension(R.dimen.ic_pid_w_h18);
     }
 
     public DeleteArea(Context context, @Nullable AttributeSet attrs) {
@@ -86,7 +88,10 @@ public class DeleteArea extends BasePath {
         if (isMoveEnd) {
             // 绘制删除按钮
 //            Rect rect = new Rect(0,0,79,80); // 绘制大小
-            RectF rectF = new RectF(0,0,40,40); // 绘制地方
+            RectF rectF = new RectF(0,0,operateImageSize,operateImageSize); // 绘制地方
+            if (deleteBitmap == null || deleteBitmap.isRecycled()) {
+                deleteBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_image);
+            }
             canvas.drawBitmap(deleteBitmap, null, rectF, paint);
         }
     }

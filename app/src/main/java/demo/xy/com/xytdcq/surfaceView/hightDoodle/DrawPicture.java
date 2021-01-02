@@ -27,7 +27,7 @@ public class DrawPicture extends BasePath {
     private int showStatus = -1;// 1:本地 2:网络
     private boolean isSelectPic = false;// 单独选中图片可以缩放
     private Bitmap deleteBitmap;
-    private Bitmap leftBitmap;
+    private Bitmap rightBitmap;
     private Bitmap bottomBitmap;
     private Bitmap scaleBitmap;
 
@@ -44,17 +44,29 @@ public class DrawPicture extends BasePath {
     private float downWidth = 0;
     private float downHeight = 0;
 
+    private  Point leftTopPoint;
+    private  Point rightTopPoint;
+    private  Point leftBottomPoint;
+    private  Point rightBottomPoint;
     public String getImageUrl() {
         return imageUrl;
     }
 
     private void init() {
+        initPoint();
         deleteBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_image);
-        leftBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoomleft_image);
+        rightBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoomleft_image);
         bottomBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoomdown_image);
         scaleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoom_image);
         minImageSize = getContext().getResources().getDimension(R.dimen.ic_pid_w_h100);
-        operateImageSize = getContext().getResources().getDimension(R.dimen.ic_pid_w_h40);
+        operateImageSize = getContext().getResources().getDimension(R.dimen.ic_pid_w_h18);
+    }
+
+    private void initPoint() {
+        leftTopPoint = new Point(operateImageSize/2,operateImageSize/2);
+        rightTopPoint = new Point(getViewWidth() - operateImageSize/2,operateImageSize/2);
+        leftBottomPoint = new Point(operateImageSize/2,getViewHeight() - operateImageSize/2);
+        rightBottomPoint = new Point(getViewWidth() - operateImageSize/2,getViewHeight() - operateImageSize/2);
     }
 
     @Override
@@ -122,10 +134,12 @@ public class DrawPicture extends BasePath {
         return false;
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        if (canvas == null) {
+            LogUtil.w("onDraw canvas = null");
+            return;
+        }
         if (paint == null) {
             paint = new Paint();
             paint.setAntiAlias(true);
@@ -140,44 +154,58 @@ public class DrawPicture extends BasePath {
         if (bitmap == null || bitmap.isRecycled()) {
             bitmap = BitmapFactory.decodeFile(localPath);
         }
-        RectF rectF = new RectF(operateImageSize/2,operateImageSize/2,getViewWidth() - operateImageSize/2,getViewHeight()- operateImageSize/2); // 绘制地方
+        RectF rectF = new RectF(operateImageSize * 0.66f,operateImageSize * 0.66f,getViewWidth() - operateImageSize * 0.66f,getViewHeight()- operateImageSize * 0.66f); // 绘制地方
         canvas.drawBitmap(bitmap, null, rectF, paint);
 
-        if (isSelectPic() || isSelect()) {
+        if (/*isSelectPic() || */isSelect()) {
             canvas.drawColor(0x30888888);
             paint.setColor(Color.GRAY);
             paint.setStrokeWidth(1);
 //        paint.setShadowLayer(1,1,1,Color.GRAY);
 //        PathEffect effects = new DashPathEffect(new float[]{12,6},0);
 //        paint.setPathEffect(effects);
-            canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
+            canvas.drawRect(1, 1, getWidth()-1, getHeight()-1, paint);
         }
 
         if (isSelectPic()) {
+            paint.setColor(Color.GRAY);
+            paint.setStrokeWidth(1);
+            initPoint();
+            // 横向顶部
+            canvas.drawLine(leftTopPoint.getX(), leftTopPoint.getY(), rightTopPoint.getX(), rightTopPoint.getY(), paint);
+            // 左侧
+            canvas.drawLine(leftTopPoint.getX(), leftTopPoint.getY(), leftBottomPoint.getX(), leftBottomPoint.getY(), paint);
+            // 右侧
+            canvas.drawLine(rightTopPoint.getX(), rightTopPoint.getY(), rightBottomPoint.getX(), getViewHeight()/2 - operateImageSize / 2, paint);
+            canvas.drawLine(rightTopPoint.getX(), getViewHeight()/2 + operateImageSize / 2, rightBottomPoint.getX(), rightBottomPoint.getY(), paint);
+            // 底部
+            canvas.drawLine(leftBottomPoint.getX(), leftBottomPoint.getY(), getViewWidth() / 2 - operateImageSize / 2, rightBottomPoint.getY(), paint);
+            canvas.drawLine(getViewWidth()/2 + operateImageSize / 2, leftBottomPoint.getY(), rightBottomPoint.getX(), rightBottomPoint.getY(), paint);
             if (deleteBitmap == null || deleteBitmap.isRecycled()) {
                 deleteBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_delete_image);
             }
-            RectF deleteRectF = new RectF(0,0,operateImageSize,operateImageSize); // 绘制地方
+            RectF deleteRectF = new RectF(operateImageSize * 0.1f,operateImageSize * 0.1f,operateImageSize * 0.8f,operateImageSize * 0.8f); // 绘制地方
             canvas.drawBitmap(deleteBitmap, null, deleteRectF, paint);
 
             if (scaleBitmap == null || scaleBitmap.isRecycled()) {
                 scaleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoom_image);
             }
-            RectF scaleRectF = new RectF(getViewWidth() - operateImageSize,getViewHeight() - operateImageSize,getViewWidth(),getViewHeight()); // 绘制地方
+            RectF scaleRectF = new RectF(getViewWidth() - operateImageSize * 0.9f,getViewHeight() - operateImageSize * 0.9f,getViewWidth() - operateImageSize * 0.2f,getViewHeight() - operateImageSize * 0.2f); // 绘制地方
             canvas.drawBitmap(scaleBitmap, null, scaleRectF, paint);
 
-            if (leftBitmap == null || leftBitmap.isRecycled()) {
-                leftBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoomleft_image);
+            if (rightBitmap == null || rightBitmap.isRecycled()) {
+                rightBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoomleft_image);
             }
-            RectF leftRectF = new RectF(getViewWidth() - operateImageSize/2,getViewHeight() / 2 - operateImageSize,getViewWidth(),getViewHeight() / 2 + operateImageSize); // 绘制地方
-            canvas.drawBitmap(leftBitmap, null, leftRectF, paint);
+            RectF rightRectF = new RectF(getViewWidth() - operateImageSize * 0.66f,getViewHeight() / 2 - operateImageSize / 2,getViewWidth() - operateImageSize * 0.33f,getViewHeight() / 2 + operateImageSize/2); // 绘制地方
+            canvas.drawBitmap(rightBitmap, null, rightRectF, paint);
 
             if (bottomBitmap == null || bottomBitmap.isRecycled()) {
                 bottomBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_zoomdown_image);
             }
-            RectF bottomRectF = new RectF(getViewWidth() / 2 - operateImageSize,getViewHeight() - operateImageSize/2,getViewWidth() / 2 + operateImageSize,getViewHeight()); // 绘制地方
+            RectF bottomRectF = new RectF(getViewWidth() / 2 - operateImageSize/2,getViewHeight() - operateImageSize * 0.66f,getViewWidth() / 2 + operateImageSize/2,getViewHeight() - operateImageSize * 0.33f); // 绘制地方
             canvas.drawBitmap(bottomBitmap, null, bottomRectF, paint);
         }
+        super.onDraw(canvas);
     }
 
     @Override
@@ -232,8 +260,10 @@ public class DrawPicture extends BasePath {
                     return true;
                 }
                 if (operate == 10) {
-                    setX(rawX-downX);
-                    setY(rawY-downY);
+//                    setX(rawX-downX);
+//                    setY(rawY-downY);
+                    this.setTranslationX(rawX-downX);
+                    this.setTranslationY(rawY-downY);
                     lastRawX = rawX;
                     lastRawY = rawY;
                 } else if (operate == 1) {

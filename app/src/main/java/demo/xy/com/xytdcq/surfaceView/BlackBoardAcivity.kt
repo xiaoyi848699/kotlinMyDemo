@@ -148,21 +148,40 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     }
 
     override fun callBackAddView(view: BasePath, width: Float, height: Float) {
-        paths?.add(view!!);
-        val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        layoutParams.width = (view.viewWidth).toInt()
-        layoutParams.height = (view.viewHeight).toInt()
-        endView.addView(view,layoutParams)
+//        paths?.add(view!!);
+//        val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//        layoutParams.width = (view.viewWidth).toInt()
+//        layoutParams.height = (view.viewHeight).toInt()
+//        endView.addView(view,layoutParams)
+        callBackAutoAddView(view)
     }
 
     fun callBackAutoAddView(view: BasePath) {
         view.x = view.startPoint.x
         view.y = view.startPoint.y
-        paths?.add(view!!);
-        val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        layoutParams.width = (view.viewWidth).toInt()
-        layoutParams.height = (view.viewHeight).toInt()
-        endView.addView(view,layoutParams)
+        if (view is DrawPicture) {
+            var index = 0;
+            for (v in this.paths!!) {
+                // 找到最后一张图片的位置 然后在他后面添加图片
+                if (v is DrawPicture) {
+                    index++
+                } else {
+                    break
+                }
+            }
+            paths?.add(index, view)
+            val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            layoutParams.width = (view.viewWidth).toInt()
+            layoutParams.height = (view.viewHeight).toInt()
+            endView.addView(view,index,layoutParams)
+
+        } else {
+            paths?.add(view!!)
+            val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            layoutParams.width = (view.viewWidth).toInt()
+            layoutParams.height = (view.viewHeight).toInt()
+            endView.addView(view,layoutParams)
+        }
     }
 
 
@@ -374,6 +393,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                         // 抬起时如果选择有view
                         if (checkAllViewIsSelect()) {
                             isSelectedView = true
+                            sBlackBoardStatus = 3
 
                             // 确定最后的框选区域（暂时保留显示）
                             selectAreStartPoint = startPoint
@@ -503,8 +523,12 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         for (b in this!!.paths!!) {
             if (b.isSelect) {
                 b.move(moveX, moveY,isMoveEnd)
-                b.y = b.startPoint.y
-                b.x = b.startPoint.x
+//                b.y = b.startPoint.y //卡顿
+//                b.x = b.startPoint.x //卡顿
+//                b.scrollTo(b.startPoint.x.toInt(), b.startPoint.y.toInt()) // 反方向内部移动
+//                b.scrollBy(b.startPoint.x.toInt(), b.startPoint.y.toInt()) // 不适合
+                b.translationX = b.startPoint.x
+                b.translationY = b.startPoint.y
             }
         }
     }
@@ -537,6 +561,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                         ToastUtil.showToast(this@BlackBoardAcivity,"图片有误")
                         return
                     }
+                    updateSelectAll(false)
                     var imageView = DrawPicture(this)
                     changeSelectCallBack(imageView.vid) // 更新选择自己
                     imageView.startPoint = Point(centerPoint.x - addImageWidth / 2,centerPoint.y - addImageWidth / 2)
@@ -557,6 +582,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                         ToastUtil.showToast(this@BlackBoardAcivity,"图片有误")
                         return
                     }
+                    updateSelectAll(false)
                     var imageView = DrawPicture(this)
                     changeSelectCallBack(imageView.vid) // 更新选择自己
                     imageView.startPoint = Point(centerPoint.x - addImageWidth / 2,centerPoint.y - addImageWidth / 2)
