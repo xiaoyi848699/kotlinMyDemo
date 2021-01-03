@@ -3,18 +3,14 @@ package demo.xy.com.xytdcq.surfaceView.hightDoodle;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Shader;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
 
 import java.util.ArrayList;
 
 import demo.xy.com.mylibrary.log.LogUtil;
-import demo.xy.com.xytdcq.R;
 import demo.xy.com.xytdcq.surfaceView.BlackBoardAcivity;
 import demo.xy.com.xytdcq.surfaceView.utils.BezierUtil;
 import demo.xy.com.xytdcq.surfaceView.utils.PointUtils;
@@ -138,7 +134,6 @@ public class DrawPath extends BasePath {
         this.points.addAll(addPoints);
         invalidate();
         // 发送数据
-
 
     }
 

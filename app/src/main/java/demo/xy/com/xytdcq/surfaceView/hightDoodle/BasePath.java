@@ -10,6 +10,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import demo.xy.com.xytdcq.uitls.ScreenCenter;
 import demo.xy.com.xytdcq.uitls.Utils;
 
 /**
@@ -36,7 +37,7 @@ public abstract class BasePath extends View implements IBasePath{
     protected float offsetY = 0;
 
     protected int color = Color.RED;
-    protected int size = 2;
+    protected int size = 1;
     protected Paint paint;
     protected Path path;
 
@@ -143,7 +144,7 @@ public abstract class BasePath extends View implements IBasePath{
     }
 
     public void setColor(int color) {
-        this.color = color;
+        this.color = getRGBColor(color);
     }
 
     public int getSize() {
@@ -151,7 +152,14 @@ public abstract class BasePath extends View implements IBasePath{
     }
 
     public void setSize(int size) {
-        this.size = size;
+        this.size = ScreenCenter.dip2px(size);
+    }
+
+    private int getRGBColor(int color){
+        int red = (color & 0xff0000) >> 16;
+        int green = (color & 0x00ff00) >> 8;
+        int blue = (color & 0x0000ff);
+        return Color.rgb(red, green, blue);
     }
 
     public void checkIsSelect(float minX,float maxX,float minY,float maxY) {

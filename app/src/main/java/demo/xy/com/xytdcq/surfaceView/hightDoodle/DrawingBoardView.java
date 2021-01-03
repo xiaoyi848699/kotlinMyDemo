@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import demo.xy.com.mylibrary.picture.ImageLibraryHelper;
+import demo.xy.com.xytdcq.surfaceView.BlackBoardAcivity;
 import demo.xy.com.xytdcq.surfaceView.doodle.Action;
 import demo.xy.com.xytdcq.surfaceView.doodle.ActionTypeEnum;
 import demo.xy.com.xytdcq.surfaceView.doodle.DoodleChannel;
@@ -47,8 +48,8 @@ import demo.xy.com.xytdcq.uitls.ToastUtil;
 public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callback {
     private String[] permissions =  new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    public static final int rts_blue = 0x0000FF;
-    public static final int rts_red = 0xFF0000;
+    public static final int rts_blue = 0x2673f7;
+    public static final int rts_red = 0xe73dcd;
     public static final int rts_black = 0x000000;
     public static final int rts_pink = 0xFF00FF;
 
@@ -326,10 +327,12 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                         }
                         paintSize = paintSizeT / xyZoom;
                     } else {
-                        paintSize = 1;
+                        paintSize = BlackBoardAcivity.paintSize;
                     }
                     points.clear();
                     drawPath = new DrawPath(context);
+                    drawPath.setColor(BlackBoardAcivity.paintColor);
+                    drawPath.setSize(BlackBoardAcivity.paintSize);
                     maxX = minX = touchX;
                     maxY = minY = touchY;
                     Point point = new Point(touchX,touchY);

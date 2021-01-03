@@ -38,6 +38,12 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         @kotlin.jvm.JvmField
         var eraserSize = 10 // 橡皮擦大小
 
+        @kotlin.jvm.JvmField
+        var paintSize = 1 // 画笔宽度1,3,6
+
+        @kotlin.jvm.JvmField
+        var paintColor = DrawingBoardView.rts_black // 画笔颜色
+
         @JvmStatic
         fun startInstance(context: Context, homeworkId: String?, questionId: String?, course: String?) {
             val intent = Intent(context, BlackBoardAcivity::class.java)
@@ -85,11 +91,24 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     @BindView(R.id.hint_add_editview)
     lateinit var hintAddEditview: TextView
 
+    @BindView(R.id.wb_normal)
+    lateinit var wb_normal: ImageView
+    @BindView(R.id.wb_big)
+    lateinit var wb_big: ImageView
+    @BindView(R.id.wb_bigger)
+    lateinit var wb_bigger: ImageView
+    @BindView(R.id.wb_black)
+
+    lateinit var wb_black: ImageView
+    @BindView(R.id.wb_blue)
+    lateinit var wb_blue: ImageView
+    @BindView(R.id.wb_red)
+    lateinit var wb_red: ImageView
+
     private var currentPageNum = 0
     private var pageList: ArrayList<PageChannel>? = null
     private var pageList2: ArrayList<PageChannel>? = null
     private var bgColor:Int? = null
-    private var paintColor:Int? = null
     private var blankPage:BlankPage? = null
 
     private var isSelectPen = true // 是否选择画笔
@@ -135,7 +154,6 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         pageList!!.add(blankPage!!)
 //        bgColor = resources.getColor(R.color.protective_color)
         bgColor = Color.TRANSPARENT // 背景颜色
-        paintColor = DrawingBoardView.rts_red
 
         doodleView.setPageChannel(blankPage,currentPageNum)
         doodleView.init(bgColor!!, paintColor!!, this)
@@ -238,6 +256,48 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
             R.id.wb_circular ->selectPen()
             R.id.wb_rectangle ->selectPen()
             R.id.wb_redo ->selectPen()
+        }
+    }
+
+    // 左侧工具栏事件
+    @OnClick(R.id.wb_normal, R.id.wb_big, R.id.wb_bigger, R.id.wb_black, R.id.wb_blue, R.id.wb_red)
+    fun doOnTopControl(view: View)
+    {
+        when(view.id) {
+            R.id.wb_normal -> {
+                paintSize = 1
+                resetTopToolsSize()
+                wb_normal.setImageResource(R.drawable.wb_normal_s)
+            }
+            R.id.wb_big ->{
+                paintSize = 3
+                resetTopToolsSize()
+                wb_big.setImageResource(R.drawable.wb_big_s)
+            }
+            R.id.wb_bigger ->{
+                paintSize = 6
+                resetTopToolsSize()
+                wb_bigger.setImageResource(R.drawable.wb_bigger_s)
+            }
+
+            R.id.wb_black ->{
+                paintColor = DrawingBoardView.rts_black // 画笔颜色
+                resetTopToolsColor()
+                doodleView.setPaintColor(paintColor!!)
+                wb_black.setImageResource(R.drawable.wb_black_s)
+            }
+            R.id.wb_blue ->{
+                paintColor = DrawingBoardView.rts_blue // 画笔颜色
+                resetTopToolsColor()
+                doodleView.setPaintColor(paintColor!!)
+                wb_blue.setImageResource(R.drawable.wb_blue_s)
+            }
+            R.id.wb_red ->{
+                paintColor = DrawingBoardView.rts_red // 画笔颜色
+                resetTopToolsColor()
+                doodleView.setPaintColor(paintColor!!)
+                wb_red.setImageResource(R.drawable.wb_red_s)
+            }
         }
     }
 
@@ -352,11 +412,23 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     }
 
     private fun resetLeftTools2() {
-        wb_curve.setImageResource(R.drawable.wb_curve_n);
-        wb_straight.setImageResource(R.drawable.wb_straight_n);
-        wb_circular.setImageResource(R.drawable.wb_circular_n);
-        wb_rectangle.setImageResource(R.drawable.wb_rectangle_n);
-        wb_redo.setImageResource(R.drawable.wb_redo_n);
+        wb_curve.setImageResource(R.drawable.wb_curve_n)
+        wb_straight.setImageResource(R.drawable.wb_straight_n)
+        wb_circular.setImageResource(R.drawable.wb_circular_n)
+        wb_rectangle.setImageResource(R.drawable.wb_rectangle_n)
+        wb_redo.setImageResource(R.drawable.wb_redo_n)
+    }
+
+    private fun resetTopToolsSize() {
+        wb_normal.setImageResource(R.drawable.wb_normal_n)
+        wb_big.setImageResource(R.drawable.wb_big_n)
+        wb_bigger.setImageResource(R.drawable.wb_bigger_n)
+    }
+
+    private fun resetTopToolsColor() {
+        wb_black.setImageResource(R.drawable.wb_black_n)
+        wb_blue.setImageResource(R.drawable.wb_blue_n)
+        wb_red.setImageResource(R.drawable.wb_red_n)
     }
 
     fun selectTools(flag:Int){
