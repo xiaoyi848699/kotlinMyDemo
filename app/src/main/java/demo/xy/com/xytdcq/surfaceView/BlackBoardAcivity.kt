@@ -23,6 +23,7 @@ import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.*
 import demo.xy.com.xytdcq.surfaceView.utils.EraserUtils
 import demo.xy.com.xytdcq.uitls.BitmapUtil
+import demo.xy.com.xytdcq.uitls.LogUtil
 import demo.xy.com.xytdcq.uitls.ScreenCenter
 import demo.xy.com.xytdcq.uitls.ToastUtil
 import kotlin.math.abs
@@ -100,8 +101,26 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 
     private lateinit var eraserUtils:EraserUtils;
 
+    private var downX:Float = 0.0f;
+    private var downY:Float = 0.0f;
+    private var lastX:Float = 0.0f;
+    private var lastY:Float = 0.0f;
+    private var isSelectedView:Boolean = false // 框选完成后是否有选中的view
+    private var isSelectedSinglePic:Boolean = false // 框选了单张图片
+    private var isSelectView:Boolean = false // 移动框选的时候是否有选中view
+    private lateinit var startPoint:Point // 单次事件的起始点
+    private lateinit var movePoint:Point // 单次事件的移动点
+    private lateinit var selectAreStartPoint:Point // 选择区域的起始点
+    private lateinit var selectAreMovePoint:Point // 选择区域的结束点
+
+    private var deleteMinX = 0f
+    private var deleteMinY = 0f
+    private var deleteMaxX = 0f
+    private var deleteMaxY = 0f
+    private lateinit var centerPoint:Point // 中间点
+
     override fun getLayout(): Int {
-        return R.layout.activity_fram_layout;
+        return R.layout.activity_frame_layout;
     }
 
 
@@ -358,144 +377,137 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         }
     }
 
-    private var downX:Float = 0.0f;
-    private var downY:Float = 0.0f;
-    private var lastX:Float = 0.0f;
-    private var lastY:Float = 0.0f;
-    private var isSelectedView:Boolean = false // 框选完成后是否有选中的view
-    private var isSelectedSinglePic:Boolean = false // 框选了单张图片
-    private var isSelectView:Boolean = false // 移动框选的时候是否有选中view
-    private lateinit var startPoint:Point // 单次事件的起始点
-    private lateinit var movePoint:Point // 单次事件的移动点
-    private lateinit var selectAreStartPoint:Point // 选择区域的起始点
-    private lateinit var selectAreMovePoint:Point // 选择区域的结束点
-
-    private var deleteMinX = 0f
-    private var deleteMinY = 0f
-    private var deleteMaxX = 0f
-    private var deleteMaxY = 0f
-    private lateinit var centerPoint:Point // 中间点
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        if (event != null) {
-            when(event.action) {
-                MotionEvent.ACTION_DOWN ->{
-                    if (sBlackBoardStatus == 4) {
-                        return true
+        try {
+            if (event != null) {
+                when(event.action) {
+                    MotionEvent.ACTION_POINTER_DOWN ->{
+                        LogUtil.e("xiaoyi 按下的时候有手指" + event.pointerCount)
                     }
-                    downX = event.x
-                    downY = event.y
-                    lastX = event.x
-                    lastY = event.y
-                    startPoint = Point(downX,downY)
-                    if (sBlackBoardStatus == 2) {
-                        isSelectView = false
-                        if (isSelectedView) {
-                            // 判断如果是上次范围内，这继续移动
+                    MotionEvent.ACTION_POINTER_UP ->{
+                        LogUtil.e("xiaoyi 抬起的时候有手指" + event.pointerCount)
+                    }
+                    MotionEvent.ACTION_DOWN ->{
+                        if (sBlackBoardStatus == 4) {
+                            return true
+                        }
+                        downX = event.x
+                        downY = event.y
+                        lastX = event.x
+                        lastY = event.y
+                        startPoint = Point(downX,downY)
+                        if (sBlackBoardStatus == 2) {
+                            isSelectView = false
+                            if (isSelectedView) {
+                                // 判断如果是上次范围内，这继续移动
 
-                            // 不是上次范围内则取消选择
-                            // 判断为点击（如果在区域外则取消选择）
-                            if (!(downX in deleteMinX..deleteMaxX && downY in deleteMinY..deleteMaxY)) {
-                                isSelectedView = false
-                                updateSelectAll(false)
+                                // 不是上次范围内则取消选择
+                                // 判断为点击（如果在区域外则取消选择）
+                                if (!(downX in deleteMinX..deleteMaxX && downY in deleteMinY..deleteMaxY)) {
+                                    isSelectedView = false
+                                    updateSelectAll(false)
 
-                                // 重新创建选择区域
+                                    // 重新创建选择区域
+                                    endView.isDrawSelect = true
+                                    endView.startPoint = startPoint
+                                }
+                            } else {
+                                // 创建选择区域
                                 endView.isDrawSelect = true
                                 endView.startPoint = startPoint
                             }
-                        } else {
-                            // 创建选择区域
-                            endView.isDrawSelect = true
+                        } else if (sBlackBoardStatus == 3) {
                             endView.startPoint = startPoint
+                            endView.isDrawEaser = true
+                            checkEraser(startPoint)
                         }
-                    } else if (sBlackBoardStatus == 3) {
-                        endView.startPoint = startPoint
-                        endView.isDrawEaser = true
-                        checkEraser(startPoint)
                     }
-                }
-                MotionEvent.ACTION_MOVE ->{
-                    if (sBlackBoardStatus == 4) {
-                        return true
-                    }
-                    var moveX = event.x - lastX
-                    var moveY = event.y - lastY
-                    movePoint = Point(event.x,event.y)
-                    if (sBlackBoardStatus == 2) {
-                        if (abs(moveX) > 8 || abs(moveY) > 8) {
-                            lastX = event.x
-                            lastY = event.y
-                            if (isSelectedView) {
-                                // 移动view
-                                updateMove(moveX, moveY, false)
-                            } else {
-                                // 选择view区域绘制
-                                endView.endPoint = movePoint
+                    MotionEvent.ACTION_MOVE ->{
+                        if (sBlackBoardStatus == 4) {
+                            return true
+                        }
+                        var moveX = event.x - lastX
+                        var moveY = event.y - lastY
+                        movePoint = Point(event.x,event.y)
+                        if (sBlackBoardStatus == 2) {
+                            if (abs(moveX) > 8 || abs(moveY) > 8) {
+                                lastX = event.x
+                                lastY = event.y
+                                if (isSelectedView) {
+                                    // 移动view
+                                    updateMove(moveX, moveY, false)
+                                } else {
+                                    // 选择view区域绘制
+                                    endView.endPoint = movePoint
 
-                                // 判断是否有选中的view
-                                checkSelectView()
+                                    // 判断是否有选中的view
+                                    checkSelectView()
+                                }
+                            }
+                        } else if (sBlackBoardStatus == 3){
+                            if (abs(moveX) > 8 || abs(moveY) > 8) {
+                                lastX = event.x
+                                lastY = event.y
+                                endView.endPoint = movePoint
+                                checkEraser(movePoint)
                             }
                         }
-                    } else if (sBlackBoardStatus == 3){
-                        if (abs(moveX) > 8 || abs(moveY) > 8) {
+                    }
+                    MotionEvent.ACTION_UP ->{
+                        movePoint = Point(event.x,event.y)
+                        if (sBlackBoardStatus == 4) {
+                            addEditTextView(movePoint)
+                            return true
+                        }
+                        if (sBlackBoardStatus == 3) {
+                            endView.endPoint = movePoint
+                            endView.isDrawEaser = false
+                            checkEraser(movePoint)
+                            return true
+                        }
+                        if (isSelectedView) {
+                            updateMove(event.x - lastX,event.y - lastY, true)
                             lastX = event.x
                             lastY = event.y
-                            endView.endPoint = movePoint
-                            checkEraser(movePoint)
-                        }
-                    }
-                }
-                MotionEvent.ACTION_UP ->{
-                    movePoint = Point(event.x,event.y)
-                    if (sBlackBoardStatus == 4) {
-                        addEditTextView(movePoint)
-                        return true
-                    }
-                    if (sBlackBoardStatus == 3) {
-                        endView.endPoint = movePoint
-                        endView.isDrawEaser = false
-                        checkEraser(movePoint)
-                        return true
-                    }
-                    if (isSelectedView) {
-                        updateMove(event.x - lastX,event.y - lastY, true)
-                        lastX = event.x
-                        lastY = event.y
-                        if (abs(event.x - startPoint.x) < 8 && abs(event.y - startPoint.y) < 8) {
-                            // 判断是否是删除点击
-                            if ((event.x in deleteMinX..(deleteMinX + 30) && event.y in deleteMinY..(deleteMinY + 30))) {
-                                deleteSelectAll()
-                                isSelectedView = false
+                            if (abs(event.x - startPoint.x) < 8 && abs(event.y - startPoint.y) < 8) {
+                                // 判断是否是删除点击
+                                if ((event.x in deleteMinX..(deleteMinX + 30) && event.y in deleteMinY..(deleteMinY + 30))) {
+                                    deleteSelectAll()
+                                    isSelectedView = false
+                                }
                             }
-                        }
-                    } else {
+                        } else {
 //                        if (abs(event.x - startPoint.x) < 8 && abs(event.y - startPoint.y) < 8) {
 //                            // 判断是否点击了图片
 //
 //                        }
-                        // 判断是否有选中的view
-                        checkSelectView()
+                            // 判断是否有选中的view
+                            checkSelectView()
 
-                        // 抬起时如果选择有view
-                        if (checkAllViewIsSelect()) {
-                            isSelectedView = true
-                            sBlackBoardStatus = 2
+                            // 抬起时如果选择有view
+                            if (checkAllViewIsSelect()) {
+                                isSelectedView = true
+                                sBlackBoardStatus = 2
 
-                            // 确定最后的框选区域（暂时保留显示）
-                            selectAreStartPoint = startPoint
-                            selectAreMovePoint = movePoint
+                                // 确定最后的框选区域（暂时保留显示）
+                                selectAreStartPoint = startPoint
+                                selectAreMovePoint = movePoint
 
-                            // 找出公共区域出来添加可选中删除的按钮
-                            findSelectArea()
-                        } else {
-                            // 取消选择框效果
-                            updateSelectAll(false)
-                            isSelectedView = false
+                                // 找出公共区域出来添加可选中删除的按钮
+                                findSelectArea()
+                            } else {
+                                // 取消选择框效果
+                                updateSelectAll(false)
+                                isSelectedView = false
+                            }
+                            cancleSelectView ()
                         }
-                        cancleSelectView ()
                     }
                 }
+                return true
             }
-            return true
+        } catch (ex: IllegalArgumentException) {
+            LogUtil.e("xiaoyi activity onInterceptTouchEvent IllegalArgumentException$ex")
         }
         return super.onTouchEvent(event)
     }

@@ -60,6 +60,7 @@ public class EraserUtils {
         if (mIChangeCallback == null) {
             mIChangeCallback = iChangeCallback;
         }
+        mLastPoint = null;
         paths.clear();
         for (IBasePath path: allPaths){
             if (path instanceof DrawPath) {

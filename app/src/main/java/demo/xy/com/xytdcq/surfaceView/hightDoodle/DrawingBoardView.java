@@ -283,137 +283,142 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int action = event.getAction();
-        if (action == MotionEvent.ACTION_CANCEL) {
-            return false;
-        }
+        try {
+            int action = event.getAction();
+            if (action == MotionEvent.ACTION_CANCEL) {
+                return false;
+            }
 
-        float touchX = event.getX();
-        float touchY = event.getY();
-        touchX -= paintOffsetX;
-        touchY -= paintOffsetY;
-        LogUtil.e("x=" + touchX + ", y=" + touchY);
-//        LogUtil.e("x=" + touchX + ", y=" + touchY+"--"+pageChannel.paintChannel.type);
-//        LogUtil.e("x===" + event.getX() + ", y===" + event.getY()+"--"+pageChannel.paintChannel.type);
-        lastTouchTime = System.currentTimeMillis();
+            float touchX = event.getX();
+            float touchY = event.getY();
+            touchX -= paintOffsetX;
+            touchY -= paintOffsetY;
+            LogUtil.e("x=" + touchX + ", y=" + touchY);
+    //        LogUtil.e("x=" + touchX + ", y=" + touchY+"--"+pageChannel.paintChannel.type);
+    //        LogUtil.e("x===" + event.getX() + ", y===" + event.getY()+"--"+pageChannel.paintChannel.type);
+            lastTouchTime = System.currentTimeMillis();
 
 
-        switch (action) {
-            case MotionEvent.ACTION_POINTER_DOWN:
-                LogUtil.e("xiaoyi ACTION_POINTER_DOWN  PointerCount:" + event.getPointerCount());
-                break;
-            case MotionEvent.ACTION_POINTER_UP:
-                LogUtil.e("xiaoyi ACTION_POINTER_UP PointerCount:" + event.getPointerCount());
-                break;
-            case MotionEvent.ACTION_DOWN:
-                isDrawing = true;
-                if (paintType == ActionTypeEnum.Eraser.getValue()) {
-                    double getSize = event.getSize();
-                    double getPressure = event.getPressure();
-                    int paintSizeT;
-                    if (getSize > 0 && getSize < 1) {
-                        paintSizeT = (int) (getSize * 130);
-                    } else if (getPressure > 0 && getPressure < 1) {
-                        paintSizeT = (int) (getPressure * 130);
+            switch (action) {
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    LogUtil.e("xiaoyi ACTION_POINTER_DOWN  PointerCount:" + event.getPointerCount());
+                    break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    LogUtil.e("xiaoyi ACTION_POINTER_UP PointerCount:" + event.getPointerCount());
+                    break;
+                case MotionEvent.ACTION_DOWN:
+                    isDrawing = true;
+                    if (paintType == ActionTypeEnum.Eraser.getValue()) {
+                        double getSize = event.getSize();
+                        double getPressure = event.getPressure();
+                        int paintSizeT;
+                        if (getSize > 0 && getSize < 1) {
+                            paintSizeT = (int) (getSize * 130);
+                        } else if (getPressure > 0 && getPressure < 1) {
+                            paintSizeT = (int) (getPressure * 130);
+                        } else {
+                            paintSizeT = 30;
+                        }
+                        if (paintSizeT < 20) {
+                            paintSizeT = 20;
+                        } else if (paintSizeT > 60) {
+                            paintSizeT = 60;
+                        }
+                        paintSize = paintSizeT / xyZoom;
                     } else {
-                        paintSizeT = 30;
+                        paintSize = 1;
                     }
-                    if (paintSizeT < 20) {
-                        paintSizeT = 20;
-                    } else if (paintSizeT > 60) {
-                        paintSizeT = 60;
+                    points.clear();
+                    drawPath = new DrawPath(context);
+                    maxX = minX = touchX;
+                    maxY = minY = touchY;
+                    Point point = new Point(touchX,touchY);
+                    points.add(point);
+                    onPaintActionStart(touchX, touchY);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (touchX < minX) {
+                        minX = touchX;
+                    } else if(touchX > maxX){
+                        maxX = touchX;
                     }
-                    paintSize = paintSizeT / xyZoom;
-                } else {
-                    paintSize = 1;
-                }
-                points.clear();
-                drawPath = new DrawPath(context);
-                maxX = minX = touchX;
-                maxY = minY = touchY;
-                Point point = new Point(touchX,touchY);
-                points.add(point);
-                onPaintActionStart(touchX, touchY);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (touchX < minX) {
-                    minX = touchX;
-                } else if(touchX > maxX){
-                    maxX = touchX;
-                }
-                if (touchY < minY) {
-                    minY = touchY;
-                } else if(touchY > maxY){
-                    maxY = touchY;
-                }
-                points.add(new Point(touchX,touchY));
-                onPaintActionMove(touchX, touchY);
-                break;
-            case MotionEvent.ACTION_UP:
-                if (touchX < minX) {
-                    minX = touchX;
-                } else if(touchX > maxX){
-                    maxX = touchX;
-                }
-                if (touchY < minY) {
-                    minY = touchY;
-                } else if(touchY > maxY){
-                    maxY = touchY;
-                }
-                onPaintActionEnd(touchX, touchY);
-                Point endPoint = new Point(touchX,touchY);
-                drawPath.setStartPoint(new Point(minX, minY));
-                drawPath.setEndPoint(new Point(maxX, maxY));
-//                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) testPath.getLayoutParams();
-//                layoutParams.width = (int) (maxX-minX);
-//                layoutParams.height = (int) (maxY-minY);
-//                testPath.setLayoutParams(layoutParams);
-                drawPath.setViewWidth(maxX-minX);
-                drawPath.setViewHeight(maxY-minY);
-//                testPath.setBackgroundColor(0x50C7EDCC);
-//                testPath.setBackgroundColor(Color.TRANSPARENT);
-                points.add(endPoint);
-                if (drawPath != null) {
-                    drawPath.addAll(points);
-                }
-//                ViewGroup.LayoutParams params = testPath.getLayoutParams();
-//                params.width = 400;
-//                params.height = 400;
-//                testPath.setLayoutParams(params);
+                    if (touchY < minY) {
+                        minY = touchY;
+                    } else if(touchY > maxY){
+                        maxY = touchY;
+                    }
+                    points.add(new Point(touchX,touchY));
+                    onPaintActionMove(touchX, touchY);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if (touchX < minX) {
+                        minX = touchX;
+                    } else if(touchX > maxX){
+                        maxX = touchX;
+                    }
+                    if (touchY < minY) {
+                        minY = touchY;
+                    } else if(touchY > maxY){
+                        maxY = touchY;
+                    }
+                    onPaintActionEnd(touchX, touchY);
+                    Point endPoint = new Point(touchX,touchY);
+                    drawPath.setStartPoint(new Point(minX, minY));
+                    drawPath.setEndPoint(new Point(maxX, maxY));
+    //                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) testPath.getLayoutParams();
+    //                layoutParams.width = (int) (maxX-minX);
+    //                layoutParams.height = (int) (maxY-minY);
+    //                testPath.setLayoutParams(layoutParams);
+                    drawPath.setViewWidth(maxX-minX);
+                    drawPath.setViewHeight(maxY-minY);
+    //                testPath.setBackgroundColor(0x50C7EDCC);
+    //                testPath.setBackgroundColor(Color.TRANSPARENT);
+                    points.add(endPoint);
+                    if (drawPath != null) {
+                        drawPath.addAll(points);
+                    }
+    //                ViewGroup.LayoutParams params = testPath.getLayoutParams();
+    //                params.width = 400;
+    //                params.height = 400;
+    //                testPath.setLayoutParams(params);
 
-                // 设置居中显示
-                drawPath.setY(drawPath.getStartPoint().getY());
-                drawPath.setX(drawPath.getStartPoint().getX());
-                if (drawCallback != null) {
-//                    TestPath testPathT = testPath;
-                    drawCallback.callBackAddView(drawPath,(int) drawPath.getViewWidth(),(int) drawPath.getViewHeight());
-//                    TextView textView = new TextView(context);
-//                    textView.setBackgroundColor(Color.GRAY);
-//                    textView.setText("aaa bbb");
-//                    textView.setTextColor(Color.BLUE);
-//                    textView.setY(230);
-//                    textView.setX(230);
-//                    drawCallback.callBack(textView);
+                    // 设置居中显示
+                    drawPath.setY(drawPath.getStartPoint().getY());
+                    drawPath.setX(drawPath.getStartPoint().getX());
+                    if (drawCallback != null) {
+    //                    TestPath testPathT = testPath;
+                        drawCallback.callBackAddView(drawPath,(int) drawPath.getViewWidth(),(int) drawPath.getViewHeight());
+    //                    TextView textView = new TextView(context);
+    //                    textView.setBackgroundColor(Color.GRAY);
+    //                    textView.setText("aaa bbb");
+    //                    textView.setTextColor(Color.BLUE);
+    //                    textView.setY(230);
+    //                    textView.setX(230);
+    //                    drawCallback.callBack(textView);
 
-                }
-                isDrawing = false;
-//                pageChannel.paintChannel.action = null;
-                //绘制缓存的其他用户画笔
-//                if (cacheT.size() > 0) {
-//                    List<TransactionData> cache = new ArrayList<>();
-//                    cache.addAll(cacheT);
-////                    onTransaction(cacheAcount, cache);
-//                    cacheT.clear();
-//                }
-                if (cacheBitmap != null) {
-                    cacheBitmap.recycle();
-                    cacheBitmap = null;
-                }
-                break;
-            default:
-                break;
+                    }
+                    isDrawing = false;
+    //                pageChannel.paintChannel.action = null;
+                    //绘制缓存的其他用户画笔
+    //                if (cacheT.size() > 0) {
+    //                    List<TransactionData> cache = new ArrayList<>();
+    //                    cache.addAll(cacheT);
+    ////                    onTransaction(cacheAcount, cache);
+    //                    cacheT.clear();
+    //                }
+                    if (cacheBitmap != null) {
+                        cacheBitmap.recycle();
+                        cacheBitmap = null;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        } catch (IllegalArgumentException ex) {
+            LogUtil.e("xiaoyi board onInterceptTouchEvent IllegalArgumentException" + ex.toString());
         }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     private void onPaintActionStart(float x, float y) {
