@@ -15,15 +15,6 @@
                 android:orientation="vertical"
                 android:background="@color/white">
 
-                <demo.xy.com.xytdcq.surfaceView.hightDoodle.DrawingView
-                    android:id="@+id/drawing_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_centerVertical="true"
-                    android:visibility="gone"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center" />
-
                 <demo.xy.com.xytdcq.surfaceView.hightDoodle.FrameLayoutView
                     android:id="@+id/end_view"
                     android:layout_width="match_parent"

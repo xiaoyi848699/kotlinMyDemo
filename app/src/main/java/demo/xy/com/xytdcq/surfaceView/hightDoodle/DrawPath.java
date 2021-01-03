@@ -14,6 +14,10 @@ import android.view.View;
 import java.util.ArrayList;
 
 import demo.xy.com.mylibrary.log.LogUtil;
+import demo.xy.com.xytdcq.R;
+import demo.xy.com.xytdcq.surfaceView.BlackBoardAcivity;
+import demo.xy.com.xytdcq.surfaceView.utils.BezierUtil;
+import demo.xy.com.xytdcq.surfaceView.utils.PointUtils;
 
 public class DrawPath extends BasePath {
     public DrawPath(Context context) {
@@ -108,8 +112,6 @@ public class DrawPath extends BasePath {
         }
         path.lineTo(startX, startY);
         canvas.drawPath(path, paint);
-
-        LogUtil.i("xiaoyi","TestPath...onDraw");
         if (isSelect()) {
             canvas.drawColor(0x30C7EDCC);
             paint.setColor(Color.BLUE);
@@ -125,11 +127,41 @@ public class DrawPath extends BasePath {
         invalidate();
     }
     public void addAll(ArrayList<Point> points) {
+        ArrayList<Point> newPoints = new ArrayList<>(points.size());
         for (Point p:points) {
             p.setX(p.getX() - startPoint.getX() + size); // 偏移 使得靠边的线不会出现一部分不可见
             p.setY(p.getY() - startPoint.getY() + size);
-            this.points.add(p);
+            newPoints.add(p);
         }
+        // 补点
+        ArrayList<Point> addPoints = BezierUtil.getAddPoint(newPoints);
+        this.points.addAll(addPoints);
         invalidate();
+        // 发送数据
+
+
+    }
+
+    public boolean checkEraser(Point pointIn) {
+        if (this.points == null || this.points.size() == 0) {
+            return true;
+        }
+        // 先判断如果不在绘制区内返回false
+        if ((pointIn.getX()) >= startPoint.getX() - BlackBoardAcivity.eraserSize // 橡皮半径
+                && pointIn.getX() <= endPoint.getX() + BlackBoardAcivity.eraserSize
+                && pointIn.getY() >= startPoint.getY() - BlackBoardAcivity.eraserSize
+                && pointIn.getY() <= endPoint.getY() + BlackBoardAcivity.eraserSize) {
+            // 转换成区域内的相对位置点
+            Point point = new Point(pointIn.getX() - startPoint.getX() + size, pointIn.getY() - startPoint.getY() + size);
+            for (Point p : this.points) {
+                if (PointUtils.checkIndistance(p, point, BlackBoardAcivity.eraserSize)) {
+                    return true;
+                }
+            }
+        } else {
+            LogUtil.e("checkEraser un in area");
+            return false;
+        }
+        return false;
     }
 }

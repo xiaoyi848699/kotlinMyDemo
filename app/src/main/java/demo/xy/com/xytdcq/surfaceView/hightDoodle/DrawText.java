@@ -27,6 +27,7 @@ import demo.xy.com.mylibrary.KeyBoardUtils;
 import demo.xy.com.xytdcq.R;
 import demo.xy.com.xytdcq.surfaceView.BlackBoardAcivity;
 import demo.xy.com.xytdcq.uitls.LogUtil;
+import demo.xy.com.xytdcq.uitls.ScreenCenter;
 import demo.xy.com.xytdcq.uitls.Utils;
 
 /**
@@ -38,6 +39,7 @@ public class DrawText extends EditText implements IBasePath {
     private String text; // 文字
     private float operateImageSize = 40;
     private int minWidthSize = 100;
+    private int maxWidthSize = 100;
     private int minHeightSize = 100;
     private int lineHeightSize = 40;
 
@@ -190,6 +192,7 @@ public class DrawText extends EditText implements IBasePath {
 
     public void setStartPoint(Point startPoint) {
         this.startPoint = startPoint;
+        maxWidthSize = (int) (ScreenCenter.getDisplayWidth() - startPoint.getX() - operateImageSize * 2);
     }
 
     public Point getEndPoint() {
@@ -341,18 +344,38 @@ public class DrawText extends EditText implements IBasePath {
             return;
         }
         float textWidth = getPaint().measureText(text.toString());
-        int line = (int) Math.ceil(textWidth / (getViewWidth() - operateImageSize * 2));
-        LogUtil.e(TAG,"onTextChanged need textWidth" + textWidth + ",line:" + line);
-        // 如果高度不够实现自动增长
-        if (getViewHeight() < (lineHeightSize * line +  operateImageSize * 2)) {
-            float viewHeight = (line * lineHeightSize +  operateImageSize * 2);
-            ViewGroup.LayoutParams layoutParams = getLayoutParams();
-            layoutParams.height = (int) viewHeight;
-            setLayoutParams(layoutParams);
-            setViewHeight(viewHeight);
-            invalidate();
-            setEndPoint(new Point(getStartPoint().getX(), getStartPoint().getY() + viewHeight));
+        // 如果还能增加宽度就先增加宽度
+        if ((getViewWidth() - operateImageSize * 2) < textWidth) {
+            if (textWidth < maxWidthSize) {
+                LogUtil.e(TAG,"onTextChanged need change width" + textWidth);
+                float viewWidth = (textWidth +  operateImageSize * 2);
+                ViewGroup.LayoutParams layoutParams = getLayoutParams();
+                layoutParams.width = (int) viewWidth;
+                setLayoutParams(layoutParams);
+                setViewWidth(viewWidth);
+                invalidate();
+                setEndPoint(new Point(viewWidth, getStartPoint().getY()));
+                return;
+            } else {
+                int line = (int) Math.ceil(textWidth / maxWidthSize);
+                LogUtil.e(TAG,"onTextChanged need textWidth" + textWidth + ",line:" + line);
+                // 无法增加宽度的情况下 如果高度不够实现自动增长
+                if (getViewHeight() < (lineHeightSize * line +  operateImageSize * 2)) {
+                    float viewHeight = (line * lineHeightSize +  operateImageSize * 2);
+                    float viewWidth = (maxWidthSize +  operateImageSize * 2);
+                    LogUtil.e(TAG,"onTextChanged need change height" + viewHeight);
+                    ViewGroup.LayoutParams layoutParams = getLayoutParams();
+                    layoutParams.width = (int) viewWidth;
+                    layoutParams.height = (int) viewHeight;
+                    setLayoutParams(layoutParams);
+                    setViewWidth(viewWidth);
+                    setViewHeight(viewHeight);
+                    invalidate();
+                    setEndPoint(new Point(viewWidth, viewHeight));
+                }
+            }
         }
+
     }
 
     @Override

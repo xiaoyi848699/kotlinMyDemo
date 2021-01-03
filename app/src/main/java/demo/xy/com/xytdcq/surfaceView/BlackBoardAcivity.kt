@@ -4,8 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.view.*
-import android.widget.*
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.OnClick
 import demo.xy.com.mylibrary.picture.ImageLibraryHelper
@@ -15,6 +21,7 @@ import demo.xy.com.xytdcq.surfaceView.doodle.ActionTypeEnum
 import demo.xy.com.xytdcq.surfaceView.doodle.BlankPage
 import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.*
+import demo.xy.com.xytdcq.surfaceView.utils.EraserUtils
 import demo.xy.com.xytdcq.uitls.BitmapUtil
 import demo.xy.com.xytdcq.uitls.ScreenCenter
 import demo.xy.com.xytdcq.uitls.ToastUtil
@@ -26,6 +33,10 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 
         @kotlin.jvm.JvmField
         var sBlackBoardStatus = 0 // 标记画板状态 0：画笔， 1：移动，2：选择 3：橡皮，4 添加文字
+
+        @kotlin.jvm.JvmField
+        var eraserSize = 10 // 橡皮擦大小
+
         @JvmStatic
         fun startInstance(context: Context, homeworkId: String?, questionId: String?, course: String?) {
             val intent = Intent(context, BlackBoardAcivity::class.java)
@@ -39,9 +50,6 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     lateinit var endView: FrameLayoutView
     @BindView(R.id.doodle_view)
     lateinit var doodleView: DrawingBoardView//画板
-//    @BindView(R.id.drawing_view)
-//    lateinit var drawingView: DrawingView//画板
-
 
     @BindView(R.id.move_scrollview)
     lateinit var move_scrollview: MyScrollView
@@ -90,6 +98,8 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 
     private lateinit var textView:TextView
 
+    private lateinit var eraserUtils:EraserUtils;
+
     override fun getLayout(): Int {
         return R.layout.activity_fram_layout;
     }
@@ -97,6 +107,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 
     override fun setDataAndEvent() {
         addImageWidth = resources.getDimension(R.dimen.ic_pid_w_h200)
+        eraserSize = resources.getDimensionPixelSize(R.dimen.ic_pid_w_h10)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         paths = arrayListOf()
         getCenterPosition()
@@ -119,12 +130,6 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 //        pageList2 = arrayListOf()
 //        var blankPage2 = BlankPage()
 //        pageList2!!.add(blankPage2!!)
-
-//        drawingView.setPageChannel(blankPage)
-//        drawingView.init(bgColor!!, paintColor!!, this)
-//        drawingView!!.setPageList(pageList2)
-//        drawingView!!.setPaintType(ActionTypeEnum.Path.value)
-//        drawingView.setDrawCallback(this);
 
 //        val layoutParamsTextInfo = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50)
 //        val textInfo = TextView(this)
@@ -269,7 +274,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         isCanMove = false
         isSelectPen = false
         doodleView.visibility = View.GONE
-        dealPenView();
+        dealPenView()
         resetLeftTools1(5);
         wb_text.setImageResource(R.drawable.wb_text_s);
         if (isSelectedView) {
@@ -277,6 +282,28 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         }
         // 提示用户点击添加输入框
         hintAddEditview.visibility = View.VISIBLE
+    }
+
+    private fun selectEraser() {
+        sBlackBoardStatus = 3
+        doodleView.isWait = true
+//        doodleView.setEraseType()
+        isCanMove = false
+        isSelectPen = false
+        doodleView.visibility = View.GONE
+        dealPenView()
+        resetLeftTools1(3);
+        wb_eraser.setImageResource(R.drawable.wb_eraser_s);
+        initEraserUtils()
+        if (isSelectedView) {
+            updateSelectAll(false)
+        }
+    }
+
+    private fun initEraserUtils() {
+        eraserUtils = EraserUtils.getInstance()
+        eraserUtils.init(paths,this)
+        eraserUtils.startLinstener()
     }
 
     private fun resetLeftTools1(index:Int) {
@@ -315,13 +342,10 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 
     fun selectTools(flag:Int){
         when(flag){
-            0->{
-                ToastUtil.showToast(this,"选择了橡皮")
-                sBlackBoardStatus = 3
-                doodleView.isWait = true
-                doodleView.setEraseType()
+            0 -> doodleView.paintBack()
+            1->{
+                selectEraser()
             }
-            1 -> doodleView.paintBack()
             2 -> {
                 ImageLibraryHelper.showTakePicDialog("添加图片",this@BlackBoardAcivity);
             }
@@ -363,24 +387,30 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                     lastX = event.x
                     lastY = event.y
                     startPoint = Point(downX,downY)
-                    isSelectView = false
-                    if (isSelectedView) {
-                        // 判断如果是上次范围内，这继续移动
+                    if (sBlackBoardStatus == 2) {
+                        isSelectView = false
+                        if (isSelectedView) {
+                            // 判断如果是上次范围内，这继续移动
 
-                        // 不是上次范围内则取消选择
-                        // 判断为点击（如果在区域外则取消选择）
-                        if (!(downX in deleteMinX..deleteMaxX && downY in deleteMinY..deleteMaxY)) {
-                            isSelectedView = false
-                            updateSelectAll(false)
+                            // 不是上次范围内则取消选择
+                            // 判断为点击（如果在区域外则取消选择）
+                            if (!(downX in deleteMinX..deleteMaxX && downY in deleteMinY..deleteMaxY)) {
+                                isSelectedView = false
+                                updateSelectAll(false)
 
-                            // 重新创建选择区域
+                                // 重新创建选择区域
+                                endView.isDrawSelect = true
+                                endView.startPoint = startPoint
+                            }
+                        } else {
+                            // 创建选择区域
                             endView.isDrawSelect = true
                             endView.startPoint = startPoint
                         }
-                    } else {
-                       // 创建选择区域
-                        endView.isDrawSelect = true
+                    } else if (sBlackBoardStatus == 3) {
                         endView.startPoint = startPoint
+                        endView.isDrawEaser = true
+                        checkEraser(startPoint)
                     }
                 }
                 MotionEvent.ACTION_MOVE ->{
@@ -390,19 +420,27 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                     var moveX = event.x - lastX
                     var moveY = event.y - lastY
                     movePoint = Point(event.x,event.y)
-                    if (abs(moveX) > 8 || abs(moveY) > 8) {
-                        lastX = event.x
-                        lastY = event.y
-                        if (isSelectedView) {
-                            // 移动view
-                            updateMove(moveX, moveY, false)
-                        } else {
-                            // 选择view区域绘制
-                            endView.endPoint = movePoint
-                            endView.invalidate()
+                    if (sBlackBoardStatus == 2) {
+                        if (abs(moveX) > 8 || abs(moveY) > 8) {
+                            lastX = event.x
+                            lastY = event.y
+                            if (isSelectedView) {
+                                // 移动view
+                                updateMove(moveX, moveY, false)
+                            } else {
+                                // 选择view区域绘制
+                                endView.endPoint = movePoint
 
-                            // 判断是否有选中的view
-                            checkSelectView()
+                                // 判断是否有选中的view
+                                checkSelectView()
+                            }
+                        }
+                    } else if (sBlackBoardStatus == 3){
+                        if (abs(moveX) > 8 || abs(moveY) > 8) {
+                            lastX = event.x
+                            lastY = event.y
+                            endView.endPoint = movePoint
+                            checkEraser(movePoint)
                         }
                     }
                 }
@@ -410,6 +448,12 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                     movePoint = Point(event.x,event.y)
                     if (sBlackBoardStatus == 4) {
                         addEditTextView(movePoint)
+                        return true
+                    }
+                    if (sBlackBoardStatus == 3) {
+                        endView.endPoint = movePoint
+                        endView.isDrawEaser = false
+                        checkEraser(movePoint)
                         return true
                     }
                     if (isSelectedView) {
@@ -424,10 +468,10 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                             }
                         }
                     } else {
-                        if (abs(event.x - startPoint.x) < 8 && abs(event.y - startPoint.y) < 8) {
-                            // 判断是否点击了图片
-
-                        }
+//                        if (abs(event.x - startPoint.x) < 8 && abs(event.y - startPoint.y) < 8) {
+//                            // 判断是否点击了图片
+//
+//                        }
                         // 判断是否有选中的view
                         checkSelectView()
 
@@ -448,7 +492,6 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                             isSelectedView = false
                         }
                         cancleSelectView ()
-
                     }
                 }
             }
@@ -457,11 +500,21 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         return super.onTouchEvent(event)
     }
 
+    /**
+     * 检查是否被橡皮擦除
+     */
+    private fun checkEraser(movePoint: Point) {
+        if (eraserUtils == null) {
+            initEraserUtils()
+        }
+        eraserUtils.addEraserPoint(movePoint)
+    }
+
     private fun addEditTextView(point: Point) {
         var drawText = DrawText(this)
         changeSelectCallBack(drawText.vid) // 更新选择自己
-        drawText.startPoint = point
-        drawText.endPoint = Point(point.x + drawText.viewWidth,point.y + drawText.viewHeight)
+        drawText.startPoint = Point(point.x - drawText.viewWidth/2, point.y - drawText.viewHeight/2)
+        drawText.endPoint = Point(point.x + drawText.viewWidth/2,point.y + drawText.viewHeight/2)
         drawText.setChangeCallback(this)
         isSelectedSinglePic = false
         callBackAutoAddView(drawText)
@@ -732,6 +785,25 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                 b.endPoint = endPoint
                 b.viewWidth = width
                 b.viewHeight = height
+            }
+        }
+    }
+
+    override fun eraserPath(viewIds: MutableList<String>?) {
+        runOnUiThread {
+            var newPaths: ArrayList<IBasePath> = arrayListOf()
+            for (b in this!!.paths!!) {
+                if (b is DrawPath && viewIds != null) {
+                    if (viewIds.contains(b.vid)) {
+                        endView.removeView(b)
+                        continue
+                    }
+                }
+                newPaths.add(b)
+            }
+            this!!.paths!!.clear()
+            if (newPaths.size > 0) {
+                this!!.paths!!.addAll(newPaths)
             }
         }
     }

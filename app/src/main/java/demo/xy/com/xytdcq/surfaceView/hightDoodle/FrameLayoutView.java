@@ -14,12 +14,23 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import demo.xy.com.xytdcq.R;
+import demo.xy.com.xytdcq.surfaceView.BlackBoardAcivity;
+import demo.xy.com.xytdcq.uitls.LogUtil;
 
 public class FrameLayoutView extends FrameLayout {
-    private boolean isDrawSelect = false;
+    private boolean isDrawSelect = false; // 绘制选择区域
+    private boolean isDrawEaser = false; // 绘制橡皮
     protected Paint paint;
     private Point startPoint;
     private Point endPoint;
+
+    public boolean isDrawEaser() {
+        return isDrawEaser;
+    }
+
+    public void setDrawEaser(boolean drawEaser) {
+        isDrawEaser = drawEaser;
+    }
 
     public boolean isDrawSelect() {
         return isDrawSelect;
@@ -43,6 +54,7 @@ public class FrameLayoutView extends FrameLayout {
 
     public void setEndPoint(Point endPoint) {
         this.endPoint = endPoint;
+        invalidate();
     }
 
     public FrameLayoutView(@NonNull Context context) {
@@ -91,23 +103,33 @@ public class FrameLayoutView extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (isDrawSelect() && startPoint != null && endPoint != null) {
+        if ((isDrawSelect() || isDrawEaser()) && startPoint != null && endPoint != null) {
             if (paint == null) {
                 paint = new Paint();
                 paint.setAntiAlias(true);
                 paint.setDither(true);
                 paint.setStrokeWidth(1);
-                paint.setStyle(Paint.Style.STROKE);
+                paint.setStyle(Paint.Style.STROKE);////画笔属性是空心圆
                 paint.setStrokeJoin(Paint.Join.ROUND);
                 paint.setStrokeCap(Paint.Cap.ROUND);
             }
-//            canvas.drawColor(0x50C7EDCC);
             paint.setColor(Color.GRAY);
             paint.setStrokeWidth(1);
-            canvas.drawRect(startPoint.getX() < endPoint.getX() ? startPoint.getX() : endPoint.getX(),
-                    startPoint.getY() < endPoint.getY() ? startPoint.getY() :endPoint.getY(),
-                    endPoint.getX() > startPoint.getX() ? endPoint.getX() : startPoint.getX(),
-                    endPoint.getY() > startPoint.getY() ? endPoint.getY(): startPoint.getY(), paint);
+            if (BlackBoardAcivity.sBlackBoardStatus == 2) {
+                canvas.drawRect(startPoint.getX() < endPoint.getX() ? startPoint.getX() : endPoint.getX(),
+                        startPoint.getY() < endPoint.getY() ? startPoint.getY() :endPoint.getY(),
+                        endPoint.getX() > startPoint.getX() ? endPoint.getX() : startPoint.getX(),
+                        endPoint.getY() > startPoint.getY() ? endPoint.getY(): startPoint.getY(), paint);
+            } else if (BlackBoardAcivity.sBlackBoardStatus == 3){
+                /**
+                 * 四个参数：
+                 * 参数一：圆心的x坐标
+                 * 参数二：圆心的y坐标
+                 * 参数三：圆的半径
+                 * 参数四：定义好的画笔
+                */
+                canvas.drawCircle(endPoint.getX(), endPoint.getY(), BlackBoardAcivity.eraserSize, paint);
+            }
         }
 
     }
