@@ -15,7 +15,7 @@ import demo.xy.com.xytdcq.surfaceView.BlackBoardAcivity;
 import demo.xy.com.xytdcq.surfaceView.utils.BezierUtil;
 import demo.xy.com.xytdcq.surfaceView.utils.PointUtils;
 
-public class DrawPath extends BasePath {
+public class DrawPath extends BaseLinePath {
     public DrawPath(Context context) {
         super(context);
     }
@@ -122,6 +122,8 @@ public class DrawPath extends BasePath {
         points.add(point);
         invalidate();
     }
+
+    @Override
     public void addAll(ArrayList<Point> points) {
         ArrayList<Point> newPoints = new ArrayList<>(points.size());
         for (Point p:points) {

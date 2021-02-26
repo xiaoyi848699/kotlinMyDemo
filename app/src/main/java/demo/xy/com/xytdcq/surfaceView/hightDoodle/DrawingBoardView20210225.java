@@ -34,6 +34,7 @@ import demo.xy.com.xytdcq.surfaceView.doodle.MyLine;
 import demo.xy.com.xytdcq.surfaceView.doodle.MyPath;
 import demo.xy.com.xytdcq.surfaceView.doodle.MyRect;
 import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel;
+import demo.xy.com.xytdcq.surfaceView.doodle.TransactionData;
 import demo.xy.com.xytdcq.uitls.BitmapUtil;
 import demo.xy.com.xytdcq.uitls.FastClick;
 import demo.xy.com.xytdcq.uitls.LogUtil;
@@ -44,7 +45,7 @@ import demo.xy.com.xytdcq.uitls.ToastUtil;
 /**
  * 画板
  */
-public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callback {
+public class DrawingBoardView20210225 extends SurfaceView implements SurfaceHolder.Callback {
     private String[] permissions =  new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     public static final int rts_blue = 0x2673f7;
@@ -62,6 +63,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
     private float paintSize;//画笔大小(修改让其传输)
     private int paintType;//画笔类型(修改让其传输)
 
+    private List<TransactionData> cacheT = new ArrayList<>();//如果本人在操作时，接受到的数据先缓存起来，画完再把缓存数据画出来
     private boolean isDrawing = false;
 
     private float xyZoom = 1.0f;
@@ -82,7 +84,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
     private byte isFirstIn = 0;
     private Bitmap cacheBitmap;
     private Canvas tmpCanvas;
-//    private DrawThread dt;
+    private DrawThread dt;
 
     private boolean isRunning = false;//绘制线程是否运行中
     private boolean isWait = false;//画笔才刷新界面
@@ -118,17 +120,17 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         isWait = wait;
     }
 
-    public DrawingBoardView(Context context) {
+    public DrawingBoardView20210225(Context context) {
         super(context);
         init();
     }
 
-    public DrawingBoardView(Context context, AttributeSet attrs, int defStyle) {
+    public DrawingBoardView20210225(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    public DrawingBoardView(Context context, AttributeSet attrs) {
+    public DrawingBoardView20210225(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -153,7 +155,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         this.paintSize = 1;
         isRunning = true;
         lastTouchTime = System.currentTimeMillis();
-//        getThreadInstance().start();
+        getThreadInstance().start();
 
     }
 
@@ -162,6 +164,33 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         this.pageList = pageList;
     }
 
+    public void onResume() {
+        LogUtil.e("xy...onResume..");
+        //syncHistory();
+        if (isFirstIn == 0) {
+            isFirstIn = 1;
+//            onPaintBackground();
+        } else {
+            onReDrawHistory(true);//TODO回调有问题
+//          //  reDraw();
+        }
+    }
+
+    private void syncHistory() {
+        List<TransactionData> transactions = pageList.get(currentPage).userDataListT;
+        LogUtil.e("euserDataListT..........................." + transactions.size());
+        if (null == transactions || transactions.size() == 0 || isDestory) {
+            LogUtil.e("xy...onSyncMyTransactionsDraw  Transaction is null" + isDestory);
+        } else {
+            onSyncMyTransactionsDraw(transactions);
+            LogUtil.e("xy...onSyncMyTransactionsDraw  Transaction paintChannel after:" + pageChannel.paintChannel.actions.size());
+            //同步完成清空
+            pageList.get(currentPage).userDataListT.clear();
+        }
+    }
+
+
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
 
@@ -169,6 +198,8 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
     //
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+//        Log.e(TAG, "surfaceView created, width = " + width + ", height = " + height);
+//        xyZoom = (float) Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
         if (surfaceHolder != null) {
             drawView(0);
         }
@@ -222,12 +253,23 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         if (pageChannel.paintChannel == null) {
             return;
         }
+        back(getImAccount(), true);
+    }
+
+    private void operateFail() {
+        ToastUtil.showToast(context, "操作失败，请重试");
     }
 
     public void clear() {
         clearAll();
     }
 
+
+    //删除画笔
+    public void clearAccountPaint(String account) {
+        pageChannel.clearAccountPaint(account);//老师删除自己的画笔同步数据
+        reDraw();
+    }
     private ArrayList<Point> points = new ArrayList<>();
     private BaseLinePath drawPath = null;
     private Point startPoint;
@@ -254,6 +296,8 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
             touchX -= paintOffsetX;
             touchY -= paintOffsetY;
             LogUtil.e("x=" + touchX + ", y=" + touchY);
+    //        LogUtil.e("x=" + touchX + ", y=" + touchY+"--"+pageChannel.paintChannel.type);
+    //        LogUtil.e("x===" + event.getX() + ", y===" + event.getY()+"--"+pageChannel.paintChannel.type);
             lastTouchTime = System.currentTimeMillis();
             switch (action) {
                 case MotionEvent.ACTION_POINTER_DOWN:
@@ -290,10 +334,6 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                        drawPath = new DrawPath(context);
                    } else if (paintType ==  ActionTypeEnum.Line.getValue()) {
                        drawPath = new DrawPathLine(context);
-                   } else if (paintType ==  ActionTypeEnum.Rectangle.getValue()) {
-                       drawPath = new DrawPath(context);
-                   } else if (paintType ==  ActionTypeEnum.Rect.getValue()) {
-                       drawPath = new DrawPath(context);
                    } else {
                        drawPath = new DrawPath(context);
                    }
@@ -307,21 +347,18 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                     onPaintActionStart(touchX, touchY);
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    if (paintType ==  ActionTypeEnum.Path.getValue()) {
-                        if (touchX < minX) {
-                            minX = touchX;
-                        } else if(touchX > maxX){
-                            maxX = touchX;
-                        }
-                        if (touchY < minY) {
-                            minY = touchY;
-                        } else if(touchY > maxY){
-                            maxY = touchY;
-                        }
-                        points.add(new Point(touchX,touchY));
+                    if (touchX < minX) {
+                        minX = touchX;
+                    } else if(touchX > maxX){
+                        maxX = touchX;
                     }
+                    if (touchY < minY) {
+                        minY = touchY;
+                    } else if(touchY > maxY){
+                        maxY = touchY;
+                    }
+                    points.add(new Point(touchX,touchY));
                     onPaintActionMove(touchX, touchY);
-                    invalidate();
                     break;
                 case MotionEvent.ACTION_UP:
                     if (touchX < minX) {
@@ -342,10 +379,10 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                         drawPath.setViewWidth(maxX-minX);
                         drawPath.setViewHeight(maxY-minY);
                     } else if (paintType ==  ActionTypeEnum.Line.getValue() || paintType ==  ActionTypeEnum.Rectangle.getValue()) {
-                        drawPath.setStartPoint(new Point(minX-10, minY-10));
-                        drawPath.setEndPoint(new Point(maxX+10, maxY+10));
-                        drawPath.setViewWidth(Math.max(Math.abs(endPoint.getX() - startPoint.getX()) + 20, 30));
-                        drawPath.setViewHeight(Math.max(Math.abs(endPoint.getY() - startPoint.getY()) + 20, 30));
+                        drawPath.setStartPoint(startPoint);
+                        drawPath.setEndPoint(endPoint);
+                        drawPath.setViewWidth(Math.max(Math.abs(endPoint.getX() - startPoint.getX()), 20));
+                        drawPath.setViewHeight(Math.max(Math.abs(endPoint.getY() - startPoint.getY()), 20));
                     } else {
                         drawPath.setStartPoint(new Point(minX, minY));
                         drawPath.setEndPoint(new Point(maxX, maxY));
@@ -365,11 +402,17 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                     }
                     isDrawing = false;
                     pageChannel.paintChannel.action = null;
+                    //绘制缓存的其他用户画笔
+    //                if (cacheT.size() > 0) {
+    //                    List<TransactionData> cache = new ArrayList<>();
+    //                    cache.addAll(cacheT);
+    ////                    onTransaction(cacheAcount, cache);
+    //                    cacheT.clear();
+    //                }
                     if (cacheBitmap != null) {
                         cacheBitmap.recycle();
                         cacheBitmap = null;
                     }
-                    invalidate();
                     break;
                 default:
                     break;
@@ -385,11 +428,11 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         if (null == pageChannel || pageChannel.paintChannel == null) {
             return;
         }
-        if (paintType == ActionTypeEnum.Path.getValue() /*&& dt == null || !dt.isAlive()*/) {
+        if (paintType == ActionTypeEnum.Path.getValue() && dt == null/* || !dt.isAlive()*/) {
             LogUtil.e("thread is stop..");
             isRunning = true;
             lastTouchTime = System.currentTimeMillis();
-//            getThreadInstance().start();
+            getThreadInstance().start();
         }
 //        //画笔大小需要根据屏幕转换，不然擦除对应不上
         onActionStart(x, y);
@@ -414,6 +457,21 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
     }
 
 
+
+    //重绘历史
+    private void onReDrawHistory(boolean repeat) {
+        if (repeat) {
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    LogUtil.e("onReDrawHistory postDelayed 画一次" + true);
+//                    onReDrawHistory(true);
+                    reDraw();
+                }
+            }, 500);
+        }
+    }
+
     private void onActionStart(float x, float y) {
         DoodleChannel channel = pageChannel.paintChannel;
         if (null == channel) return;
@@ -426,8 +484,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
             ;
         }
         //2017/6/8 修改原来画path,增加画其它形状
-//        channel.action = getActionByPaintType(paintType, x, y, this.paintColor, (int) paintSizeT);
-        channel.action = getActionByPaintType(paintType, x, y, rts_red, (int) paintSizeT);
+        channel.action = getActionByPaintType(paintType, x, y, this.paintColor, (int) paintSizeT);
         if (paintType == ActionTypeEnum.Path.getValue()) {
             channel.action.onDraw(tmpCanvas);
         }
@@ -447,7 +504,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         if (paintType == ActionTypeEnum.Path.getValue()) {
             channel.action.onDraw(tmpCanvas);
         } else {
-//            drawHistoryActions();
+            drawHistoryActions();
         }
     }
 
@@ -456,13 +513,13 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         if (channel == null || channel.action == null) {
             return;
         }
-//        if (paintType != ActionTypeEnum.Path.getValue()) {
-//            channel.action.onDraw(tmpCanvas);
-//        }
+        if (paintType != ActionTypeEnum.Path.getValue()) {
+            channel.action.onDraw(tmpCanvas);
+        }
         channel.action.onEnd(tmpCanvas);
-//        if (paintType != ActionTypeEnum.Path.getValue()) {
-//            drawHistoryActions();//防止画笔重影、重绘一次
-//        }
+        if (paintType != ActionTypeEnum.Path.getValue()) {
+            drawHistoryActions();//防止画笔重影、重绘一次
+        }
 
         channel.action.setAccount(getImAccount());
         channel.actions.add(channel.action);
@@ -471,11 +528,116 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
     }
 
 
+    private void onSyncMyTransactionsDraw(List<TransactionData> transactions) {
+        LogUtil.e("xy...onSyncMyTransactionsDraw  Transaction:" + transactions.size());
+        for (TransactionData t : transactions) {
+            //学生端不要缓存历史数据（如果需要在这里将接受到的数据，按用户缓存进userDataMap）
+            LogUtil.e("xy...onSyncMyTransactionsDraw  Transaction:" + t.toString());
+            lastTouchTime = System.currentTimeMillis();
+            switch (t.getPointType()) {
+                case TransactionData.ActionPointType.DOWN:
+                    if (null != pageChannel.paintChannel && otherPeopleaction != null) {
+                        // 如果没有收到end包，在这里补提交
+                        pageChannel.paintChannel.actions.add(otherPeopleaction);
+                        otherPeopleaction = null;
+                    }
+                    int paintSize = (int) (t.getPenSize());
+                    if (t.getPenType() == ActionTypeEnum.Eraser.getValue()) {
+//                        paintSize = (int)(t.getPenSize() * xZoom);
+//                        paintSize = (int)(fst.adjustXInFloat(t.getPenSize()));
+                        paintSize = (int) (t.getPenSize() * xyZoom);
+                    }
+                    otherPeopleaction = getActionByPaintType(t.getPenType(), t.getX() * xyZoom, t.getY() * xyZoom, t.getColorHex(), paintSize);
+                    otherPeopleaction.onStart(tmpCanvas);
+                    if (t.getPenType() == ActionTypeEnum.Path.getValue()) {
+                        otherPeopleaction.onDraw(tmpCanvas);
+                    }
+                    break;
+                case TransactionData.ActionPointType.MOVE:
+                    if (otherPeopleaction == null) {
+                        // 有可能action被清空，此时收到move，重新补个start
+                        paintSize = (int) (t.getPenSize());
+                        if (t.getPenType() == ActionTypeEnum.Eraser.getValue()) {
+//                            paintSize = (int)(t.getPenSize() * xZoom);
+//                            paintSize = (int)(fst.adjustXInFloat(t.getPenSize()));
+                            paintSize = (int) (t.getPenSize() * xyZoom);
+                        }
+                        otherPeopleaction = getActionByPaintType(t.getPenType(), t.getX() * xyZoom, t.getY() * xyZoom, t.getColorHex(), paintSize);
+                        otherPeopleaction.onStart(tmpCanvas);
+                        if (t.getPenType() == ActionTypeEnum.Path.getValue()) {
+                            otherPeopleaction.onDraw(tmpCanvas);
+                        }
+                    }
+                    otherPeopleaction.onMove(t.getX() * xyZoom, t.getY() * xyZoom);
+                    if (t.getPenType() == ActionTypeEnum.Path.getValue()) {
+                        otherPeopleaction.onDraw(tmpCanvas);
+                    } else {
+//                        Canvas canvas = surfaceHolder.lockCanvas();
+                        drawHistoryActions();
+//                        if (canvas != null) {
+//                            surfaceHolder.unlockCanvasAndPost(canvas);
+//                        }
+                    }
+                    break;
+                case TransactionData.ActionPointType.UP:
+                    if (getImAccount().equals(t.getUid())) {
+                        otherPeopleaction.isSelf = 1;//自己的画笔
+                    } else {
+                        otherPeopleaction.isSelf = 0;
+                    }
+                    otherPeopleaction.setAccount(t.getUid());
+                    otherPeopleaction.onDraw(tmpCanvas);
+                    otherPeopleaction.onEnd(tmpCanvas);
+                    if (t.getPenType() != ActionTypeEnum.Path.getValue()) {
+//                        Canvas canvas = surfaceHolder.lockCanvas();
+                        drawHistoryActions();
+//                        if (canvas != null) {
+//                            surfaceHolder.unlockCanvasAndPost(canvas);
+//                        }
+                    }
+                    otherPeopleaction.setAccount(getImAccount());
+                    pageChannel.paintChannel.actions.add(otherPeopleaction);
+                    otherPeopleaction = null;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
 
     //------------------------------绘画------------------------------------
-//    private void drawHistoryActions() {
-//        drawView(3);
-//    }
+    private void drawHistoryActions() {
+        drawView(3);
+    }
+
+    //isPaintView : true(用户主动撤销)、false(接收到撤销)
+    private boolean back(String account, boolean isPaintView) {
+//        DialogUtils.show((Activity) context,"正在撤销...");
+        boolean isBack = false;
+        DoodleChannel channel = pageChannel.paintChannel;
+        if (null != channel) { //主动撤销
+            if (null != channel.actions && channel.actions.size() > 0) {
+                for (int i = channel.actions.size(); i >= 1; i--) {
+                    Action action = channel.actions.get(i - 1);
+                    if (isPaintView && action.isSelf == 1) {//自己撤销、是自己的通道才进行撤销
+                        channel.actions.remove(action);
+                        break;
+                    } else if (!isPaintView && action.isSelf == 0) {
+                        channel.actions.remove(action);
+                        break;
+                    }
+
+                }
+                isBack = true;
+            }
+        }
+        LogUtil.e("isBack" + isBack);
+        if (isBack) {
+            return reDraw();
+        }
+        return isBack;
+    }
 
 
     public void clearAll() {
@@ -485,7 +647,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
 
     //重新画一次
     private boolean reDraw() {
-//        drawView(1);
+        drawView(1);
         return true;
     }
 
@@ -516,9 +678,11 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
 
     //设置图片对象
     public void setImageView(Bitmap bitmap) {
+
         this.bitmap = bitmap;
         dstbmp = null;
         reDraw();
+        syncHistory();//同步获取数据回来的时候、要先同步一下
     }
 
 
@@ -579,76 +743,54 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         super.onWindowFocusChanged(hasWindowFocus);
     }
 
-//    public DrawThread getThreadInstance() {
-//        if (dt != null) {
-//            return dt;
-//        } else {
-//            dt = new DrawThread();
-//            return dt;
-//        }
-//    }
-
-//    class DrawThread extends Thread {
-//        @Override
-//        public void run() {
-//            while (isRunning) {
-//                if (isWait) {//切换到非画笔
-//                    try {
-//                        Thread.sleep(300);
-//                    } catch (InterruptedException e) {
-//                        LogUtil.e("DrawThread InterruptedException" + e.getMessage());
-//                    }
-//                } else {
-//                    if (Math.abs(lastTouchTime - System.currentTimeMillis()) < 300) {//画笔有动作
-//                        try {
-//                            drawView(2);
-//                        } catch (Exception e) {
-//                            LogUtil.e("DrawThread Exception" + e.getMessage());
-//                        } finally {
-//                            try {
-//                                if (isFreeze) {
-//                                    Thread.sleep(50);
-//                                } else {
-//                                    Thread.sleep(5);
-//                                }
-//                            } catch (InterruptedException e) {
-//                                LogUtil.e("DrawThread InterruptedException" + e.getMessage());
-//                            }
-//                        }
-//                    } else {
-//                        try {
-//                            Thread.sleep(50);
-//                        } catch (InterruptedException e) {
-//                            LogUtil.e("DrawThread 10 InterruptedException" + e.getMessage());
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-//        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-
-        if (cacheBitmap == null || cacheBitmap.isRecycled()) {
-            cacheBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
-            cacheBitmap.setHasAlpha(true);
-            tmpCanvas = new Canvas(cacheBitmap);
-        }
-        // 绘制历史记录(自己的)
-        if (pageChannel.paintChannel != null && pageChannel.paintChannel.actions != null) {
-            // 绘制当前
-            if (pageChannel.paintChannel.action != null) {
-                pageChannel.paintChannel.action.onDraw(canvas);
-            }
-        }
-
-        if (null != cacheBitmap && !cacheBitmap.isRecycled()) {
-            canvas.drawBitmap(cacheBitmap, 0, 0, null);
+    public DrawThread getThreadInstance() {
+        if (dt != null) {
+            return dt;
+        } else {
+            dt = new DrawThread();
+            return dt;
         }
     }
+
+    class DrawThread extends Thread {
+        @Override
+        public void run() {
+            while (isRunning) {
+                if (isWait) {//切换到非画笔
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        LogUtil.e("DrawThread InterruptedException" + e.getMessage());
+                    }
+                } else {
+                    if (Math.abs(lastTouchTime - System.currentTimeMillis()) < 300) {//画笔有动作
+                        try {
+                            drawView(2);
+                        } catch (Exception e) {
+                            LogUtil.e("DrawThread Exception" + e.getMessage());
+                        } finally {
+                            try {
+                                if (isFreeze) {
+                                    Thread.sleep(50);
+                                } else {
+                                    Thread.sleep(5);
+                                }
+                            } catch (InterruptedException e) {
+                                LogUtil.e("DrawThread InterruptedException" + e.getMessage());
+                            }
+                        }
+                    } else {
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            LogUtil.e("DrawThread 10 InterruptedException" + e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 绘制界面
      *
@@ -672,51 +814,28 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         canvasWidth = mCanvas.getWidth();
 
         switch (flag) {
-//            case 0:
-//                LogUtil.e("surfaceChanged canvasHeight" + canvasHeight + ",canvasWidth:" + canvasWidth);
-////                bgBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
-//                cacheBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
-//                cacheBitmap.setHasAlpha(true);
-//                tmpCanvas = new Canvas(cacheBitmap);
-//                tmpCanvas.setDrawFilter(new PaintFlagsDrawFilter(0,
-//                        Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
-//                drawBgAndBitmap(mCanvas);
-//                break;
-//            case 1:
-//                isWait = true;
-//                //橡皮擦功能先保存画布
-//                layerId = mCanvas.saveLayer(0, 0, canvasWidth, canvasHeight,
-//                        null, Canvas.ALL_SAVE_FLAG);
-//                cacheBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
-//                cacheBitmap.setHasAlpha(true);
-//                tmpCanvas.setBitmap(cacheBitmap);
-//                // 绘制历史记录(自己的)
-//                if (pageChannel.paintChannel != null && pageChannel.paintChannel.actions != null) {
-//                    for (Action a : pageChannel.paintChannel.actions) {
-////                       LogUtil.e("reDraw history");
-//                        a.onDraw(mCanvas);
-//                        a.onDraw(tmpCanvas);
-//                        //1.老师端接收到--先画自己矩形--再画橡皮擦路径
-//                    }
-//                    // 绘制当前
-//                    if (pageChannel.paintChannel.action != null) {
-//                        pageChannel.paintChannel.action.onDraw(mCanvas);
-//                        pageChannel.paintChannel.action.onDraw(tmpCanvas);
-//                    }
-//                }
-//                mCanvas.restoreToCount(layerId);
-//                drawBgAndBitmap(mCanvas);
-//                isWait = false;
-//                break;
-            case 2:
-                if (cacheBitmap == null || cacheBitmap.isRecycled()) {
-                    cacheBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
-                    cacheBitmap.setHasAlpha(true);
-                    tmpCanvas = new Canvas(cacheBitmap);
-                }
+            case 0:
+                LogUtil.e("surfaceChanged canvasHeight" + canvasHeight + ",canvasWidth:" + canvasWidth);
+//                bgBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
+                cacheBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
+                cacheBitmap.setHasAlpha(true);
+                tmpCanvas = new Canvas(cacheBitmap);
+                tmpCanvas.setDrawFilter(new PaintFlagsDrawFilter(0,
+                        Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
+                drawBgAndBitmap(mCanvas);
+                break;
+            case 1:
+                isWait = true;
+                //橡皮擦功能先保存画布
+                layerId = mCanvas.saveLayer(0, 0, canvasWidth, canvasHeight,
+                        null, Canvas.ALL_SAVE_FLAG);
+                cacheBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
+                cacheBitmap.setHasAlpha(true);
+                tmpCanvas.setBitmap(cacheBitmap);
                 // 绘制历史记录(自己的)
                 if (pageChannel.paintChannel != null && pageChannel.paintChannel.actions != null) {
                     for (Action a : pageChannel.paintChannel.actions) {
+//                       LogUtil.e("reDraw history");
                         a.onDraw(mCanvas);
                         a.onDraw(tmpCanvas);
                         //1.老师端接收到--先画自己矩形--再画橡皮擦路径
@@ -727,35 +846,45 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                         pageChannel.paintChannel.action.onDraw(tmpCanvas);
                     }
                 }
+                mCanvas.restoreToCount(layerId);
+                drawBgAndBitmap(mCanvas);
+                isWait = false;
+                break;
+            case 2:
+                if (cacheBitmap == null || cacheBitmap.isRecycled()) {
+                    cacheBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
+                    cacheBitmap.setHasAlpha(true);
+                    tmpCanvas = new Canvas(cacheBitmap);
+                }
                 drawBgAndBitmap(mCanvas);
                 break;
-//            case 3:
-////                mCanvas.drawColor(bgColor);
-//                mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-//                if (bitmap != null) {
-//                    drawBg(mCanvas);
-//                }
-//                //橡皮擦功能先保存画布
-//                layerId = mCanvas.saveLayer(0, 0, canvasWidth, canvasHeight,
-//                        null, Canvas.ALL_SAVE_FLAG);
-//                // 绘制历史记录(自己的)
-//                if (pageChannel.paintChannel != null && pageChannel.paintChannel.actions != null) {
-//                    for (Action a : pageChannel.paintChannel.actions) {
-////                        LogUtil.e("draw history");
-//                        a.onDraw(mCanvas);
-//                        //1.老师端接收到--先画自己矩形--再画橡皮擦路径
-//                    }
-//                    // 绘制当前
-//                    if (pageChannel.paintChannel.action != null) {
-//                        pageChannel.paintChannel.action.onDraw(mCanvas);
-//                    }
-//                    //绘制当前别人绘制的
-//                    if (null != otherPeopleaction) {
-//                        otherPeopleaction.onDraw(mCanvas);
-//                    }
-//                }
-//                mCanvas.restoreToCount(layerId);
-//                break;
+            case 3:
+//                mCanvas.drawColor(bgColor);
+                mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                if (bitmap != null) {
+                    drawBg(mCanvas);
+                }
+                //橡皮擦功能先保存画布
+                layerId = mCanvas.saveLayer(0, 0, canvasWidth, canvasHeight,
+                        null, Canvas.ALL_SAVE_FLAG);
+                // 绘制历史记录(自己的)
+                if (pageChannel.paintChannel != null && pageChannel.paintChannel.actions != null) {
+                    for (Action a : pageChannel.paintChannel.actions) {
+//                        LogUtil.e("draw history");
+                        a.onDraw(mCanvas);
+                        //1.老师端接收到--先画自己矩形--再画橡皮擦路径
+                    }
+                    // 绘制当前
+                    if (pageChannel.paintChannel.action != null) {
+                        pageChannel.paintChannel.action.onDraw(mCanvas);
+                    }
+                    //绘制当前别人绘制的
+                    if (null != otherPeopleaction) {
+                        otherPeopleaction.onDraw(mCanvas);
+                    }
+                }
+                mCanvas.restoreToCount(layerId);
+                break;
         }
 
         if (null != surfaceHolder && null != mCanvas) {
@@ -769,7 +898,7 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
 //        mCanvas.drawColor(bgColor);
         mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         if (bitmap != null) {
-//            drawBg(mCanvas);
+            drawBg(mCanvas);
         }
 //        if (bgBitmap != null && !bgBitmap.isRecycled()) {
 //            mCanvas.drawBitmap(bgBitmap, 0, 0, null);
@@ -779,50 +908,50 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
         }
     }
 
-//    private void drawBg(Canvas mCanvas) {
-//        if (dstbmp == null || src == null || dest == null) {
-//            bitmapWidth = bitmap.getWidth();
-//            bitmapHeight = bitmap.getHeight();
-//            LogUtil.e("canvasWidth" + canvasWidth + "，canvasHeight:" + canvasHeight);
-//            LogUtil.e("bitmapWidth:" + bitmapWidth + ",bitmapHeight" + bitmapHeight);
-//            dstbmp = Bitmap.createBitmap(bitmap, 0, 0, bitmapWidth,
-//                    bitmapHeight, null, true);
-//            cacheBitmap.setHasAlpha(true);
-//            dstbmpWidth = dstbmp.getWidth();
-//            dstbmpHeight = dstbmp.getHeight();
-////            LogUtil.e("dstbmpWidth:"+dstbmpWidth+",dstbmpHeight"+dstbmpHeight);
-//            src = new Rect(0, 0, dstbmpWidth, dstbmpHeight);
-//            // Rect用于居中显示
-//            int left = canvasWidth / 2 - dstbmpWidth / 2;
-//            if (left < 0) {
-//                left = 0;
-//            }
-//            int top = canvasHeight / 2 - dstbmpHeight / 2;
-//            if (top < 0) {
-//                top = 0;
-//            }
-//            int right = canvasWidth / 2 + dstbmpWidth / 2;
-//            if (right > canvasWidth) {
-//                right = canvasWidth;
-//            }
-//            int bottom = canvasHeight / 2 + dstbmpHeight / 2;
-//            if (bottom > canvasHeight) {
-//                bottom = canvasHeight;
-//            }
-//            dest = new Rect(left, top, right, bottom);
-//        }
-////        LogUtil.e("dest.width()："+dest.width()+"dest.height()"+dest.height());
-//        if (null != dstbmp && !dstbmp.isRecycled()) {
-//            mCanvas.drawBitmap(dstbmp, src, dest, null);
-//        }
-//    }
+    private void drawBg(Canvas mCanvas) {
+        if (dstbmp == null || src == null || dest == null) {
+            bitmapWidth = bitmap.getWidth();
+            bitmapHeight = bitmap.getHeight();
+            LogUtil.e("canvasWidth" + canvasWidth + "，canvasHeight:" + canvasHeight);
+            LogUtil.e("bitmapWidth:" + bitmapWidth + ",bitmapHeight" + bitmapHeight);
+            dstbmp = Bitmap.createBitmap(bitmap, 0, 0, bitmapWidth,
+                    bitmapHeight, null, true);
+            cacheBitmap.setHasAlpha(true);
+            dstbmpWidth = dstbmp.getWidth();
+            dstbmpHeight = dstbmp.getHeight();
+//            LogUtil.e("dstbmpWidth:"+dstbmpWidth+",dstbmpHeight"+dstbmpHeight);
+            src = new Rect(0, 0, dstbmpWidth, dstbmpHeight);
+            // Rect用于居中显示
+            int left = canvasWidth / 2 - dstbmpWidth / 2;
+            if (left < 0) {
+                left = 0;
+            }
+            int top = canvasHeight / 2 - dstbmpHeight / 2;
+            if (top < 0) {
+                top = 0;
+            }
+            int right = canvasWidth / 2 + dstbmpWidth / 2;
+            if (right > canvasWidth) {
+                right = canvasWidth;
+            }
+            int bottom = canvasHeight / 2 + dstbmpHeight / 2;
+            if (bottom > canvasHeight) {
+                bottom = canvasHeight;
+            }
+            dest = new Rect(left, top, right, bottom);
+        }
+//        LogUtil.e("dest.width()："+dest.width()+"dest.height()"+dest.height());
+        if (null != dstbmp && !dstbmp.isRecycled()) {
+            mCanvas.drawBitmap(dstbmp, src, dest, null);
+        }
+    }
 
     public void onDestoryView() {
         isDestory = true;
         isRunning = false;
-//        if (dt != null) {
-//            dt = null;
-//        }
+        if (dt != null) {
+            dt = null;
+        }
 //        if(null != transactionManager){
 //            transactionManager.end();
 //            transactionManager = null;
@@ -884,5 +1013,28 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
     }
     private String getImAccount(){
         return "xy_tdcq";
+    }
+
+    public static Bitmap getTransparentBitmap(Bitmap sourceImg, int number){
+        int[] argb = new int[sourceImg.getWidth() * sourceImg.getHeight()];
+
+        sourceImg.getPixels(argb, 0, sourceImg.getWidth(), 0, 0, sourceImg
+
+                .getWidth(), sourceImg.getHeight());// 获得图片的ARGB值
+
+        number = number * 255 / 100;
+
+        for (int i = 0; i < argb.length; i++) {
+
+            argb[i] = (number << 24) | (argb[i] & 0x00FFFFFF);
+
+        }
+
+        sourceImg = Bitmap.createBitmap(argb, sourceImg.getWidth(), sourceImg
+
+                .getHeight(), Bitmap.Config.ARGB_8888);
+
+        return sourceImg;
+
     }
 }

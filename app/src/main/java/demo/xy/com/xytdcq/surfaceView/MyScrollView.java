@@ -61,7 +61,7 @@ public class MyScrollView extends ScrollView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        LogUtil.e("xiaoyi onInterceptTouchEvent" + ev.getAction());
+//        LogUtil.e("xiaoyi onInterceptTouchEvent" + ev.getAction());
 //        try {
 //            if (ev != null && (ev.getPointerCount() >= 2 || ev.getAction() == MotionEvent.ACTION_POINTER_DOWN || ev.getAction() == MotionEvent.ACTION_POINTER_2_DOWN)) {
 //                mIsMove = true;

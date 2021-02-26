@@ -4,15 +4,17 @@ package demo.xy.com.xytdcq.surfaceView.doodle;
  * 形状枚举
  */
 public enum ActionTypeEnum {
+    UnKnow(-2),
     Eraser(-1),
-    UnKnow(0),
-    Path(1),
-    Line(2),
-    triangle(3),
-    Rect(4),
-    Circle(5),
+    Path(0),
+    Line(1),
+    Circle(2),
+    Rectangle(3),// 矩形
+    Triangle(4), // 三角形
+    Rect(5),
     FilledRect(6),
-    FilledCircle(7);
+    FilledCircle(7),
+    Cancel(8);
 
     private int value;
 

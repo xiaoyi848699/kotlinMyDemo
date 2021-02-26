@@ -9,6 +9,7 @@ import demo.xy.com.mylibrary.log.Write;
 import demo.xy.com.mylibrary.thread.ThreadPoolManager;
 import demo.xy.com.xytdcq.surfaceView.BlackBoardAcivity;
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.DrawPath;
+import demo.xy.com.xytdcq.surfaceView.hightDoodle.DrawPathLine;
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.IBasePath;
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.IChangeCallback;
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.Point;
@@ -24,7 +25,7 @@ public class EraserUtils {
 
     private boolean isCheck = true;
 
-    private List<DrawPath> paths = new ArrayList<>();
+    private List<IBasePath> paths = new ArrayList<>();
 
     private IChangeCallback mIChangeCallback;
 
@@ -63,9 +64,9 @@ public class EraserUtils {
         mLastPoint = null;
         paths.clear();
         for (IBasePath path: allPaths){
-            if (path instanceof DrawPath) {
+            if (path instanceof DrawPath || path instanceof DrawPathLine) {
                 if (path != null) {
-                    paths.add((DrawPath) path);
+                    paths.add(path);
                 }
             }
         }
@@ -128,9 +129,15 @@ public class EraserUtils {
         }
 
         private void checkPoint(Point eraserPoint, List<String> removeVid) {
-            for (DrawPath drawPath :paths){
-                boolean isDelete =  drawPath.checkEraser(eraserPoint);
+            for (IBasePath drawPath :paths){
+                boolean isDelete = false;
+                if (drawPath instanceof DrawPath) {
+                    isDelete = ((DrawPath)drawPath).checkEraser(eraserPoint);
+                } else if (drawPath instanceof DrawPathLine) {
+                    isDelete = ((DrawPathLine)drawPath).checkEraser(eraserPoint);
+                }
                 if (isDelete) {
+                    LogUtil.e("xiaoyi", "distance remove" + drawPath.getVid());
                     removeVid.add(drawPath.getVid());
                 }
             }

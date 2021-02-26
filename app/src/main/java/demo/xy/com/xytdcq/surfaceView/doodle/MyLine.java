@@ -23,7 +23,7 @@ public class MyLine extends Action {
             paint.setStrokeWidth(size);
         }
         canvas.drawColor(selectColor);
-        canvas.drawLine(startX, startY, stopX, stopY, paint);
+        canvas.drawLine(startX + size/2, startY+ size/2, stopX+ size/2, stopY+ size/2, paint);
     }
 
     public void onMove(float mx, float my) {

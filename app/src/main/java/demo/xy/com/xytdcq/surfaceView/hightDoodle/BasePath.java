@@ -188,5 +188,4 @@ public abstract class BasePath extends View implements IBasePath{
     }
 
     public abstract void relaseData();
-
 }

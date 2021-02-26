@@ -1,5 +1,7 @@
 package demo.xy.com.xytdcq.surfaceView.hightDoodle;
 
+import java.util.ArrayList;
+
 public interface IBasePath {
     String getVid();
 

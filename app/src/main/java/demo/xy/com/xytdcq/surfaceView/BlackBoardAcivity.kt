@@ -28,7 +28,10 @@ import demo.xy.com.xytdcq.uitls.ScreenCenter
 import demo.xy.com.xytdcq.uitls.ToastUtil
 import kotlin.math.abs
 
-
+/**
+ * 画板
+ * 物件层级：图片-文字-画线-视频-音频-绘制层
+ */
 class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IChangeCallback {
     companion object {
 
@@ -112,6 +115,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     private var blankPage:BlankPage? = null
 
     private var isSelectPen = true // 是否选择画笔
+    private var lastPenType = 1 // 默认画笔
     private var isCanMove = false // 是否可以移动
 
     private var paths: ArrayList<IBasePath>? = null
@@ -226,13 +230,28 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                 endView.addView(view,layoutParams)
             }
         } else if (view is DrawText) {
-            view.x = view.startPoint.x
-            view.y = view.startPoint.y
-            paths?.add(view!!)
+            var index = 0;
+            for (v in this.paths!!) {
+                // 找到最后一张图片的位置 然后在他后面添加图片
+                if (v is DrawPicture) {
+                    index++
+                } else {
+                    break
+                }
+            }
+            paths?.add(index, view)
             val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             layoutParams.width = (view.viewWidth).toInt()
             layoutParams.height = (view.viewHeight).toInt()
-            endView.addView(view,layoutParams)
+            endView.addView(view,index,layoutParams)
+
+//            view.x = view.startPoint.x
+//            view.y = view.startPoint.y
+//            paths?.add(view!!)
+//            val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//            layoutParams.width = (view.viewWidth).toInt()
+//            layoutParams.height = (view.viewHeight).toInt()
+//            endView.addView(view,layoutParams)
         }
     }
 
@@ -251,11 +270,11 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
             R.id.wb_text ->selectTools(3)//PPT
             R.id.wb_audio ->selectTools(4)
 
-            R.id.wb_curve ->selectPen()
-            R.id.wb_straight ->selectPen()
-            R.id.wb_circular ->selectPen()
-            R.id.wb_rectangle ->selectPen()
-            R.id.wb_redo ->selectPen()
+            R.id.wb_curve ->selectPenTools(ActionTypeEnum.Path.value)
+            R.id.wb_straight ->selectPenTools(ActionTypeEnum.Line.value)
+            R.id.wb_circular ->selectPenTools(ActionTypeEnum.Circle.value)
+            R.id.wb_rectangle ->selectPenTools(ActionTypeEnum.Rectangle.value)
+            R.id.wb_redo ->selectPenTools(ActionTypeEnum.Cancel.value)
         }
     }
 
@@ -343,6 +362,64 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         dealPenView();
         resetLeftTools1(2);
         wb_pen.setImageResource(R.drawable.wb_pen_s);
+        selectPenTools(lastPenType) // 默认曲线
+        if (isSelectedView) {
+            updateSelectAll(false)
+        }
+    }
+
+    private fun selectPenTools(type:Int) {
+        sBlackBoardStatus = 0
+        isCanMove = false
+        isSelectPen = true
+        doodleView.visibility = View.VISIBLE
+        dealPenView()
+        if (type != ActionTypeEnum.Cancel.value) {
+            // 撤销不切换画笔状态
+            resetLeftTools2()
+            lastPenType = type;
+        }
+        when(type) {
+            ActionTypeEnum.Path.value-> {
+                wb_curve.setImageResource(R.drawable.wb_curve_s)
+                doodleView.setPaintType(ActionTypeEnum.Path.value)
+            }
+            ActionTypeEnum.Line.value-> {
+                wb_straight.setImageResource(R.drawable.wb_straight_s)
+                doodleView.setPaintType(ActionTypeEnum.Line.value)
+            }
+            ActionTypeEnum.Circle.value-> {
+                wb_circular.setImageResource(R.drawable.wb_circular_s)
+                doodleView.setPaintType(ActionTypeEnum.Circle.value)
+            }
+            ActionTypeEnum.Rectangle.value-> {
+                wb_rectangle.setImageResource(R.drawable.wb_rectangle_s)
+                doodleView.setPaintType(ActionTypeEnum.Rectangle.value)
+            }
+            ActionTypeEnum.Cancel.value-> {
+                // 撤销
+               if (this.paths != null &&  this.paths!!.size > 0) {
+                   // 遍历最后一个画笔删除
+                   var index = this.paths!!.size - 1
+                   while (index > 0){
+                       if (this.paths!![index] is DrawPath) {
+                           var lastView = this.paths!![index]
+                           if (lastView is DrawPath) {
+                               this.paths!!.remove(lastView)
+                               endView.removeView(lastView)
+                           }
+                           if (lastView is DrawPathLine) {
+                               this.paths!!.remove(lastView)
+                               endView.removeView(lastView)
+                           }
+                           break
+                       }
+                       index--
+                   }
+               }
+            }
+        }
+
         if (isSelectedView) {
             updateSelectAll(false)
         }
@@ -878,6 +955,12 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
             var newPaths: ArrayList<IBasePath> = arrayListOf()
             for (b in this!!.paths!!) {
                 if (b is DrawPath && viewIds != null) {
+                    if (viewIds.contains(b.vid)) {
+                        endView.removeView(b)
+                        continue
+                    }
+                }
+                if (b is DrawPathLine && viewIds != null) {
                     if (viewIds.contains(b.vid)) {
                         endView.removeView(b)
                         continue
