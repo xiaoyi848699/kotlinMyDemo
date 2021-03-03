@@ -408,7 +408,27 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                                this.paths!!.remove(lastView)
                                endView.removeView(lastView)
                            }
+                           break
+                       }
+                       if (this.paths!![index] is DrawPathLine) {
+                           var lastView = this.paths!![index]
                            if (lastView is DrawPathLine) {
+                               this.paths!!.remove(lastView)
+                               endView.removeView(lastView)
+                           }
+                           break
+                       }
+                       if (this.paths!![index] is DrawRect) {
+                           var lastView = this.paths!![index]
+                           if (lastView is DrawRect) {
+                               this.paths!!.remove(lastView)
+                               endView.removeView(lastView)
+                           }
+                           break
+                       }
+                       if (this.paths!![index] is DrawCircle) {
+                           var lastView = this.paths!![index]
+                           if (lastView is DrawCircle) {
                                this.paths!!.remove(lastView)
                                endView.removeView(lastView)
                            }
@@ -961,6 +981,18 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                     }
                 }
                 if (b is DrawPathLine && viewIds != null) {
+                    if (viewIds.contains(b.vid)) {
+                        endView.removeView(b)
+                        continue
+                    }
+                }
+                if (b is DrawRect && viewIds != null) {
+                    if (viewIds.contains(b.vid)) {
+                        endView.removeView(b)
+                        continue
+                    }
+                }
+                if (b is DrawCircle && viewIds != null) {
                     if (viewIds.contains(b.vid)) {
                         endView.removeView(b)
                         continue

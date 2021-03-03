@@ -291,9 +291,9 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                    } else if (paintType ==  ActionTypeEnum.Line.getValue()) {
                        drawPath = new DrawPathLine(context);
                    } else if (paintType ==  ActionTypeEnum.Rectangle.getValue()) {
-                       drawPath = new DrawPath(context);
-                   } else if (paintType ==  ActionTypeEnum.Rect.getValue()) {
-                       drawPath = new DrawPath(context);
+                       drawPath = new DrawRect(context);
+                   } else if (paintType ==  ActionTypeEnum.Circle.getValue()) {
+                       drawPath = new DrawCircle(context);
                    } else {
                        drawPath = new DrawPath(context);
                    }
@@ -341,7 +341,18 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
                         drawPath.setEndPoint(new Point(maxX, maxY));
                         drawPath.setViewWidth(maxX-minX);
                         drawPath.setViewHeight(maxY-minY);
-                    } else if (paintType ==  ActionTypeEnum.Line.getValue() || paintType ==  ActionTypeEnum.Rectangle.getValue()) {
+                    } else if (paintType ==  ActionTypeEnum.Line.getValue()) {
+                        drawPath.setStartPoint(new Point(minX-10, minY-10));
+                        drawPath.setEndPoint(new Point(maxX+10, maxY+10));
+                        drawPath.setViewWidth(Math.max(Math.abs(endPoint.getX() - startPoint.getX()) + 20, 30));
+                        drawPath.setViewHeight(Math.max(Math.abs(endPoint.getY() - startPoint.getY()) + 20, 30));
+                    } else if (paintType ==  ActionTypeEnum.Rectangle.getValue()) {
+                        drawPath.setStartPoint(new Point(minX-10, minY-10));
+                        drawPath.setEndPoint(new Point(maxX+10, maxY+10));
+                        drawPath.setViewWidth(Math.max(Math.abs(endPoint.getX() - startPoint.getX()) + 20, 30));
+                        drawPath.setViewHeight(Math.max(Math.abs(endPoint.getY() - startPoint.getY()) + 20, 30));
+                    } else if (paintType ==  ActionTypeEnum.Circle.getValue()) {
+                        // 算出起始和结束点
                         drawPath.setStartPoint(new Point(minX-10, minY-10));
                         drawPath.setEndPoint(new Point(maxX+10, maxY+10));
                         drawPath.setViewWidth(Math.max(Math.abs(endPoint.getX() - startPoint.getX()) + 20, 30));
@@ -426,8 +437,8 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
             ;
         }
         //2017/6/8 修改原来画path,增加画其它形状
-//        channel.action = getActionByPaintType(paintType, x, y, this.paintColor, (int) paintSizeT);
-        channel.action = getActionByPaintType(paintType, x, y, rts_red, (int) paintSizeT);
+        channel.action = getActionByPaintType(paintType, x, y, this.paintColor, (int) paintSizeT);
+//        channel.action = getActionByPaintType(paintType, x, y, rts_red, (int) paintSizeT);
         if (paintType == ActionTypeEnum.Path.getValue()) {
             channel.action.onDraw(tmpCanvas);
         }

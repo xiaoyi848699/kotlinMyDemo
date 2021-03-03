@@ -4,42 +4,39 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import demo.xy.com.mylibrary.log.LogUtil;
 import demo.xy.com.xytdcq.surfaceView.BlackBoardAcivity;
-import demo.xy.com.xytdcq.surfaceView.utils.BezierUtil;
 import demo.xy.com.xytdcq.surfaceView.utils.PointUtils;
 
 /**
- * 直线
+ * 椭圆、圆
  */
-public class DrawPathLine extends BaseLinePath {
-//    private int penWidth; // 线宽：1.0、3.0、6.0
-//    private String penColor; // 色值：#000000、#2673f7、#e73dc
-//    private int penType; // 曲线-0，直线-1，圆形-2，矩形-3，三角形-4, 星形 -5，箭头-6
-//    private List<Point> paths;
+public class DrawCircle extends BaseLinePath {
 
-    private Point lineStart = new Point(0,0);
-    private Point lineEnd = new Point(0,0);
+    private float radius;
+    private Point centerPoint = new Point(0,0);
+    private Point touchStart = new Point(0,0);
+    private Point touchEnd = new Point(0,0);
 
-    public DrawPathLine(Context context) {
+    public DrawCircle(Context context) {
         super(context);
     }
 
-    public DrawPathLine(Context context, @Nullable AttributeSet attrs) {
+    public DrawCircle(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public DrawPathLine(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public DrawCircle(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public DrawPathLine(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public DrawCircle(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
@@ -68,7 +65,10 @@ public class DrawPathLine extends BaseLinePath {
             paint.setStrokeWidth(size);
             paint.setColor(color);
         }
-        canvas.drawLine(lineStart.getX(), lineStart.getY(), lineEnd.getX(), lineEnd.getY() , paint);
+        //定义一个矩形区域
+        RectF oval = new RectF(touchStart.getX(), touchStart.getY(), touchEnd.getX(), touchEnd.getY());
+        //矩形区域内切椭圆
+        canvas.drawOval(oval, paint);
         if (isSelect()) {
             canvas.drawColor(0x30C7EDCC);
             paint.setColor(Color.BLUE);
@@ -93,14 +93,16 @@ public class DrawPathLine extends BaseLinePath {
             p.setX(p.getX() - startPoint.getX() + size/2); // 偏移 使得靠边的线不会出现一部分不可见
             p.setY(p.getY() - startPoint.getY() + size/2);
             if (index == 0) {
-                lineStart = p;
+                touchStart = p;
                 newPoints.add(p);
             } else if (index == points.size() -1) {
-                lineEnd = p;
+                touchEnd = p;
                 newPoints.add(p);
             }
             index++;
         }
+        radius = (float) ((Math.sqrt((touchEnd.getX() - touchStart.getX()) * (touchEnd.getX() - touchStart.getX())
+            + (touchEnd.getY() - touchStart.getY()) * (touchEnd.getY() - touchStart.getY()))) / 2);
         this.points.addAll(newPoints);
         invalidate();
         // 发送数据
@@ -111,11 +113,26 @@ public class DrawPathLine extends BaseLinePath {
         if (this.points == null || this.points.size() == 0) {
             return true;
         }
-        double distance = PointUtils.pointToLine(lineStart.getX() + startPoint.getX(), lineStart.getY() + startPoint.getY(),
-            lineEnd.getX() + startPoint.getX(), lineEnd.getY() + startPoint.getY(),
-            pointIn.getX(), pointIn.getY());
+//        //通过矩形得到椭圆中心点
+//        Point center = Width/2, Height/2
+////得到椭圆
+//        a = Width/2
+//        b = Height/2
+////触摸点 P (x,y)
+//        F = (x - center.x)*(x - center.x)/(a*a) + (y - center.y)*(y - center.y)/(b*b)
+////判断F > = 0.8 && F < = 1.2 即触摸到，删除椭圆
+        float a = getWidth()/2;
+        float b = getHeight()/2;
+        Point center = new Point(a, b);
+        float touchX = pointIn.getX() - startPoint.getX();
+        float touchY = pointIn.getY() - startPoint.getY();
+        double distance = (touchX - center.getX()) * (touchX - center.getX()) / (a * a) + (touchY - center.getY()) * (touchY - center.getY()) / (b * b);
+
+//        double distance = PointUtils.pointToLine(lineStart.getX() + startPoint.getX(), lineStart.getY() + startPoint.getY(),
+//            lineEnd.getX() + startPoint.getX(), lineEnd.getY() + startPoint.getY(),
+//            pointIn.getX(), pointIn.getY());
         LogUtil.e("xiaoyi", "distance" + distance);
-        if (distance <= BlackBoardAcivity.eraserSize + size) {
+        if (distance >= 0.8 && distance <= 1.2) {
             return true;
         }
         return false;

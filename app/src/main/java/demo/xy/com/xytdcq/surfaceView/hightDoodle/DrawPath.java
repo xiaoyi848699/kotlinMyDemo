@@ -77,13 +77,12 @@ public class DrawPath extends BaseLinePath {
             paint.setStrokeCap(Paint.Cap.ROUND);
 
         }
-        paint.setColor(color);
-        paint.setStrokeWidth(size);
         if (isSelect()) {
             paint.setShadowLayer(4,4,4,Color.GRAY);
         } else {
             paint.setShadowLayer(0,0,0,color);
-
+            paint.setColor(color);
+            paint.setStrokeWidth(size);
         }
         if (points == null || points.size() < 1) {
             return;
