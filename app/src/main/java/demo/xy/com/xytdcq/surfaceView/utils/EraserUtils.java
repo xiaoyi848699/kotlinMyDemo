@@ -97,7 +97,10 @@ public class EraserUtils {
 
     public void endLinstener() {
         isCheck = false;
-        ThreadPoolManager.getInstance().remove(mCheckTask);
+        if (mCheckTask != null) {
+            ThreadPoolManager.getInstance().remove(mCheckTask);
+            mCheckTask = null;
+        }
     }
 
     class CheckTask implements Runnable{

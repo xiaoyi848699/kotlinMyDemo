@@ -80,9 +80,12 @@ public class DrawPath extends BaseLinePath {
         if (isSelect()) {
             paint.setShadowLayer(4,4,4,Color.GRAY);
         } else {
-            paint.setShadowLayer(0,0,0,color);
+            paint.setShadowLayer(0,0,0, color);
             paint.setColor(color);
             paint.setStrokeWidth(size);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeJoin(Paint.Join.ROUND);
+            paint.setStrokeCap(Paint.Cap.ROUND);
         }
         if (points == null || points.size() < 1) {
             return;
@@ -131,8 +134,8 @@ public class DrawPath extends BaseLinePath {
             newPoints.add(p);
         }
         // 补点
-        ArrayList<Point> addPoints = BezierUtil.getAddPoint(newPoints);
-        this.points.addAll(addPoints);
+//        ArrayList<Point> addPoints = BezierUtil.getAddPoint(newPoints);
+        this.points.addAll(newPoints);
         invalidate();
         // 发送数据
 

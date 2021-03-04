@@ -1,9 +1,12 @@
 package demo.xy.com.xytdcq.surfaceView
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Handler
+import android.os.Message
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +25,7 @@ import demo.xy.com.xytdcq.surfaceView.doodle.BlankPage
 import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.*
 import demo.xy.com.xytdcq.surfaceView.utils.EraserUtils
+import demo.xy.com.xytdcq.surfaceView.utils.MoveUtils
 import demo.xy.com.xytdcq.uitls.BitmapUtil
 import demo.xy.com.xytdcq.uitls.LogUtil
 import demo.xy.com.xytdcq.uitls.ScreenCenter
@@ -124,6 +128,8 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 
     private lateinit var eraserUtils:EraserUtils;
 
+    private lateinit var moveUtils:MoveUtils;
+
     private var downX:Float = 0.0f;
     private var downY:Float = 0.0f;
     private var lastX:Float = 0.0f;
@@ -135,6 +141,8 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     private lateinit var movePoint:Point // 单次事件的移动点
     private lateinit var selectAreStartPoint:Point // 选择区域的起始点
     private lateinit var selectAreMovePoint:Point // 选择区域的结束点
+
+    private var lastMoveTime = 0L
 
     private var deleteMinX = 0f
     private var deleteMinY = 0f
@@ -267,7 +275,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
             R.id.wb_pen ->selectPen() // 画笔
             R.id.wb_eraser ->selectTools(1)//橡皮
             R.id.wb_image ->selectTools(2)
-            R.id.wb_text ->selectTools(3)//PPT
+            R.id.wb_text ->selectTools(3)
             R.id.wb_audio ->selectTools(4)
 
             R.id.wb_curve ->selectPenTools(ActionTypeEnum.Path.value)
@@ -352,6 +360,9 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         wb_select.setImageResource(R.drawable.wb_select_s)
 //        updateSelectAll(true)
 //        isSelectedView = true
+        moveUtils = MoveUtils.getInstance()
+        moveUtils.init(this.paths, this)
+        moveUtils.startLinstener()
     }
 
     private fun selectPen() {
@@ -401,7 +412,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                if (this.paths != null &&  this.paths!!.size > 0) {
                    // 遍历最后一个画笔删除
                    var index = this.paths!!.size - 1
-                   while (index > 0){
+                   while (index >= 0){
                        if (this.paths!![index] is DrawPath) {
                            var lastView = this.paths!![index]
                            if (lastView is DrawPath) {
@@ -535,7 +546,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
                 selectEraser()
             }
             2 -> {
-                ImageLibraryHelper.showTakePicDialog("添加图片",this@BlackBoardAcivity);
+                ImageLibraryHelper.showTakePicDialog("添加图片",this@BlackBoardAcivity)
             }
             3 -> {
                 selectText();
@@ -812,24 +823,83 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         endView.invalidate()
     }
 
+
+
     private fun updateMove(moveX:Float, moveY:Float,isMoveEnd:Boolean) {
-        deleteMinX += moveX;
-        deleteMaxX += moveX;
-        deleteMinY += moveY;
-        deleteMaxY += moveY;
+        deleteMinX += moveX
+        deleteMaxX += moveX
+        deleteMinY += moveY
+        deleteMaxY += moveY
         for (b in this!!.paths!!) {
             if (b.isSelect) {
                 b.move(moveX, moveY,isMoveEnd)
-//                b.y = b.startPoint.y //卡顿
-//                b.x = b.startPoint.x //卡顿
-//                b.scrollTo(b.startPoint.x.toInt(), b.startPoint.y.toInt()) // 反方向内部移动
-//                b.scrollBy(b.startPoint.x.toInt(), b.startPoint.y.toInt()) // 不适合
+            }
+        }
+//        moveUtils?.setMoveEnd(moveX, moveY, isMoveEnd)
+
+        if (isMoveEnd || (abs(System.currentTimeMillis() - lastMoveTime) > 120)) {
+//            for (b in this!!.paths!!) {
+//                if (b.isSelect) {
+//                    if (b is BasePath) {
+//                        b.translationX = b.startPoint.x
+//                        b.translationY = b.startPoint.y
+//                    } else if (b is DrawText) {
+//                        b.translationX = b.startPoint.x
+//                        b.translationY = b.startPoint.y
+//                    }
+////                    if (b is BasePath) {
+////                        b.x = b.startPoint.x
+////                        b.y = b.startPoint.y
+////                    } else if (b is DrawText) {
+////                        b.x = b.startPoint.x
+////                        b.y = b.startPoint.y
+////                    }
+//                }
+//            }
+//            lastMoveTime = System.currentTimeMillis()
+            handler.removeMessages(999)
+            handler.sendEmptyMessage(999)
+        }
+
+//        for (b in this!!.paths!!) {
+//            if (b.isSelect) {
+//                b.move(moveX, moveY,isMoveEnd)
+////                b.y = b.startPoint.y //卡顿
+////                b.x = b.startPoint.x //卡顿
+////                b.scrollTo(b.startPoint.x.toInt(), b.startPoint.y.toInt()) // 反方向内部移动
+////                b.scrollBy(b.startPoint.x.toInt(), b.startPoint.y.toInt()) // 不适合
+//                if (b is BasePath) {
+//                    b.translationX = b.startPoint.x
+//                    b.translationY = b.startPoint.y
+//                } else if (b is DrawText) {
+//                    b.translationX = b.startPoint.x
+//                    b.translationY = b.startPoint.y
+//                }
+//            }
+//        }
+    }
+
+    private fun moveView() {
+        for (b in this!!.paths!!) {
+            if (b.isSelect) {
                 if (b is BasePath) {
                     b.translationX = b.startPoint.x
                     b.translationY = b.startPoint.y
                 } else if (b is DrawText) {
                     b.translationX = b.startPoint.x
                     b.translationY = b.startPoint.y
+                }
+            }
+        }
+        lastMoveTime = System.currentTimeMillis()
+    }
+
+    val handler : Handler = object : Handler(){
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            when(msg?.what){
+                999 ->{
+                    moveView()
                 }
             }
         }

@@ -8,6 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:clickable="true"
         android:orientation="horizontal"
         >
         <LinearLayout
@@ -21,45 +22,45 @@
             >
             <ImageView
                 android:id="@+id/wb_move"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_move_n"/>
             <ImageView
                 android:id="@+id/wb_select"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_select_n"/>
             <ImageView
                 android:id="@+id/wb_pen"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_pen_s"/>
             <ImageView
                 android:id="@+id/wb_eraser"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_eraser_n"/>
             <ImageView
                 android:id="@+id/wb_image"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_image_n"/>
             <ImageView
                 android:id="@+id/wb_text"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_text_n"/>
             <ImageView
                 android:id="@+id/wb_audio"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_audio_n"/>
 
         </LinearLayout>
@@ -76,35 +77,34 @@
             >
             <ImageView
                 android:id="@+id/wb_curve"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_curve_s"/>
             <ImageView
                 android:id="@+id/wb_straight"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_straight_n"/>
             <ImageView
                 android:id="@+id/wb_circular"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_circular_n"/>
             <ImageView
                 android:id="@+id/wb_rectangle"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_rectangle_n"/>
             <ImageView
                 android:id="@+id/wb_redo"
-                android:layout_width="@dimen/ic_pid_w_h24"
-                android:layout_height="@dimen/ic_pid_w_h24"
-                android:layout_margin="2dp"
+                android:layout_width="@dimen/ic_pid_w_h28"
+                android:layout_height="@dimen/ic_pid_w_h28"
+                android:padding="2dp"
                 android:src="@drawable/wb_redo_n"/>
-
         </LinearLayout>
     </RelativeLayout>
 

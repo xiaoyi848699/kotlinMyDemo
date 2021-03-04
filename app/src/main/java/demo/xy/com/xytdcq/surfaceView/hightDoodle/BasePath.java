@@ -10,6 +10,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import demo.xy.com.mylibrary.thread.ThreadPoolManager;
 import demo.xy.com.xytdcq.uitls.ScreenCenter;
 import demo.xy.com.xytdcq.uitls.Utils;
 
@@ -162,14 +163,19 @@ public abstract class BasePath extends View implements IBasePath{
         return Color.rgb(red, green, blue);
     }
 
-    public void checkIsSelect(float minX,float maxX,float minY,float maxY) {
-        if (Utils.getInterval(minX,startPoint.getX(),maxX,endPoint.getX()) &&
-                Utils.getInterval(minY,startPoint.getY(),maxY,endPoint.getY())) {
-            setSelect(true);
-        } else {
-            // 没有选中
-            setSelect(false);
-        }
+    public void checkIsSelect(final float minX, final float maxX, final float minY, final float maxY) {
+        ThreadPoolManager.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (Utils.getInterval(minX,startPoint.getX(),maxX,endPoint.getX()) &&
+                        Utils.getInterval(minY,startPoint.getY(),maxY,endPoint.getY())) {
+                    setSelect(true);
+                } else {
+                    // 没有选中
+                    setSelect(false);
+                }
+            }
+        });
     }
 
     public void move(float moveX, float moveY, boolean isMoveEnd) {
