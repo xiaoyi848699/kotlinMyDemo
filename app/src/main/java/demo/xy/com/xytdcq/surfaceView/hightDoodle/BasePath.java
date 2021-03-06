@@ -164,9 +164,9 @@ public abstract class BasePath extends View implements IBasePath{
     }
 
     public void checkIsSelect(final float minX, final float maxX, final float minY, final float maxY) {
-        ThreadPoolManager.getInstance().execute(new Runnable() {
-            @Override
-            public void run() {
+//        ThreadPoolManager.getInstance().execute(new Runnable() {
+//            @Override
+//            public void run() {
                 if (Utils.getInterval(minX,startPoint.getX(),maxX,endPoint.getX()) &&
                         Utils.getInterval(minY,startPoint.getY(),maxY,endPoint.getY())) {
                     setSelect(true);
@@ -174,8 +174,8 @@ public abstract class BasePath extends View implements IBasePath{
                     // 没有选中
                     setSelect(false);
                 }
-            }
-        });
+//            }
+//        });
     }
 
     public void move(float moveX, float moveY, boolean isMoveEnd) {

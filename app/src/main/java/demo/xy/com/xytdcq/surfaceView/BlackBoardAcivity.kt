@@ -1,6 +1,5 @@
 package demo.xy.com.xytdcq.surfaceView
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -18,6 +17,7 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.OnClick
 import demo.xy.com.mylibrary.picture.ImageLibraryHelper
+import demo.xy.com.mylibrary.thread.ThreadPoolManager
 import demo.xy.com.xytdcq.R
 import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.surfaceView.doodle.ActionTypeEnum
@@ -26,10 +26,7 @@ import demo.xy.com.xytdcq.surfaceView.doodle.PageChannel
 import demo.xy.com.xytdcq.surfaceView.hightDoodle.*
 import demo.xy.com.xytdcq.surfaceView.utils.EraserUtils
 import demo.xy.com.xytdcq.surfaceView.utils.MoveUtils
-import demo.xy.com.xytdcq.uitls.BitmapUtil
-import demo.xy.com.xytdcq.uitls.LogUtil
-import demo.xy.com.xytdcq.uitls.ScreenCenter
-import demo.xy.com.xytdcq.uitls.ToastUtil
+import demo.xy.com.xytdcq.uitls.*
 import kotlin.math.abs
 
 /**
@@ -128,7 +125,7 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 
     private lateinit var eraserUtils:EraserUtils;
 
-    private lateinit var moveUtils:MoveUtils;
+//    private lateinit var moveUtils:MoveUtils;
 
     private var downX:Float = 0.0f;
     private var downY:Float = 0.0f;
@@ -360,9 +357,9 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
         wb_select.setImageResource(R.drawable.wb_select_s)
 //        updateSelectAll(true)
 //        isSelectedView = true
-        moveUtils = MoveUtils.getInstance()
-        moveUtils.init(this.paths, this)
-        moveUtils.startLinstener()
+//        moveUtils = MoveUtils.getInstance()
+//        moveUtils.init(this.paths, this)
+//        moveUtils.startLinstener()
     }
 
     private fun selectPen() {
@@ -703,11 +700,14 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
     }
 
     private fun addEditTextView(point: Point) {
+        // ????  point
         var drawText = DrawText(this)
         changeSelectCallBack(drawText.vid) // 更新选择自己
         drawText.startPoint = Point(point.x - drawText.viewWidth/2, point.y - drawText.viewHeight/2)
         drawText.endPoint = Point(point.x + drawText.viewWidth/2,point.y + drawText.viewHeight/2)
         drawText.setChangeCallback(this)
+        drawText.x = drawText.startPoint.x
+        drawText.y = drawText.startPoint.y
         isSelectedSinglePic = false
         callBackAutoAddView(drawText)
         // 添加完成后切换成移动
@@ -907,9 +907,14 @@ class BlackBoardAcivity : BaseActivity(), IDrawCallback, View.OnTouchListener,IC
 
     // 框选返回传入view判断是否被选择
     private fun checkSelectView() {
-        for (b in this!!.paths!!) {
-           b.checkIsSelect(startPoint.x, movePoint.x, startPoint.y, movePoint.y)
+        if (abs(movePoint.x - startPoint.x) < 10 && abs(movePoint.y - startPoint.y) < 10) {
+            return
         }
+//        ThreadPoolManager.getInstance().execute {
+            for (b in this!!.paths!!) {
+                b.checkIsSelect(startPoint.x, movePoint.x, startPoint.y, movePoint.y)
+            }
+//        }
     }
 
     // 遍历所有的view 是否有选中的

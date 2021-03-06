@@ -151,7 +151,6 @@ public class EraserUtils {
                     removeVid.add(drawPath.getVid());
                 }
             }
-
         }
     }
 }

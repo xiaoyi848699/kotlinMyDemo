@@ -114,7 +114,6 @@ public class DrawPathLine extends BaseLinePath {
         double distance = PointUtils.pointToLine(lineStart.getX() + startPoint.getX(), lineStart.getY() + startPoint.getY(),
             lineEnd.getX() + startPoint.getX(), lineEnd.getY() + startPoint.getY(),
             pointIn.getX(), pointIn.getY());
-        LogUtil.e("xiaoyi", "distance" + distance);
         if (distance <= BlackBoardAcivity.eraserSize + size) {
             return true;
         }

@@ -142,25 +142,39 @@ public class DrawPath extends BaseLinePath {
     }
 
     public boolean checkEraser(Point pointIn) {
-        if (this.points == null || this.points.size() == 0) {
+        if (this.points == null || this.points.size() <= 1) {
             return true;
         }
-        // 先判断如果不在绘制区内返回false
-        if ((pointIn.getX()) >= startPoint.getX() - BlackBoardAcivity.eraserSize // 橡皮半径
-                && pointIn.getX() <= endPoint.getX() + BlackBoardAcivity.eraserSize
-                && pointIn.getY() >= startPoint.getY() - BlackBoardAcivity.eraserSize
-                && pointIn.getY() <= endPoint.getY() + BlackBoardAcivity.eraserSize) {
-            // 转换成区域内的相对位置点
-            Point point = new Point(pointIn.getX() - startPoint.getX() + size, pointIn.getY() - startPoint.getY() + size);
-            for (Point p : this.points) {
-                if (PointUtils.checkIndistance(p, point, BlackBoardAcivity.eraserSize)) {
-                    return true;
-                }
+
+        Point lineStart = this.points.get(0);
+        for (int index = 1; index < this.points.size(); index ++) {
+            Point lineEnd = this.points.get(index);
+            double distance = PointUtils.pointToLine(lineStart.getX() + startPoint.getX(), lineStart.getY() + startPoint.getY(),
+                    lineEnd.getX() + startPoint.getX(), lineEnd.getY() + startPoint.getY(),
+                    pointIn.getX(), pointIn.getY());
+            if (distance <= BlackBoardAcivity.eraserSize + size) {
+                return true;
             }
-        } else {
-            LogUtil.e("checkEraser un in area");
-            return false;
+            lineStart = this.points.get(index);
         }
+
+
+        // 先判断如果不在绘制区内返回false
+//        if ((pointIn.getX()) >= startPoint.getX() - BlackBoardAcivity.eraserSize // 橡皮半径
+//                && pointIn.getX() <= endPoint.getX() + BlackBoardAcivity.eraserSize
+//                && pointIn.getY() >= startPoint.getY() - BlackBoardAcivity.eraserSize
+//                && pointIn.getY() <= endPoint.getY() + BlackBoardAcivity.eraserSize) {
+//            // 转换成区域内的相对位置点
+//            Point point = new Point(pointIn.getX() - startPoint.getX() + size, pointIn.getY() - startPoint.getY() + size);
+//            for (Point p : this.points) {
+//                if (PointUtils.checkIndistance(p, point, BlackBoardAcivity.eraserSize)) {
+//                    return true;
+//                }
+//            }
+//        } else {
+//            LogUtil.e("checkEraser un in area");
+//            return false;
+//        }
         return false;
     }
 }
