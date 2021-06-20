@@ -257,10 +257,10 @@ public class DrawingBoardView extends SurfaceView implements SurfaceHolder.Callb
             lastTouchTime = System.currentTimeMillis();
             switch (action) {
                 case MotionEvent.ACTION_POINTER_DOWN:
-                    LogUtil.e("xiaoyi ACTION_POINTER_DOWN  PointerCount:" + event.getPointerCount());
+                    LogUtil.e("ACTION_POINTER_DOWN  PointerCount:" + event.getPointerCount());
                     break;
                 case MotionEvent.ACTION_POINTER_UP:
-                    LogUtil.e("xiaoyi ACTION_POINTER_UP PointerCount:" + event.getPointerCount());
+                    LogUtil.e("ACTION_POINTER_UP PointerCount:" + event.getPointerCount());
                     break;
                 case MotionEvent.ACTION_DOWN:
                     isDrawing = true;
