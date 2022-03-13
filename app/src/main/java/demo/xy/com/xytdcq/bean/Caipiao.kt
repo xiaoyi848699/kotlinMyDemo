@@ -9,4 +9,8 @@ class Caipiao {
     var e: Int = 0
     var f: Int = 0
     var g: Int = 0
+    constructor()
+    constructor(id:String) {
+        this.id = id
+    }
 }

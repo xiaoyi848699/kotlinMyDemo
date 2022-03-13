@@ -16,11 +16,13 @@ public class HistoryAdapter extends BaseAdapter{
 	List<Caipiao> caipiao;
 	Context ctx;
 	LayoutInflater inflater;
+	private int modle;
 	
-	public HistoryAdapter(Context ctx,List<Caipiao> caipiao) {
+	public HistoryAdapter(Context ctx,List<Caipiao> caipiao, int modle) {
 		this.ctx=ctx;
 		this.caipiao=caipiao;
 		this.inflater=LayoutInflater.from(ctx);
+		this.modle=modle;
 	}
 	@Override
 	public int getCount() {
@@ -47,8 +49,13 @@ public class HistoryAdapter extends BaseAdapter{
 		TextView tvred=(TextView) convertView.findViewById(R.id.resultRed2);
 		TextView tvblue=(TextView) convertView.findViewById(R.id.resultBlue2);
 		Caipiao cp=caipiao.get(position);
-		tvred.setText(cp.getA()+"\t\t"+cp.getB()+"\t\t"+cp.getC()+"\t\t"+cp.getD()+"\t\t"+cp.getE()+"\t\t"+cp.getF()+"\t\t");
-		tvblue.setText(cp.getG()+"");
+		if (modle == 1) {
+			tvred.setText(cp.getA()+"\t\t"+cp.getB()+"\t\t"+cp.getC()+"\t\t"+cp.getD()+"\t\t"+cp.getE()+"\t\t"+cp.getF()+"\t\t");
+			tvblue.setText(cp.getG()+"");
+		} else {
+			tvred.setText(cp.getA()+"\t\t"+cp.getB()+"\t\t"+cp.getC()+"\t\t"+cp.getD()+"\t\t"+cp.getE()+"\t\t");
+			tvblue.setText(cp.getF()+"\t\t" + cp.getG()+"");
+		}
 		return convertView;
 	}
 	

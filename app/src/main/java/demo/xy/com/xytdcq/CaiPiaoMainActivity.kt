@@ -28,7 +28,7 @@ class CaiPiaoMainActivity : BaseActivity() {
     override fun setDataAndEvent() {
         cps = ArrayList()
         history.text = "清空记录(" + cps!!.size + ")"
-        myAdapter = HistoryAdapter(this@CaiPiaoMainActivity, cps)
+        myAdapter = HistoryAdapter(this@CaiPiaoMainActivity, cps, 1)
         lv.adapter = myAdapter
     }
     fun createCaipiao1(): Caipiao {

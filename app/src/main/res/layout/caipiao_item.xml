@@ -10,16 +10,18 @@
 	        android:layout_height="wrap_content"
 	        android:layout_margin="10dp"
 	        android:textColor="#FF0033"
+			android:layout_weight="1"
 	        android:textSize="20sp"
 	        android:gravity="right"
 	        android:text="0\t\t0\t\t0\t\t0\t\t0\t\t" />
 	     <TextView
-	        android:id="@+id/resultBlue2"
-	        android:layout_width="80dp"
-	        android:layout_height="wrap_content"
-	        android:layout_margin="10dp"
-	        android:textColor="#0000FF"
-	        android:textSize="20sp"
-	        android:text="0" />
+			android:id="@+id/resultBlue2"
+			android:layout_width="80dp"
+			android:layout_weight="0"
+			android:layout_height="wrap_content"
+			android:layout_margin="10dp"
+			android:textColor="#0000FF"
+			android:textSize="20sp"
+			android:text="0" />
 
 </LinearLayout>

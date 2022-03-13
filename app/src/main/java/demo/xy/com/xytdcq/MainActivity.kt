@@ -16,6 +16,7 @@ import demo.xy.com.xytdcq.base.BaseActivity
 import demo.xy.com.xytdcq.demo1.PhotoAnimActivity
 import demo.xy.com.xytdcq.demo1.RedPagerMainActivity
 import demo.xy.com.xytdcq.demo1.SlidingConflictActivity
+import demo.xy.com.xytdcq.mvvm.CaiPiaoActivity
 import demo.xy.com.xytdcq.nkd.MainNKDActivity
 import demo.xy.com.xytdcq.screen.RtmpActivity
 import demo.xy.com.xytdcq.screen.ScreenRecordingAndCompress
@@ -53,6 +54,8 @@ class MainActivity : BaseActivity() {
 //                9 ->startActivity(Intent(context, CaiPiaoMainActivity::class.java))
 //            }
         }
+
+
     }
 
     //    lateinit可以在任何位置初始化并且可以初始化多次。而lazy在第一次被调用时就被初始化，想要被改变只能重新定义
@@ -63,6 +66,7 @@ class MainActivity : BaseActivity() {
     private var itemsName = listOf(
             "全屏",
             "彩票助手",
+            "彩票助手mvvm",
             "随机瓜分红包",
             "滑动事件冲突",
             "照片动画",
@@ -79,6 +83,7 @@ class MainActivity : BaseActivity() {
     private var itemsAC = listOf(
             FullActivity::class.java,
             CaiPiaoMainActivity::class.java,
+            CaiPiaoActivity::class.java,
             RedPagerMainActivity::class.java,
             SlidingConflictActivity::class.java,
             PhotoAnimActivity::class.java,

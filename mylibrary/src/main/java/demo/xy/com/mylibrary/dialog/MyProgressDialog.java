@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.text.TextUtils;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import demo.xy.com.mylibrary.R;
@@ -65,6 +67,7 @@ public class MyProgressDialog extends Dialog {
         if(null != handler){
             handler.sendEmptyMessageDelayed(CHECK_DISMISS,maxWaitTime);
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
